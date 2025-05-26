@@ -18,8 +18,8 @@
 
 ## 💼 Roles y tareas asignadas
 
-| Integrante          | Tareas principales                                     | Fecha de inicio | Fecha estimada fin |
-|---------------------|--------------------------------------------------------|------------------|-------------------|
-| Zampella, Tomás     | Diseño de icono, splash animado, Login                 | 26/05/2025       | 31/05/2025        |
+| Integrante          | Módulos (objetivos) a desarrollar.                     | Fecha de inicio | Fecha estimada fin | BRANCH|
+|---------------------|--------------------------------------------------------|-----------------|--------------------|-------|   
+| Zampella, Tomás     | Diseño de icono, splash animado, Login                 | 26/05/2025      | 31/05/2025         |MAIN   |
 
 ---
