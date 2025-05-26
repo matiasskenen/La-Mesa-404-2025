@@ -6,27 +6,20 @@
 
 ## 👥 Integrantes del grupo
 
-1. **Apellido, Nombre**  
-   - 📌 Módulos: Login, Registro de usuarios, Splash animado  
-   - 🗓️ Inicio: 24/05/2025  
-   - 🗓️ Finalización: 31/05/2025  
-   - 🔀 Branch: `login-splash-usuario`
+1. **Skenen, Matias**  
 
-2. **Apellido, Nombre**  
-   - 📌 Módulos: Gestión de pedidos, QR de mesa, Juegos  
-   - 🗓️ Inicio: 24/05/2025  
-   - 🗓️ Finalización: 03/06/2025  
-   - 🔀 Branch: `pedidos-juegos-qr`
-
-3. **Apellido, Nombre**  
-   - 📌 Módulos: Encuestas, Push Notifications, PDF con logo  
-   - 🗓️ Inicio: 24/05/2025  
-   - 🗓️ Finalización: 07/06/2025  
-   - 🔀 Branch: `encuestas-push-pdf`
-
+2. **Zampella, Tomas**  
 ---
 
 ## 🛠️ Tecnologías
 - Ionic + Angular
 - Supabase
 - Capacitor
+
+## 💼 Roles y tareas asignadas
+
+| Integrante          | Tareas principales                                     | Fecha de inicio | Fecha estimada fin |
+|---------------------|--------------------------------------------------------|------------------|-------------------|
+| Zampella, Tomás     | Diseño de icono, splash animado, Login                 | 26/05/2025       | 31/05/2025        |
+
+---
