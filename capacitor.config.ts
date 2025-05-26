@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'mesa404',
+  appId: 'com.usuario.mesa404',
+  appName: 'Mesa404',
   webDir: 'www'
 };
 

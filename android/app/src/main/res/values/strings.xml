@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mesa404</string>
+    <string name="title_activity_main">Mesa404</string>
+    <string name="package_name">com.usuario.mesa404</string>
+    <string name="custom_url_scheme">com.usuario.mesa404</string>
+</resources>
