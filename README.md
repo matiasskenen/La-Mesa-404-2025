@@ -18,8 +18,10 @@
 
 ## 💼 Roles y tareas asignadas
 
-| Integrante          | Módulos (objetivos) a desarrollar.                     | Fecha de inicio | Fecha estimada fin | BRANCH|
-|---------------------|--------------------------------------------------------|-----------------|--------------------|-------|   
-| Zampella, Tomás     | Diseño de icono, splash animado, Login                 | 26/05/2025      | 31/05/2025         |MAIN   |
+| Integrante          | Módulos (objetivos) a desarrollar                                     | Fecha de inicio | Fecha estimada fin | Branch |
+|---------------------|------------------------------------------------------------------------|------------------|---------------------|--------|
+| Zampella, Tomás     | Diseño de ícono y splash animado                                       | 26/05/2025       | 31/05/2025          | main   |
+|                     | Formulario de login con animación + accesos rápidos                    | 26/05/2025       | 31/05/2025          | main   |
+|                     | Implementación de Supabase + validaciones de formularios               | 26/05/2025       | 31/05/2025          | main   |
 
 ---
