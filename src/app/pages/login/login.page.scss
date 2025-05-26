@@ -1,4 +1,151 @@
 ion-content {
-  --background: none; // elimina el color por defecto de Ionic
-  background-color: #19647E;
+  --background: #19647E;
+  overflow: hidden;
+}
+
+ion-button, ion-input{
+  font-family: 'Montserrat', sans-serif;
+}
+
+ion-item ion-label {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+//ANIMACION Desvanecimiento desde arriba
+.contenedor-flex {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  animation: fadeInUp 2s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+ion-card {
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+ion-input{
+  --color: var(--ion-color-favorito);
+  --placeholder-color: var(--ion-color-celeste);
+  --placeholder-opacity: 1;
+  --highlight-color: var(--ion-color-danger);
+  /* Ajusta el grosor si quieres más o menos pronunciado */
+  --highlight-height: 2px;
+}
+
+.login-card {
+  flex-shrink: 0; // Que no se encoja
+  margin: 16px;
+}
+
+.imagen-card {
+  flex-grow: 1; // Ocupa el resto del espacio
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:#BF1F27;
+   margin: 16px;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+.boton-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  
+}
+
+.chips-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.input-group {
+  position: relative;
+  margin-bottom: 20px; // para que el tooltip tenga espacio visual y no se solape
+
+  ion-item {
+    z-index: 1;
+  }
+
+  .error-tooltip {
+    position: absolute;
+    top: 100%; // justo debajo del ion-item
+    left: 16px;
+    background-color: #BF1F27;
+    color: rgb(0, 0, 0);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    width: fit-content;
+    max-width: 90%;
+    z-index: 2;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 12px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: transparent transparent #BF1F27 transparent;
+    }
+  }
+}
+
+// agregado
+ion-alert.custom-alert {
+  --backdrop-opacity: 0.7;
+}
+
+.custom-alert .alert-button-group {
+  padding: 8px;
+}
+
+button.alert-button.alert-button-confirm {
+  background-color: var(--ion-color-success);
+  color: var(--ion-color-success-contrast);
+}
+
+.md button.alert-button.alert-button-confirm {
+  border-radius: 4px;
+}
+
+.ios .custom-alert button.alert-button {
+  border: 0.55px solid rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.2);
+}
+
+.ios button.alert-button.alert-button-cancel {
+  border-right: 0;
+  border-bottom-left-radius: 13px;
+  border-top-left-radius: 13px;
+}
+
+.ios button.alert-button.alert-button-confirm {
+  border-bottom-right-radius: 13px;
+  border-top-right-radius: 13px;
 }
