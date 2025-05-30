@@ -22,6 +22,7 @@
 
 
 ## 💼 Roles y tareas asignadas
+## LISTADO TOTAL DE TAREAS:
 
 | Integrante          | Módulos (objetivos) a desarrollar                                     | Fecha de inicio | Fecha estimada fin | Branch |
 |---------------------|------------------------------------------------------------------------|------------------|---------------------|--------|
