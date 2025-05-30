@@ -1,13 +1,35 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>bartender</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="fondo">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">bartender</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Encabezado superior -->
+  <div class="header-bar">
+    <img src="assets/icons/barman.png" class="avatar" />
+    <span class="titulo">BARMAN</span>
+    <ion-button fill="clear" class="logout-btn">
+      <ion-icon name="power" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Botones principales -->
+  <div class="botones-container">
+    <ion-button expand="block" class="boton-opcion" color="light">
+      <img src="assets/icons/alta_producto.png" />
+      ALTA DE PRODUCTO
+    </ion-button>
+
+    <ion-button expand="block" class="boton-opcion" color="light">
+      <img src="assets/icons/ver_pedidos.png" />
+      VER PEDIDOS PENDIENTES
+    </ion-button>
+
+    <ion-button expand="block" class="boton-opcion" color="light">
+      <img src="assets/icons/relevamiento.png" />
+      RELEVAMIENTO LUGAR DE TRABAJO
+    </ion-button>
+
+    <ion-button expand="block" class="boton-opcion" color="light">
+      <img src="assets/icons/encuestas.png" />
+      VER ENCUESTAS DE OTROS EMPLEADOS
+    </ion-button>
+  </div>
+
 </ion-content>

@@ -1,20 +1,77 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import {
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonInput,
+  IonItem,
+  IonText
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-meitre',
   templateUrl: './meitre.page.html',
   styleUrls: ['./meitre.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonIcon,
+    IonImg,
+    IonInput,
+    IonItem,
+    IonText
+  ]
 })
 export class MeitrePage implements OnInit {
+  formClienteActivo = false;
+  mensajeError = '';
+  mensajeOk = '';
+  formCliente: FormGroup;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private fb: FormBuilder) {
+    this.formCliente = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      dni: ['', Validators.required],
+      cuil: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmar: ['', Validators.required]
+    });
   }
 
+  ngOnInit() {}
+
+  async guardarCliente() {
+    const c = this.formCliente.value;
+    this.mensajeError = '';
+    this.mensajeOk = '';
+
+    if (c.password !== c.confirmar) {
+      this.mensajeError = 'Las contraseñas no coinciden';
+      return;
+    }
+
+    // Aquí iría tu lógica para registrar en Supabase o backend
+    // Por ahora simula que se guarda
+    console.log('Cliente a guardar:', c);
+
+    this.mensajeOk = '¡Cliente registrado con éxito!';
+    this.formCliente.reset();
+    this.formClienteActivo = false;
+  }
 }

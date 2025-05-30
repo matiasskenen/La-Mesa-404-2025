@@ -37,5 +37,9 @@ export const routes: Routes = [
     path: 'bartender',
     loadComponent: () => import('./pages/empleados/bartender/bartender.page').then( m => m.BartenderPage)
   },
+  {
+    path: 'administrador',
+    loadComponent: () => import('./pages/empleados/administrador/administrador.page').then( m => m.AdministradorPage)
+  },
 
 ];
