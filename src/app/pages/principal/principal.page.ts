@@ -15,13 +15,17 @@ export class PrincipalPage implements OnInit {
 
   auth = inject(AuthService);
 
-  constructor() { }
+  constructor() { 
+    console.log(this.auth.nombreUsuario);
+
+  }
 
   ngOnInit() {
   }
 
   salir(){
     this.auth.cerrarSesion();
+
   }
 
 }

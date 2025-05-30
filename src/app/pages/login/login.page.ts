@@ -44,10 +44,6 @@ export class LoginPage {
   }
 }
 
-  autocompletar(email: string, password: string) {
-    this.loginForm.patchValue({ email, password });
-  }
-
   async mostrarAlerta(titulo: string, mensaje: string) {
   const alert = await this.alertCtrl.create({
     header: titulo,
@@ -56,6 +52,22 @@ export class LoginPage {
   });
 
   await alert.present();
+}
+
+mostrarUsuarios = false;
+
+usuarios = [
+  { nombre: 'Administrador', email: 'admin@resto.com', pass: 'admin123', img: 'assets/login/avatar_admin.png' },
+  { nombre: 'Meitre', email: 'metre@resto.com', pass: 'metre123', img: 'assets/login/avatar_metre.png' },
+  { nombre: 'Bartender', email: 'mozo@resto.com', pass: 'mozo123', img: 'assets/login/avatar_mozo.png' },
+  { nombre: 'Cocinero', email: 'cocinero@resto.com', pass: 'cocinero123', img: 'assets/login/avatar_cocinero.png' },
+  { nombre: 'Cliente', email: 'bartender@resto.com', pass: 'bart123', img: 'assets/login/avatar_cliente.png' },
+  { nombre: 'Dueño', email: 'cliente@resto.com', pass: 'cliente123', img: 'assets/login/avatar_dueño.png' }
+];
+
+autocompletar(email: string, pass: string) {
+  this.loginForm.patchValue({ email, password: pass });
+  this.mostrarUsuarios = false;
 }
 
 }

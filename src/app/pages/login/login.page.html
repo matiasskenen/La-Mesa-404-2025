@@ -1,6 +1,10 @@
 <ion-content [fullscreen]="true">
   <form [formGroup]="loginForm" (ngSubmit)="loguearse()" class="contenedor-flex">
     <!-- Card de login -->
+        <ion-card class="imagen-card">
+      <img src="../assets/logo_splash.png" alt="logo_kinetico" />
+    </ion-card>
+
     <ion-card class="login-card">
       <ion-card-header>
       </ion-card-header>
@@ -45,59 +49,37 @@
 
       <!-- Card Imagen al fondo, adaptativa -->
     </ion-card>
-    <ion-card class="imagen-card">
-      <img src="../assets/logo_splash.png" alt="logo_kinetico" />
-    </ion-card>
 
-    <!-- En cada autocompletar poner el mail y contraseña de cada usuario, eje autocompletar('anonimo@anonimo.com', '123456')-->
+    <!-- BOTÓN PARA MOSTRAR INICIO RÁPIDO -->
+<ion-button expand="block" color="warning" (click)="mostrarUsuarios = true">
+  INICIO RÁPIDO
+</ion-button>
 
-    <!-- Card con los accesos rápidos  -->
-    <ion-card class="login-card">
-      <ion-list>
-        <ion-item>
-          <ion-avatar aria-hidden="true" slot="start">
-            <img alt="" src="../assets/login/avatar_dueño.png"/>
-          </ion-avatar>
-          <ion-label>Dueño</ion-label>
-          <ion-button slot="end" color="secondary" (click)="autocompletar('prueba@prueba.com', '123456')"> 
-            <ion-icon name="star" slot="end"></ion-icon>
-            Seleccionar
-          </ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-avatar aria-hidden="true" slot="start">
-            <img alt="" src="../assets/login/avatar_empleado.png"/>
-          </ion-avatar>
-          <ion-label>Empleado</ion-label>
-          <ion-button slot="end" color="tertiary" (click)="autocompletar('invitado@invitado.com', '222222')">
-            <ion-icon name="star" slot="end"></ion-icon>
-            Seleccionar
-          </ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-avatar aria-hidden="true" slot="start">
-            <img alt="" src="../assets/login/avatar_cliente.png"/>
-          </ion-avatar>
-          <ion-label>Cliente</ion-label>
-          <ion-button slot="end" color="danger" (click)="autocompletar('usuario@usuario.com', '333333')">
-            <ion-icon name="star" slot="end"></ion-icon>
-            Seleccionar
-          </ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-avatar aria-hidden="true" slot="start">
-            <img alt="" src="../assets/login/avatar_anonimo.png" />
-          </ion-avatar>
-          <ion-label>Anónimo</ion-label>
-          <ion-button slot="end" color="success" (click)="autocompletar('tester@tester.com', '555555')">
-            <ion-icon name="star" slot="end"></ion-icon>
-            Seleccionar
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-card>
 
   </form>
+
+
+
+<!-- OVERLAY QUE TAPA TODO -->
+<div *ngIf="mostrarUsuarios" class="overlay-usuarios">
+
+  <!-- BOTÓN PARA CERRAR -->
+  <ion-button fill="clear" color="dark" (click)="mostrarUsuarios = false" class="cerrar-btn">
+    ❌
+  </ion-button>
+
+  <!-- LISTA DE USUARIOS -->
+  <div class="lista-usuarios">
+    <div
+      class="usuario-card"
+      *ngFor="let u of usuarios"
+      (click)="autocompletar(u.email, u.pass)"
+    >
+      <img [src]="u.img" alt="{{u.nombre}}" />
+      <p>{{u.nombre}}</p>
+    </div>
+  </div>
+</div>
 
 
 </ion-content>
