@@ -16,6 +16,10 @@
 - Supabase
 - Capacitor
 
+DISTRIBUCIÓN SEMANAL DE TAREAS:
+La-Mesa-404-2025 - SEMANA 1 (26/05 AL 31/05):
+
+
 ## 💼 Roles y tareas asignadas
 
 | Integrante          | Módulos (objetivos) a desarrollar                                     | Fecha de inicio | Fecha estimada fin | Branch |
