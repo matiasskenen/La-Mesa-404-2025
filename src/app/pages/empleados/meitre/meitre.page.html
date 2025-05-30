@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true" class="fondo">
 
-  <!-- Encabezado -->
   <div class="header-bar">
     <img src="assets/icons/metre.png" class="avatar" />
     <span class="titulo">METRE</span>
@@ -9,7 +8,7 @@
     </ion-button>
   </div>
 
-  <!-- BOTONES PRINCIPALES -->
+
   <div class="botones-container" *ngIf="!formClienteActivo">
     <ion-button expand="block" class="boton-opcion" color="light" (click)="formClienteActivo = true">
       <img src="assets/icons/alta_cliente.png" />
@@ -32,7 +31,7 @@
     </ion-button>
   </div>
 
-  <!-- MENSAJES -->
+
   <ion-text color="danger" *ngIf="mensajeError && formClienteActivo">
     <p class="ion-padding">{{ mensajeError }}</p>
   </ion-text>
@@ -41,7 +40,7 @@
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
-  <!-- FORMULARIO ALTA CLIENTE -->
+
   <form *ngIf="formClienteActivo" [formGroup]="formCliente" (ngSubmit)="guardarCliente()" class="formulario">
     <ion-item><ion-input formControlName="nombre" placeholder="Nombre"></ion-input></ion-item>
     <ion-item><ion-input formControlName="apellido" placeholder="Apellido"></ion-input></ion-item>

@@ -1,21 +1,24 @@
 <ion-content [fullscreen]="true" class="fondo">
 
-  <!-- MENÚ PRINCIPAL -->
-
+  <!-- MENSAJES -->
   <ion-text color="danger" *ngIf="mensajeError">
-  <p class="ion-padding">{{ mensajeError }}</p>
+    <p class="ion-padding">{{ mensajeError }}</p>
   </ion-text>
 
   <ion-text color="success" *ngIf="mensajeOk">
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
+  <!-- MENÚ PRINCIPAL -->
   <div class="menu-container" *ngIf="formActivo === null">
     <ion-button expand="block" (click)="formActivo = 'duenio'">
       ALTA DE DUEÑO / SUPERVISOR
     </ion-button>
     <ion-button expand="block" (click)="formActivo = 'empleado'">
       ALTA DE EMPLEADO
+    </ion-button>
+    <ion-button expand="block" (click)="formActivo = 'altaClientes'">
+      APROBAR NUEVOS CLIENTES
     </ion-button>
   </div>
 
@@ -80,5 +83,37 @@
     <ion-button expand="block" type="submit" color="success">GUARDAR</ion-button>
     <ion-button fill="clear" color="medium" (click)="formActivo = null">VOLVER</ion-button>
   </form>
+
+  <!-- APROBACIÓN DE NUEVOS CLIENTES -->
+  <div *ngIf="formActivo === 'altaClientes'" class="clientes-pendientes-container">
+
+    <ion-button fill="clear" (click)="formActivo = null">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+      VOLVER
+    </ion-button>
+
+    <div *ngFor="let cliente of clientesPendientes" class="card-cliente">
+
+      <img [src]="cliente.imagen || 'assets/icons/avatar_placeholder.png'" class="imagen-cliente" />
+
+      <div class="acciones">
+        <ion-button color="success" shape="round" size="small" (click)="aprobarCliente(cliente)">
+          ✅
+        </ion-button>
+        <ion-button color="danger" shape="round" size="small" (click)="rechazarCliente(cliente)">
+          ❌
+        </ion-button>
+      </div>
+
+      <div class="datos">
+        <p><strong>CORREO:</strong> {{ cliente.email }}</p>
+        <p><strong>NOMBRE:</strong> {{ cliente.nombre }}</p>
+        <p><strong>APELLIDO:</strong> {{ cliente.apellido }}</p>
+        <p><strong>DNI:</strong> {{ cliente.dni }}</p>
+        <p><strong>CREACIÓN:</strong> {{ cliente.created_at | date: 'dd/MM/yyyy HH:mm:ss' }} hs</p>
+      </div>
+
+    </div>
+  </div>
 
 </ion-content>

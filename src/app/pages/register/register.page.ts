@@ -10,9 +10,6 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonList,
-  IonRadioGroup,
-  IonRadio,
   IonText
 } from '@ionic/angular/standalone';
 
@@ -30,43 +27,26 @@ import {
     IonInput,
     IonItem,
     IonLabel,
-    IonList,
-    IonRadioGroup,
-    IonRadio,
-    IonText 
+    IonText
   ]
 })
 export class RegisterPage implements OnInit {
-  formActivo: 'duenio' | 'empleado' | null = null;
   auth = inject(AuthService);
 
-  formDuenio: FormGroup;
-  formEmpleado: FormGroup;
-
+  formCliente: FormGroup;
   mensajeError = '';
   mensajeOk = '';
+  imagenSeleccionada: File | null = null;
 
   constructor(private router: Router, private fb: FormBuilder) {
-    this.formDuenio = this.fb.group({
-      apellido: [''],
-      nombre: [''],
-      dni: [''],
-      cuil: [''],
-      email: [''],
-      password: [''],
-      confirmar: [''],
-      rol: ['dueño']
-    });
-
-    this.formEmpleado = this.fb.group({
+    this.formCliente = this.fb.group({
       nombre: [''],
       apellido: [''],
       dni: [''],
       cuil: [''],
       email: [''],
       password: [''],
-      confirmar: [''],
-      rol: ['mozo']
+      confirmar: ['']
     });
   }
 
@@ -76,75 +56,47 @@ export class RegisterPage implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  async guardarDuenio() {
-    const d = this.formDuenio.value;
+  async guardarCliente() {
+    const c = this.formCliente.value;
     this.mensajeError = '';
     this.mensajeOk = '';
 
-    if (d.password !== d.confirmar) {
+    if (c.password !== c.confirmar) {
       this.mensajeError = 'Las contraseñas no coinciden';
       return;
     }
 
     try {
-      await this.auth.crearCuenta(d.email, d.password, d.nombre);
+      await this.auth.crearCuenta(c.email, c.password, c.nombre);
 
       const { error } = await this.auth.sb.supabase.from('usuarios').insert({
-        nombre: d.nombre,
-        apellido: d.apellido,
-        dni: d.dni,
-        cuil: d.cuil,
-        email: d.email,
-        password: d.password,
-        rol: d.rol,
-        tipo: 'dueño_supervisor'
+        nombre: c.nombre,
+        apellido: c.apellido,
+        dni: c.dni,
+        cuil: c.cuil,
+        email: c.email,
+        password: c.password,
+        rol: 'cliente',
+        tipo: 'cliente'
       });
 
       if (error) {
         this.mensajeError = 'Error al guardar: ' + error.message;
       } else {
-        this.mensajeOk = '¡Registro exitoso!';
-        this.formDuenio.reset();
-        this.formActivo = null;
+        this.mensajeOk = '¡Cliente registrado con éxito!';
+        this.formCliente.reset();
       }
     } catch (err) {
       this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
     }
   }
 
-  async guardarEmpleado() {
-    const e = this.formEmpleado.value;
-    this.mensajeError = '';
-    this.mensajeOk = '';
-
-    if (e.password !== e.confirmar) {
-      this.mensajeError = 'Las contraseñas no coinciden';
-      return;
-    }
-
-    try {
-      await this.auth.crearCuenta(e.email, e.password, e.nombre);
-
-      const { error } = await this.auth.sb.supabase.from('usuarios').insert({
-        nombre: e.nombre,
-        apellido: e.apellido,
-        dni: e.dni,
-        cuil: e.cuil,
-        email: e.email,
-        password: e.password,
-        rol: e.rol,
-        tipo: 'empleado'
-      });
-
-      if (error) {
-        this.mensajeError = 'Error al guardar: ' + error.message;
-      } else {
-        this.mensajeOk = '¡Empleado registrado con éxito!';
-        this.formEmpleado.reset();
-        this.formActivo = null;
-      }
-    } catch (err) {
-      this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagenSeleccionada = input.files[0];
     }
   }
+
+
 }

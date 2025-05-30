@@ -25,12 +25,8 @@ import {
     FormsModule,
     ReactiveFormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
     IonIcon,
-    IonImg,
     IonInput,
     IonItem,
     IonText
@@ -65,8 +61,7 @@ export class MeitrePage implements OnInit {
       this.mensajeError = 'Las contraseñas no coinciden';
       return;
     }
-
-    // Aquí iría tu lógica para registrar en Supabase o backend
+    
     // Por ahora simula que se guarda
     console.log('Cliente a guardar:', c);
 

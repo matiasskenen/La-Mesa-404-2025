@@ -21,12 +21,8 @@ import {
     CommonModule,
     FormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
-    IonIcon,
-    IonImg
+    IonIcon
   ]
 })
 export class BartenderPage implements OnInit {
