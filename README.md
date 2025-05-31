@@ -31,5 +31,8 @@
 |                     | Formulario de login con animación + accesos rápidos                    | 26/05/2025       | 31/05/2025          | main   |
 |                     | Implementación de Supabase + validaciones de formularios               | 26/05/2025       | 31/05/2025          | main   |
 | Skenen, Matias      | Acceso rapido, Login.                                                  | 29/05/2025       | 29/05/2025          | main   |
+| Skenen, Matias      | Alta de dueño/supervisor y empleado Validado con supabase              | 30/05/2025       | 30/05/2025          | main   |
+| Zampella, Tomás     | Alta de Mesa                                                           | 30/05/2025       | 30/05/2025          | main   |
+| Skenen, Matias      | Confirmacion de clientes nuevos por admnistrador/dueño                 | 30/05/2025       | 30/05/2025          | main   |
 
 ---
