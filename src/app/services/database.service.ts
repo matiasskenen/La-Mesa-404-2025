@@ -14,9 +14,9 @@ export class DatabaseService {
 
   async traerTodosLosProductos(){
     const { data, error } = await this.tablaProductos
-      .select("id, created_at, id_usuario, tipo, foto_url, nombre_usuario, likes, dislikes");
+      .select("id, nombre, descripcion, tiempo, precio, foto_1, foto_2, foto_3");
     if (error) {
-      console.error('Error al solicitar fotos', error.message);
+      console.error('Error al solicitar productos', error.message);
     }
     return data as any[];
   }
