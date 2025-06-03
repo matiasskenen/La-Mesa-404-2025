@@ -19,7 +19,11 @@
 # DISTRIBUCIÓN SEMANAL DE TAREAS:
 
 ## La-Mesa-404-2025 - SEMANA 1 (26/05 AL 31/05):
-
+#	Tarea	Responsable	Estado	Rama
+-	Generacion de proyeto	Matias Terminado	Rama main
+-	Iconos + Splash	Tomas Terminado	Rama main
+-	Login	Matias y Tomas	Terminado	Rama main
+-	Registro	Matias	Terminado	Rama main
 
 ## 💼 Roles y tareas asignadas
 ## LISTADO TOTAL DE TAREAS:
@@ -34,5 +38,6 @@
 | Skenen, Matias      | Alta de dueño/supervisor y empleado Validado con supabase              | 30/05/2025       | 30/05/2025          | main   |
 | Zampella, Tomás     | Alta de Mesa                                                           | 30/05/2025       | 30/05/2025          | main   |
 | Skenen, Matias      | Confirmacion de clientes nuevos por admnistrador/dueño                 | 30/05/2025       | 30/05/2025          | main   |
+| Zampella, Tomás     | Gestión de productos del menú                                          | 1/05/2025        | 1/05/2025           | main   |
 
 ---
