@@ -6,6 +6,14 @@
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
+  <!-- SPINNER DE CARGA -->
+  <ion-spinner
+    *ngIf="subiendoImagen"
+    name="crescent"
+    color="medium"
+    class="spinner-subida"
+  ></ion-spinner>
+
   <form
     [formGroup]="formCliente"
     (ngSubmit)="guardarCliente()"
@@ -70,14 +78,6 @@
       <ion-icon slot="start" name="camera-outline"></ion-icon>
       Subir imagen
     </ion-button>
-
-    <!-- SPINNER DE CARGA -->
-    <ion-spinner
-      *ngIf="subiendoImagen"
-      name="crescent"
-      color="medium"
-      class="spinner-subida"
-    ></ion-spinner>
 
     <ion-button
       expand="block"
