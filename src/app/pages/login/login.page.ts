@@ -59,38 +59,44 @@ export class LoginPage {
     {
       nombre: 'Administrador',
       email: 'admin@resto.com',
-      pass: 'admin123',
+      pass: '123456',
       img: 'assets/login/avatar_admin.png',
     },
     {
       nombre: 'Meitre',
       email: 'metre@resto.com',
-      pass: 'metre123',
+      pass: '123456',
       img: 'assets/login/avatar_metre.png',
     },
     {
       nombre: 'Bartender',
       email: 'mozo@resto.com',
-      pass: 'mozo123',
+      pass: '123456',
       img: 'assets/login/avatar_mozo.png',
     },
     {
       nombre: 'Cocinero',
       email: 'cocinero@resto.com',
-      pass: 'cocinero123',
+      pass: '123456',
       img: 'assets/login/avatar_cocinero.png',
     },
     {
       nombre: 'Cliente',
       email: 'bartender@resto.com',
-      pass: 'bart123',
+      pass: '123456',
       img: 'assets/login/avatar_cliente.png',
     },
     {
       nombre: 'Dueño',
       email: 'cliente@resto.com',
-      pass: 'cliente123',
+      pass: '123456',
       img: 'assets/login/avatar_dueño.png',
+    },
+    {
+      nombre: 'Anónimo',
+      email: 'anonimo@gmail.com',
+      pass: '123456',
+      img: 'assets/login/avatar_anonimo.png',
     },
   ];
 

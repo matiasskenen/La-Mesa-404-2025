@@ -1,13 +1,19 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>clientes</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">clientes</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="contenedor-qr">
+    <ion-button
+      expand="block"
+      color="warning"
+      size="large"
+      (click)="escanearQR()"
+    >
+      <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+      Escanear el código QR para ingresar a la fila
+    </ion-button>
+  </div>
 </ion-content>

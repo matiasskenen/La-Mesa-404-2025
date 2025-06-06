@@ -43,7 +43,6 @@ import {
     IonRadioGroup,
     IonRadio,
     IonText,
-    IonIcon,
     IonTextarea,
     IonModal,
   ],
