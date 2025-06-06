@@ -64,6 +64,10 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {}
 
+  formularioValido(): boolean {
+    return this.formCliente.valid && this.imagenSeleccionada !== null;
+  }
+
   volver() {
     this.router.navigateByUrl('/login');
   }
