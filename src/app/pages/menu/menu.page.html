@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>menu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Perfil</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if (productos.length > 0) {
+  <ion-list>
+    @for (producto of productos; track producto.id) {
+    <ion-card class="custom-card">
+    <!-- Hay que usar esta libreria para deslizar fotos, el componente de ionic no se usa más "ionicSlider"  -->
+      <swiper-container>
+        <swiper-slide><img [src]="producto.foto_1" alt="foto 1 del producto" class="galeria-img" /></swiper-slide>
+        <swiper-slide><img [src]="producto.foto_2" alt="foto 2 del producto" class="galeria-img" /></swiper-slide>
+        <swiper-slide><img [src]="producto.foto_3" alt="foto 3 del producto" class="galeria-img" /></swiper-slide>
+      </swiper-container>
+      
+      <ion-card-header>
+        <ion-card-title>{{ producto.nombre }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ producto.descripcion }}</p>
+        <p>$ {{ producto.precio }}</p>
+      </ion-card-content>
+    </ion-card>
+    }
+  </ion-list>
+  } @else {
+  <p style="text-align: center; margin-top: 2rem;">No se encontraron productos.</p>
+  }
+</ion-content>

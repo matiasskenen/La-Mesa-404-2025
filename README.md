@@ -19,7 +19,12 @@
 # DISTRIBUCIÓN SEMANAL DE TAREAS:
 
 ## La-Mesa-404-2025 - SEMANA 1 (26/05 AL 31/05):
-
+| # | Tarea                  | Responsable        | Estado    | Rama      |
+| - | ---------------------- | ------------------ | --------- | --------- |
+| – | Generación de proyecto | **Matías**         | Terminado | Rama main |
+| – | Iconos + Splash        | **Tomás**          | Terminado | Rama main |
+| – | Login                  | **Matías y Tomás** | Terminado | Rama main |
+| – | Registro               | **Matías**         | Terminado | Rama main |
 
 ## 💼 Roles y tareas asignadas
 ## LISTADO TOTAL DE TAREAS:
@@ -31,5 +36,9 @@
 |                     | Formulario de login con animación + accesos rápidos                    | 26/05/2025       | 31/05/2025          | main   |
 |                     | Implementación de Supabase + validaciones de formularios               | 26/05/2025       | 31/05/2025          | main   |
 | Skenen, Matias      | Acceso rapido, Login.                                                  | 29/05/2025       | 29/05/2025          | main   |
+| Skenen, Matias      | Alta de dueño/supervisor y empleado Validado con supabase              | 30/05/2025       | 30/05/2025          | main   |
+| Zampella, Tomás     | Alta de Mesa                                                           | 30/05/2025       | 30/05/2025          | main   |
+| Skenen, Matias      | Confirmacion de clientes nuevos por admnistrador/dueño                 | 30/05/2025       | 30/05/2025          | main   |
+| Zampella, Tomás     | Gestión de productos del menú                                          | 1/05/2025        | 1/05/2025           | main   |
 
 ---

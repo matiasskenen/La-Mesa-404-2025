@@ -13,7 +13,8 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
-  },  {
+  },
+  {
     path: 'principal',
     loadComponent: () => import('./pages/principal/principal.page').then( m => m.PrincipalPage)
   },
@@ -46,8 +47,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/clientes/clientes.page').then( m => m.ClientesPage)
   },
   {
-    path: 'clientes',
-    loadComponent: () => import('./pages/clientes/clientes.page').then( m => m.ClientesPage)
+    path: 'menu',
+    loadComponent: () => import('./pages/menu/menu.page').then( m => m.MenuPage)
   },
-
 ];

@@ -1,0 +1,22 @@
+ion-content{
+  --background: red;
+  overflow: hidden;
+}
+
+ion-list {
+  --background: transparent !important; // Evitás el fondo negro del modo oscuro
+  background: transparent !important;
+}
+
+
+.custom-card{
+   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+
+.galeria-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
