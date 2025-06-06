@@ -26,6 +26,8 @@
 | – | Login                  | **Matías y Tomás** | Terminado | Rama main |
 | – | Registro               | **Matías**         | Terminado | Rama main |
 
+## La-Mesa-404-2025 - SEMANA 1 (1/06 AL 7/06):
+
 ## 💼 Roles y tareas asignadas
 ## LISTADO TOTAL DE TAREAS:
 
@@ -39,6 +41,9 @@
 | Skenen, Matias      | Alta de dueño/supervisor y empleado Validado con supabase              | 30/05/2025       | 30/05/2025          | main   |
 | Zampella, Tomás     | Alta de Mesa                                                           | 30/05/2025       | 30/05/2025          | main   |
 | Skenen, Matias      | Confirmacion de clientes nuevos por admnistrador/dueño                 | 30/05/2025       | 30/05/2025          | main   |
-| Zampella, Tomás     | Gestión de productos del menú                                          | 1/05/2025        | 1/05/2025           | main   |
+| Zampella, Tomás     | Gestión de productos del menú                                          | 1/06/2025        | 1/06/2025           | main   |
+| Skenen, Matias      | Registro de imagen en formulario Cliente                               | 5/06/2025        | 5/06/2025           | main   |
+| Zampella, Tomás     | Validacion de formulario Cliente                                       | 5/05/2025        | 5/06/2025           | main   |
+| Skenen, Matias      | Envio de correo Confirmacion o Rechazo Validado                        | 6/05/2025        | 6/05/2025            | main   |
 
 ---
