@@ -8,46 +8,46 @@ export const routes: Routes = [
   },
   {
     path: 'splash',
-    loadComponent: () => import('./pages/splash/splash.page').then( m => m.SplashPage)
+    loadComponent: () => import('./pages/splash/splash.page').then(m => m.SplashPage)
   },
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
+    loadComponent: () => import('./pages/login/login.page').then(m => m.LoginPage)
   },
   {
     path: 'principal',
-    loadComponent: () => import('./pages/principal/principal.page').then( m => m.PrincipalPage)
+    loadComponent: () => import('./pages/principal/principal.page').then(m => m.PrincipalPage)
   },
   {
     path: 'register',
-    loadComponent: () => import('./pages/register/register.page').then( m => m.RegisterPage)
+    loadComponent: () => import('./pages/register/register.page').then(m => m.RegisterPage)
   },
   {
     path: 'meitre',
-    loadComponent: () => import('./pages/empleados/meitre/meitre.page').then( m => m.MeitrePage)
+    loadComponent: () => import('./pages/empleados/meitre/meitre.page').then(m => m.MeitrePage)
   },
   {
     path: 'mozo',
-    loadComponent: () => import('./pages/empleados/mozo/mozo.page').then( m => m.MozoPage)
+    loadComponent: () => import('./pages/empleados/mozo/mozo.page').then(m => m.MozoPage)
   },
   {
     path: 'cocinero',
-    loadComponent: () => import('./pages/empleados/cocinero/cocinero.page').then( m => m.CocineroPage)
+    loadComponent: () => import('./pages/empleados/cocinero/cocinero.page').then(m => m.CocineroPage)
   },
   {
     path: 'bartender',
-    loadComponent: () => import('./pages/empleados/bartender/bartender.page').then( m => m.BartenderPage)
+    loadComponent: () => import('./pages/empleados/bartender/bartender.page').then(m => m.BartenderPage)
   },
   {
     path: 'administrador',
-    loadComponent: () => import('./pages/empleados/administrador/administrador.page').then( m => m.AdministradorPage)
+    loadComponent: () => import('./pages/empleados/administrador/administrador.page').then(m => m.AdministradorPage)
   },
   {
     path: 'clientes',
-    loadComponent: () => import('./pages/clientes/clientes.page').then( m => m.ClientesPage)
+    loadComponent: () => import('./pages/clientes/clientes.page').then(m => m.ClientesPage)
   },
   {
     path: 'menu',
-    loadComponent: () => import('./pages/menu/menu.page').then( m => m.MenuPage)
+    loadComponent: () => import('./pages/menu/menu.page').then(m => m.MenuPage)
   },
 ];
