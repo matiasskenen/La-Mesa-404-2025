@@ -6,14 +6,6 @@
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
-  <!-- SPINNER DE CARGA -->
-  <ion-spinner
-    *ngIf="subiendoImagen"
-    name="crescent"
-    color="medium"
-    class="spinner-subida"
-  ></ion-spinner>
-
   <form
     [formGroup]="formCliente"
     (ngSubmit)="guardarCliente()"
