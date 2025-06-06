@@ -1,6 +1,9 @@
 <ion-content [fullscreen]="true">
-  <form [formGroup]="loginForm" (ngSubmit)="loguearse()" class="contenedor-flex">
-
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="loguearse()"
+    class="contenedor-flex"
+  >
     <ion-card class="imagen-card">
       <img src="../assets/logo_splash.png" alt="logo_kinetico" />
     </ion-card>
@@ -11,11 +14,22 @@
       <ion-card-content>
         <div class="input-group">
           <ion-item>
-            <ion-input type="email" formControlName="email" placeholder="pepito@pepito.com"></ion-input>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Correo electrónico "
+            ></ion-input>
           </ion-item>
-          <div class="error-tooltip" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
-            <span *ngIf="loginForm.get('email')?.hasError('required')">El correo es obligatorio</span>
-            <span *ngIf="loginForm.get('email')?.hasError('email')">Formato de correo inválido</span>
+          <div
+            class="error-tooltip"
+            *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+          >
+            <span *ngIf="loginForm.get('email')?.hasError('required')"
+              >El correo es obligatorio</span
+            >
+            <span *ngIf="loginForm.get('email')?.hasError('email')"
+              >Formato de correo inválido</span
+            >
           </div>
         </div>
 
@@ -24,20 +38,37 @@
             <ion-input
               [type]="verPassword ? 'text' : 'password'"
               formControlName="password"
-              placeholder="clave secreta">
+              placeholder="clave secreta"
+            >
             </ion-input>
-            <ion-button fill="clear" slot="end" (click)="verPassword = !verPassword">
+            <ion-button
+              fill="clear"
+              slot="end"
+              (click)="verPassword = !verPassword"
+            >
               <ion-icon [name]="verPassword ? 'eye-off' : 'eye'"></ion-icon>
             </ion-button>
           </ion-item>
-          <div class="error-tooltip" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+          <div
+            class="error-tooltip"
+            *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+          >
             La contraseña es obligatoria
           </div>
         </div>
 
         <div class="boton-container">
-          <ion-button expand="block" type="submit" [disabled]="loginForm.invalid" color="danger">
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="loginForm.invalid"
+            color="danger"
+          >
             <ion-icon name="grid-sharp"></ion-icon>
+          </ion-button>
+
+          <ion-button expand="block" color="warning" (click)="irARegistro()">
+            REGISTRARSE
           </ion-button>
         </div>
       </ion-card-content>
@@ -46,15 +77,15 @@
     <ion-button expand="block" color="warning" (click)="mostrarUsuarios = true">
       INICIO RÁPIDO
     </ion-button>
-
-    <ion-button expand="block" color="warning" (click)="irARegistro()">
-      REGISTRARSE
-    </ion-button>
-    
   </form>
 
   <div *ngIf="mostrarUsuarios" class="overlay-usuarios">
-    <ion-button fill="clear" color="dark" (click)="mostrarUsuarios = false" class="cerrar-btn">
+    <ion-button
+      fill="clear"
+      color="dark"
+      (click)="mostrarUsuarios = false"
+      class="cerrar-btn"
+    >
       ❌
     </ion-button>
 
@@ -62,7 +93,8 @@
       <div
         class="usuario-card"
         *ngFor="let u of usuarios"
-        (click)="autocompletar(u.email, u.pass)">
+        (click)="autocompletar(u.email, u.pass)"
+      >
         <img [src]="u.img" alt="{{u.nombre}}" />
         <p>{{u.nombre}}</p>
       </div>

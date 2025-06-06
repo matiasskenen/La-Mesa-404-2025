@@ -1,5 +1,5 @@
 .fondo {
-  --background: url('/assets/fondos/patron_fondo.png') repeat;
+  --background: url("/assets/fondos/patron_fondo.png") repeat;
   background-size: contain;
   display: flex;
   flex-direction: column;
@@ -54,10 +54,15 @@
   font-size: 0.9rem;
   text-align: left;
   padding-left: 1rem;
-  --box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .boton-opcion img {
   height: 30px;
   margin-right: 1rem;
+}
+
+.spinner-subida {
+  display: block;
+  margin: 1rem auto;
 }

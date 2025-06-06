@@ -2,16 +2,17 @@
    ESTRUCTURA GENERAL
 ====================== */
 ion-content {
-  --background: #19647E;
+  --background: #19647e;
   overflow: hidden;
 }
 
-ion-button, ion-input {
-  font-family: 'Montserrat', sans-serif;
+ion-button,
+ion-input {
+  font-family: "Montserrat", sans-serif;
 }
 
 ion-item ion-label {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: "Montserrat", sans-serif !important;
 }
 
 /* ======================
@@ -59,11 +60,11 @@ ion-card {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #BF1F27;
+  background: #bf1f27;
   margin: 16px;
 
   img {
-    max-height: 300px;  // ✅ imagen más chica
+    max-height: 300px; // ✅ imagen más chica
     max-width: 90%;
     object-fit: contain;
   }
@@ -91,7 +92,7 @@ ion-input {
     position: absolute;
     top: 100%;
     left: 16px;
-    background-color: #BF1F27;
+    background-color: #bf1f27;
     color: rgb(0, 0, 0);
     padding: 6px 10px;
     border-radius: 6px;
@@ -100,13 +101,13 @@ ion-input {
     z-index: 2;
 
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: -6px;
       left: 12px;
       border-width: 6px;
       border-style: solid;
-      border-color: transparent transparent #BF1F27 transparent;
+      border-color: transparent transparent #bf1f27 transparent;
     }
   }
 }
@@ -234,4 +235,3 @@ button.alert-button.alert-button-confirm {
     transform: scale(1.05);
   }
 }
-

@@ -1,0 +1,104 @@
+.fondo {
+  --background: #f2f2f2;
+  padding: 1rem;
+}
+
+/* MENSAJES */
+ion-text p {
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* BOTONES PRINCIPALES */
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* FORMULARIO */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+/* CARDS DE CLIENTES */
+.card-cliente {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* IMAGEN CLIENTE */
+.imagen-cliente {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  align-self: center;
+  margin-bottom: 0.5rem;
+  border: 2px solid #ccc;
+}
+
+/* BOTONES DE ACCIÓN */
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* DATOS DEL CLIENTE */
+.datos {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* MODAL DE RECHAZO */
+ion-modal::part(backdrop) {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+ion-modal ion-content {
+  --background: #ffffff;
+  border-radius: 15px 15px 0 0;
+}
+
+ion-modal h2 {
+  margin-top: 0.5rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+ion-modal p {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+ion-modal ion-textarea {
+  width: 100%;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+ion-button.volver-btn {
+  --background: #e74c3c; /* rojo fuerte */
+  --color: white; /* texto blanco */
+  margin: 1rem auto;
+  display: block;
+  font-weight: bold;
+  padding: 0.5rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}

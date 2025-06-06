@@ -1,8 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import emailjs from 'emailjs-com';
 
 import {
   IonContent,
@@ -14,7 +20,9 @@ import {
   IonRadioGroup,
   IonRadio,
   IonText,
-  IonIcon
+  IonIcon,
+  IonTextarea,
+  IonModal,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -35,8 +43,10 @@ import {
     IonRadioGroup,
     IonRadio,
     IonText,
-    IonIcon 
-  ]
+    IonIcon,
+    IonTextarea,
+    IonModal,
+  ],
 })
 export class AdministradorPage implements OnInit {
   formActivo: 'duenio' | 'empleado' | 'altaClientes' | null = null;
@@ -50,6 +60,11 @@ export class AdministradorPage implements OnInit {
 
   clientesPendientes: any[] = [];
 
+  // Modal rechazo
+  modalRechazoVisible = false;
+  motivoRechazo = '';
+  clienteSeleccionado: any = null;
+
   constructor(private router: Router, private fb: FormBuilder) {
     this.formDuenio = this.fb.group({
       apellido: [''],
@@ -59,7 +74,7 @@ export class AdministradorPage implements OnInit {
       email: [''],
       password: [''],
       confirmar: [''],
-      rol: ['dueño']
+      rol: ['dueño'],
     });
 
     this.formEmpleado = this.fb.group({
@@ -70,11 +85,15 @@ export class AdministradorPage implements OnInit {
       email: [''],
       password: [''],
       confirmar: [''],
-      rol: ['mozo']
+      rol: ['mozo'],
     });
   }
 
   ngOnInit() {
+    this.cargarClientesPendientes();
+  }
+
+  ionViewWillEnter() {
     this.cargarClientesPendientes();
   }
 
@@ -90,8 +109,6 @@ export class AdministradorPage implements OnInit {
       .eq('aprobado', false)
       .order('created_at', { ascending: false });
 
-    console.log('CLIENTES:', data); // <-- Agregá esto
-
     if (error) {
       console.error('Error al traer clientes pendientes:', error.message);
     } else {
@@ -99,31 +116,62 @@ export class AdministradorPage implements OnInit {
     }
   }
 
-async aprobarCliente(cliente: any) {
-  const { error } = await this.auth.sb.supabase
-    .from('usuarios')
-    .update({ aprobado: true })
-    .eq('id', cliente.id);
+  async aprobarCliente(cliente: any) {
+    const { error } = await this.auth.sb.supabase
+      .from('usuarios')
+      .update({ aprobado: true })
+      .eq('id', cliente.id);
 
-  if (error) {
-    alert('Error al aprobar cliente: ' + error.message);
-  } else {
-    this.cargarClientesPendientes();
+    if (error) {
+      this.mensajeError = 'Error al aprobar cliente: ' + error.message;
+    } else {
+      await this.enviarCorreoCliente(cliente.email, cliente.nombre, true);
+      this.mensajeOk = 'Cliente aprobado correctamente.';
+      this.cargarClientesPendientes();
+    }
   }
-}
 
-  async rechazarCliente(cliente: any) {
+  abrirModalRechazo(cliente: any) {
+    this.clienteSeleccionado = cliente;
+    this.motivoRechazo = '';
+    this.modalRechazoVisible = true;
+  }
+
+  cerrarModalRechazo() {
+    this.modalRechazoVisible = false;
+    this.clienteSeleccionado = null;
+    this.motivoRechazo = '';
+  }
+
+  async confirmarRechazo() {
+    if (!this.motivoRechazo.trim()) {
+      this.mensajeError = 'Tenés que escribir un motivo para rechazar.';
+      return;
+    }
+
+    const cliente = this.clienteSeleccionado;
+
     const { error } = await this.auth.sb.supabase
       .from('usuarios')
       .delete()
       .eq('id', cliente.id);
 
     if (error) {
-      //ALERRT CAMBIAR ESTO.
-      alert('Error al eliminar cliente: ' + error.message);
+      this.mensajeError = 'Error al eliminar cliente: ' + error.message;
     } else {
-      this.clientesPendientes = this.clientesPendientes.filter(c => c.id !== cliente.id);
+      await this.enviarCorreoCliente(
+        cliente.email,
+        cliente.nombre,
+        false,
+        this.motivoRechazo
+      );
+      this.clientesPendientes = this.clientesPendientes.filter(
+        (c) => c.id !== cliente.id
+      );
+      this.mensajeOk = 'Cliente rechazado correctamente.';
     }
+
+    this.cerrarModalRechazo();
   }
 
   async guardarDuenio() {
@@ -148,7 +196,7 @@ async aprobarCliente(cliente: any) {
         password: d.password,
         rol: d.rol,
         tipo: 'dueño_supervisor',
-        aprobado: true
+        aprobado: true,
       });
 
       if (error) {
@@ -185,7 +233,7 @@ async aprobarCliente(cliente: any) {
         password: e.password,
         rol: e.rol,
         tipo: 'empleado',
-        aprobado: true
+        aprobado: true,
       });
 
       if (error) {
@@ -198,5 +246,35 @@ async aprobarCliente(cliente: any) {
     } catch (err) {
       this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
     }
+  }
+
+  enviarCorreoCliente(
+    emailDestino: string,
+    nombre: string,
+    aprobado: boolean,
+    motivoTexto: string = ''
+  ) {
+    const templateParams = {
+      to_name: nombre,
+      to_email: emailDestino,
+      estado: aprobado ? 'aceptado' : 'rechazado',
+      motivo: aprobado ? '' : `Motivo del rechazo: ${motivoTexto}`,
+      empresa: 'MESA 404',
+      logo_url: 'https://i.imgur.com/G6Zwxv1.png',
+    };
+
+    emailjs
+      .send(
+        'service_8xl5hfr',
+        'template_eqs9mhe',
+        templateParams,
+        'ugJXF6nqC7DtIYSSr'
+      )
+      .then((result) => {
+        console.log('Correo enviado ✅', result.text);
+      })
+      .catch((error) => {
+        console.error('Error al enviar correo ❌', error.text);
+      });
   }
 }
