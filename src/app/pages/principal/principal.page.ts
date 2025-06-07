@@ -10,6 +10,8 @@ import {
   IonButtons,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-principal',
@@ -17,26 +19,29 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./principal.page.scss'],
   standalone: true,
   imports: [
+    CommonModule,
+    FormsModule,
     IonContent,
     IonHeader,
     IonTitle,
     IonToolbar,
-    CommonModule,
-    FormsModule,
     IonButtons,
     IonButton,
+    IonIcon, // ← AGREGÁ ESTE
   ],
 })
 export class PrincipalPage implements OnInit {
   auth = inject(AuthService);
 
-  constructor() {
+  constructor(private router: Router) {
     console.log(this.auth.nombreUsuario);
   }
 
   ngOnInit() {}
 
-  accionUno() {}
+  accionExtra() {
+    this.router.navigateByUrl('/administrador');
+  }
 
   salir() {
     this.auth.cerrarSesion();

@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+//margen matias
+.margen-nombre {
+  margin-top: 5rem;
+}
+
 .header-bar {
   display: flex;
   align-items: center;
@@ -67,7 +72,6 @@
   margin: 1rem auto;
 }
 
-
 //validacion formulario
 .contenedor-flex {
   display: flex;
@@ -75,7 +79,6 @@
   height: 100%;
   overflow: hidden;
 }
-
 
 .input-group {
   position: relative;
