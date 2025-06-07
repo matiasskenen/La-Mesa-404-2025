@@ -69,12 +69,11 @@ ion-modal::part(backdrop) {
 }
 
 ion-modal ion-content {
-  --background: #ffffff;
   border-radius: 15px 15px 0 0;
 }
 
 ion-modal h2 {
-  margin-top: 0.5rem;
+  margin-top: 200px;
   font-size: 1.3rem;
   text-align: center;
 }
