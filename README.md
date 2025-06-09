@@ -27,6 +27,14 @@
 | – | Registro               | **Matías**         | Terminado | Rama main |
 
 ## La-Mesa-404-2025 - SEMANA 1 (1/06 AL 7/06):
+| #  | Tarea                          | Responsable        | Estado    | Rama     |
+|----|-------------------------------|--------------------|-----------|-----------|
+| –  | Gestión de productos del menú | **Tomás**          | Terminado | Rama main |
+| –  | Registro Cliente Completo     | **Matías y Tomás** | Terminado | Rama main |
+| –  | Correo Automático Notificación| **Matías**         | Terminado | Rama main |
+
+## La-Mesa-404-2025 - SEMANA 1 (9/06 AL 15/06):
+
 
 ## 💼 Roles y tareas asignadas
 ## LISTADO TOTAL DE TAREAS:
