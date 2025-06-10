@@ -3,27 +3,32 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { Haptics } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.page.html',
   styleUrls: ['./clientes.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    IonicModule, // ✅ incluye todos los ion-button, ion-content, ion-icon, etc.
-  ],
+  imports: [CommonModule, IonicModule],
 })
 export class ClientesPage {
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
+  procesando = false;
+
+  constructor(private router: Router) {}
 
   async escanearQR() {
+    this.procesando = true;
+
     try {
       const { barcodes } = await BarcodeScanner.scan();
       const claveQR = barcodes[0]?.rawValue;
 
       if (!claveQR) {
+        this.procesando = false;
         this.mostrarAlerta('Error', 'No se detectó un código QR válido.');
         return;
       }
@@ -36,6 +41,7 @@ export class ClientesPage {
         .maybeSingle();
 
       if (claveError || !claveData) {
+        this.procesando = false;
         this.mostrarAlerta(
           'Clave inválida',
           'Este código QR no es válido o ya fue usado.'
@@ -63,6 +69,7 @@ export class ClientesPage {
         });
 
       if (insertarError) {
+        this.procesando = false;
         this.mostrarAlerta('Error', 'No se pudo ingresar a la fila.');
         return;
       }
@@ -72,6 +79,8 @@ export class ClientesPage {
         .update({ activa: false })
         .eq('clave', claveQR);
 
+      await Haptics.vibrate();
+
       this.mostrarAlerta(
         '✅ Ingreso exitoso',
         `Tu número en la fila es: ${siguienteNumero}`
@@ -79,6 +88,8 @@ export class ClientesPage {
     } catch (err) {
       console.error(err);
       this.mostrarAlerta('Error', 'Hubo un problema al escanear el código.');
+    } finally {
+      this.procesando = false;
     }
   }
 
@@ -89,5 +100,10 @@ export class ClientesPage {
       buttons: ['OK'],
     });
     await alert.present();
+  }
+
+  salir() {
+    this.auth.cerrarSesion();
+    this.router.navigateByUrl('/login');
   }
 }

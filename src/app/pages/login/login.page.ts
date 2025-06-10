@@ -17,6 +17,9 @@ import {
   IonCardContent,
   IonIcon,
   IonText,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/angular/standalone';
 
 import { AuthService } from 'src/app/services/auth.service';

@@ -25,10 +25,10 @@ import {
   IonIcon,
   IonTextarea,
   IonModal,
-  IonHeader, // <--- Add this
-  IonToolbar, // <--- Add this
-  IonTitle, // <--- Add this
-  IonButtons, // <--- Add this
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
 } from '@ionic/angular/standalone';
 
 @Component({

@@ -52,6 +52,6 @@ export class RedireccionGuard implements CanActivate {
         break;
     }
 
-    return false; // Nunca deja pasar a 'principal'
+    return false;
   }
 }

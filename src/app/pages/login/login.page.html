@@ -1,11 +1,14 @@
 <ion-content [fullscreen]="true">
-  <form [formGroup]="loginForm" class="contenedor-flex">
-    <!-- Logo -->
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="loguearse()"
+    class="contenedor-flex"
+  >
     <ion-card class="imagen-card">
       <img src="../assets/logo_splash.png" alt="logo_kinetico" />
     </ion-card>
 
-    <!-- ✅ Mensajes de éxito / error -->
+    <!-- ✅ MENSAJES DE CONFIRMACIÓN O ERROR -->
     <ion-text *ngIf="mensajeExito" class="mensaje-confirmacion">
       <p class="ion-padding">{{ mensajeExito }}</p>
     </ion-text>
@@ -14,17 +17,16 @@
       <p class="ion-padding">{{ mensajeError }}</p>
     </ion-text>
 
-    <!-- Formulario -->
     <ion-card class="login-card">
       <ion-card-header></ion-card-header>
+
       <ion-card-content>
-        <!-- Email -->
         <div class="input-group">
           <ion-item>
             <ion-input
               type="email"
               formControlName="email"
-              placeholder="Correo electrónico"
+              placeholder="Correo electrónico "
             ></ion-input>
           </ion-item>
           <div
@@ -40,14 +42,14 @@
           </div>
         </div>
 
-        <!-- Password -->
         <div class="input-group">
           <ion-item>
             <ion-input
               [type]="verPassword ? 'text' : 'password'"
               formControlName="password"
-              placeholder="Clave secreta"
-            ></ion-input>
+              placeholder="clave secreta"
+            >
+            </ion-input>
             <ion-button
               fill="clear"
               slot="end"
@@ -64,13 +66,12 @@
           </div>
         </div>
 
-        <!-- Botones -->
         <div class="boton-container">
           <ion-button
             expand="block"
-            color="danger"
-            (click)="loguearse()"
+            type="submit"
             [disabled]="loginForm.invalid"
+            color="danger"
           >
             <ion-icon name="grid-sharp"></ion-icon>
           </ion-button>
@@ -82,13 +83,12 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Botón inicio rápido -->
     <ion-button expand="block" color="warning" (click)="mostrarUsuarios = true">
       INICIO RÁPIDO
     </ion-button>
   </form>
 
-  <!-- ✅ Overlay usuarios rápidos -->
+  <!-- ✅ OVERLAY DE USUARIOS RÁPIDOS -->
   <div *ngIf="mostrarUsuarios" class="overlay-usuarios">
     <ion-button
       fill="clear"

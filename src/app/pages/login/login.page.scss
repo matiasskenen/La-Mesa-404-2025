@@ -1,6 +1,3 @@
-/* ======================
-   ESTRUCTURA GENERAL
-====================== */
 ion-content {
   --background: #19647e;
   overflow: hidden;
@@ -15,9 +12,6 @@ ion-item ion-label {
   font-family: "Montserrat", sans-serif !important;
 }
 
-/* ======================
-   ANIMACIÓN DE ENTRADA
-====================== */
 .contenedor-flex {
   display: flex;
   flex-direction: column;
@@ -38,9 +32,6 @@ ion-item ion-label {
   }
 }
 
-/* ======================
-   TARJETAS LOGIN
-====================== */
 ion-card {
   width: 90%;
   max-width: 400px;
@@ -54,8 +45,8 @@ ion-card {
 }
 
 .imagen-card {
-  flex-grow: 0; // Que no crezca más de lo necesario
-  height: 320px; // ✅ altura fija más pequeña
+  flex-grow: 0;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,14 +55,12 @@ ion-card {
   margin: 16px;
 
   img {
-    max-height: 300px; // ✅ imagen más chica
+    max-height: 300px;
     max-width: 90%;
     object-fit: contain;
   }
 }
-/* ======================
-   INPUTS Y FORMULARIOS
-====================== */
+
 ion-input {
   --color: var(--ion-color-favorito);
   --placeholder-color: var(--ion-color-celeste);
@@ -130,9 +119,6 @@ ion-input {
   flex-wrap: wrap;
 }
 
-/* ======================
-   ALERTA PERSONALIZADA
-====================== */
 ion-alert.custom-alert {
   --backdrop-opacity: 0.7;
 }
@@ -165,9 +151,6 @@ button.alert-button.alert-button-confirm {
   border-top-right-radius: 13px;
 }
 
-/* ======================
-   OVERLAY USUARIOS
-====================== */
 .overlay-usuarios {
   position: absolute;
   top: 0;
@@ -178,14 +161,12 @@ button.alert-button.alert-button-confirm {
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* pegado al costado derecho */
+  align-items: flex-end;
   justify-content: flex-start;
   padding: 2rem 1rem 0 1rem;
-
   animation: fadeInRight 0.4s ease-out;
 }
 
-/* Animación entrada */
 @keyframes fadeInRight {
   from {
     opacity: 0;
@@ -207,7 +188,7 @@ button.alert-button.alert-button-confirm {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  align-items: flex-end; /* también alinea las cards al borde */
+  align-items: flex-end;
 }
 
 .usuario-card {
@@ -239,6 +220,7 @@ button.alert-button.alert-button-confirm {
     transform: scale(1.05);
   }
 }
+
 .mensaje-confirmacion,
 .mensaje-rechazo {
   position: relative;
@@ -254,15 +236,15 @@ button.alert-button.alert-button-confirm {
 }
 
 .mensaje-confirmacion {
-  background-color: #dff5e1; /* verde pastel suave */
+  background-color: #dff5e1;
   color: #14532d;
-  border-left: 6px solid #22c55e; /* borde verde éxito */
+  border-left: 6px solid #22c55e;
 }
 
 .mensaje-rechazo {
-  background-color: #fde2e1; /* rojo claro */
+  background-color: #fde2e1;
   color: #7f1d1d;
-  border-left: 6px solid #ef4444; /* borde rojo error */
+  border-left: 6px solid #ef4444;
 }
 
 @keyframes aparecerMensaje {

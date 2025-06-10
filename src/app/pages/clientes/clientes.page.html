@@ -1,19 +1,26 @@
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-content [fullscreen]="true" class="pagina-cliente">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">clientes</ion-title>
+      <ion-title>Ingreso con QR</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
+          SALIR
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
-  <div class="contenedor-qr">
+  <div class="scanner-container">
     <ion-button
       expand="block"
       color="warning"
       size="large"
       (click)="escanearQR()"
+      [disabled]="procesando"
     >
       <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      Escanear el código QR para ingresar a la fila
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar' }}
+      <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
   </div>
 </ion-content>
