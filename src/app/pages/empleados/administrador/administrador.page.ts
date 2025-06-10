@@ -1,5 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
+
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -23,6 +25,10 @@ import {
   IonIcon,
   IonTextarea,
   IonModal,
+  IonHeader, // <--- Add this
+  IonToolbar, // <--- Add this
+  IonTitle, // <--- Add this
+  IonButtons, // <--- Add this
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -36,7 +42,6 @@ import {
     ReactiveFormsModule,
     IonContent,
     IonButton,
-    IonInput,
     IonItem,
     IonLabel,
     IonList,
@@ -45,6 +50,10 @@ import {
     IonText,
     IonTextarea,
     IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
   ],
 })
 export class AdministradorPage implements OnInit {
@@ -64,7 +73,11 @@ export class AdministradorPage implements OnInit {
   motivoRechazo = '';
   clienteSeleccionado: any = null;
 
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private location: Location
+  ) {
     this.formDuenio = this.fb.group({
       apellido: [''],
       nombre: [''],
@@ -88,6 +101,11 @@ export class AdministradorPage implements OnInit {
     });
   }
 
+  volverAtras() {
+    this.auth.cerrarSesion();
+    this.router.navigateByUrl('/login');
+  }
+
   ngOnInit() {
     this.cargarClientesPendientes();
   }
@@ -97,6 +115,7 @@ export class AdministradorPage implements OnInit {
   }
 
   volver() {
+    this.auth.cerrarSesion();
     this.router.navigateByUrl('/login');
   }
 
@@ -275,5 +294,47 @@ export class AdministradorPage implements OnInit {
       .catch((error) => {
         console.error('Error al enviar correo ❌', error.text);
       });
+  }
+
+  async migrarUsuariosATablaAuth() {
+    this.mensajeError = '';
+    this.mensajeOk = 'Migrando usuarios...';
+
+    const { data: usuarios, error } = await this.auth.sb.supabase
+      .from('usuarios')
+      .select('*');
+
+    if (error || !usuarios) {
+      this.mensajeError = '❌ Error al obtener usuarios: ' + error?.message;
+      this.mensajeOk = '';
+      return;
+    }
+
+    for (const u of usuarios) {
+      try {
+        const { data, error: errorAuth } =
+          await this.auth.sb.supabase.auth.signUp({
+            email: u.email,
+            password: u.password || 'clave1234', // ⚠️ Si no guardaste password, usá una temporal
+          });
+
+        if (errorAuth) {
+          console.warn(`🔸 ${u.email} no migrado: ${errorAuth.message}`);
+          continue;
+        }
+
+        const userId = data.user?.id;
+        if (userId) {
+          await this.auth.sb.supabase
+            .from('usuarios')
+            .update({ id: userId })
+            .eq('email', u.email);
+        }
+      } catch (e) {
+        console.error('⚠️ Error con usuario:', u.email, e);
+      }
+    }
+
+    this.mensajeOk = '✅ Migración completada. Revisá consola para detalles.';
   }
 }

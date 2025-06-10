@@ -93,12 +93,16 @@ ion-input {
     top: 100%;
     left: 16px;
     background-color: #bf1f27;
-    color: rgb(0, 0, 0);
+    color: rgb(240, 240, 240);
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 13px;
     max-width: 90%;
     z-index: 2;
+
+    span {
+      color: white;
+    }
 
     &::after {
       content: "";
@@ -233,5 +237,41 @@ button.alert-button.alert-button-confirm {
 
   &:hover {
     transform: scale(1.05);
+  }
+}
+.mensaje-confirmacion,
+.mensaje-rechazo {
+  position: relative;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin: 16px auto;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: aparecerMensaje 0.4s ease-in-out;
+}
+
+.mensaje-confirmacion {
+  background-color: #dff5e1; /* verde pastel suave */
+  color: #14532d;
+  border-left: 6px solid #22c55e; /* borde verde éxito */
+}
+
+.mensaje-rechazo {
+  background-color: #fde2e1; /* rojo claro */
+  color: #7f1d1d;
+  border-left: 6px solid #ef4444; /* borde rojo error */
+}
+
+@keyframes aparecerMensaje {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

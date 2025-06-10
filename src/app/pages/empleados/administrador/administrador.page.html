@@ -1,5 +1,20 @@
 <ion-content [fullscreen]="true" class="fondo">
-  <!-- MENSAJES -->
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Administrador</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button
+          fill="solid"
+          shape="round"
+          (click)="volverAtras()"
+          color="danger"
+        >
+          Volver
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-text color="danger" *ngIf="mensajeError">
     <p class="ion-padding">{{ mensajeError }}</p>
   </ion-text>
@@ -8,231 +23,133 @@
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
-  <!-- MENÚ PRINCIPAL -->
+  <!-- Menú principal -->
   <div class="menu-container" *ngIf="formActivo === null">
-    <ion-button expand="block" (click)="formActivo = 'duenio'"
-      >ALTA DE DUEÑO / SUPERVISOR</ion-button
+    <ion-button expand="block" (click)="formActivo = 'duenio'">
+      ALTA DE DUEÑO / SUPERVISOR
+    </ion-button>
+    <ion-button expand="block" (click)="formActivo = 'empleado'">
+      ALTA DE EMPLEADO
+    </ion-button>
+    <ion-button expand="block" (click)="formActivo = 'altaClientes'">
+      APROBAR NUEVOS CLIENTES
+    </ion-button>
+    <ion-button
+      expand="block"
+      color="warning"
+      (click)="migrarUsuariosATablaAuth()"
     >
-    <ion-button expand="block" (click)="formActivo = 'empleado'"
-      >ALTA DE EMPLEADO</ion-button
-    >
-    <ion-button expand="block" (click)="formActivo = 'altaClientes'"
-      >APROBAR NUEVOS CLIENTES</ion-button
-    >
+      MIGRAR USUARIOS A AUTH 🔁
+    </ion-button>
   </div>
 
-  <!-- FORMULARIO ALTA DUEÑO/SUPERVISOR -->
+  <!-- Form Alta Dueño/Supervisor -->
   <form
     *ngIf="formActivo === 'duenio'"
     [formGroup]="formDuenio"
     (ngSubmit)="guardarDuenio()"
     class="formulario"
   >
-    <ion-item
-      ><ion-input formControlName="apellido" placeholder="Apellido"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input formControlName="nombre" placeholder="Nombre"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="number"
-        formControlName="dni"
-        placeholder="DNI"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input formControlName="cuil" placeholder="CUIL"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="email"
-        formControlName="email"
-        placeholder="Correo electrónico"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="password"
-        formControlName="password"
-        placeholder="Contraseña"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="password"
-        formControlName="confirmar"
-        placeholder="Confirmar contraseña"
-      ></ion-input
-    ></ion-item>
-
-    <ion-list>
-      <ion-radio-group formControlName="rol">
-        <ion-item
-          ><ion-label>Dueño</ion-label
-          ><ion-radio slot="start" value="dueño"></ion-radio
-        ></ion-item>
-        <ion-item
-          ><ion-label>Supervisor</ion-label
-          ><ion-radio slot="start" value="supervisor"></ion-radio
-        ></ion-item>
-      </ion-radio-group>
-    </ion-list>
-
-    <ion-button expand="block" type="submit" color="success"
-      >GUARDAR</ion-button
-    >
-    <ion-button fill="clear" color="medium" (click)="formActivo = null"
-      >VOLVER</ion-button
-    >
+    <ion-button expand="block" type="submit" color="success">
+      GUARDAR
+    </ion-button>
   </form>
 
-  <!-- FORMULARIO ALTA EMPLEADO -->
+  <!-- Form Alta Empleado -->
   <form
     *ngIf="formActivo === 'empleado'"
     [formGroup]="formEmpleado"
     (ngSubmit)="guardarEmpleado()"
     class="formulario"
   >
-    <ion-item
-      ><ion-input formControlName="nombre" placeholder="Nombre"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input formControlName="apellido" placeholder="Apellido"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="number"
-        formControlName="dni"
-        placeholder="DNI"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input formControlName="cuil" placeholder="CUIL"></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="email"
-        formControlName="email"
-        placeholder="Correo electrónico"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="password"
-        formControlName="password"
-        placeholder="Contraseña"
-      ></ion-input
-    ></ion-item>
-    <ion-item
-      ><ion-input
-        type="password"
-        formControlName="confirmar"
-        placeholder="Confirmar contraseña"
-      ></ion-input
-    ></ion-item>
-
     <ion-list>
       <ion-radio-group formControlName="rol">
-        <ion-item
-          ><ion-label>Meitre</ion-label
-          ><ion-radio slot="start" value="meitre"></ion-radio
-        ></ion-item>
-        <ion-item
-          ><ion-label>Mozo</ion-label
-          ><ion-radio slot="start" value="mozo"></ion-radio
-        ></ion-item>
-        <ion-item
-          ><ion-label>Cocinero</ion-label
-          ><ion-radio slot="start" value="cocinero"></ion-radio
-        ></ion-item>
-        <ion-item
-          ><ion-label>Bartender</ion-label
-          ><ion-radio slot="start" value="bartender"></ion-radio
-        ></ion-item>
+        <ion-item>
+          <ion-label>Mozo</ion-label>
+          <ion-radio slot="start" value="mozo"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cocinero</ion-label>
+          <ion-radio slot="start" value="cocinero"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Barra</ion-label>
+          <ion-radio slot="start" value="barra"></ion-radio>
+        </ion-item>
       </ion-radio-group>
     </ion-list>
-
-    <ion-button expand="block" type="submit" color="success"
-      >GUARDAR</ion-button
-    >
-    <ion-button fill="clear" color="medium" (click)="formActivo = null"
-      >VOLVER</ion-button
-    >
+    <ion-button expand="block" type="submit" color="success">
+      GUARDAR
+    </ion-button>
+    <ion-button fill="clear" color="medium" (click)="formActivo = null">
+      VOLVER
+    </ion-button>
   </form>
 
-  <!-- APROBACIÓN DE NUEVOS CLIENTES -->
-  <div
-    *ngIf="formActivo === 'altaClientes'"
-    class="clientes-pendientes-container"
-  >
-    <div class="volver-wrapper">
-      <ion-button class="volver-btn" (click)="formActivo = null">
-        VOLVER
-      </ion-button>
+  <!-- Aprobar Nuevos Clientes -->
+  <div *ngIf="formActivo === 'altaClientes'" class="formulario">
+    <h2 class="ion-text-center">Aprobar Nuevos Clientes</h2>
+    <div *ngIf="clientesPendientes.length === 0" class="ion-text-center">
+      <p>No hay clientes pendientes de aprobación.</p>
     </div>
-
-    <div *ngFor="let cliente of clientesPendientes" class="card-cliente">
-      <img
-        [src]="cliente.imagen_url || 'assets/icons/avatar_placeholder.png'"
-        class="imagen-cliente"
-      />
-
-      <div class="acciones">
+    <ion-list *ngIf="clientesPendientes.length > 0">
+      <ion-item *ngFor="let cliente of clientesPendientes">
+        <ion-label>
+          <h3>{{ cliente.nombre }} {{ cliente.apellido }}</h3>
+          <p>{{ cliente.email }}</p>
+          <p>DNI: {{ cliente.dni }}</p>
+          <p>CUIL: {{ cliente.cuil }}</p>
+        </ion-label>
         <ion-button
+          slot="end"
           color="success"
-          shape="round"
-          size="small"
           (click)="aprobarCliente(cliente)"
-          >✅</ion-button
         >
+          Aprobar
+        </ion-button>
         <ion-button
+          slot="end"
           color="danger"
-          shape="round"
-          size="small"
           (click)="abrirModalRechazo(cliente)"
-          >❌</ion-button
         >
-      </div>
-
-      <div class="datos">
-        <p><strong>CORREO:</strong> {{ cliente.email }}</p>
-        <p><strong>NOMBRE:</strong> {{ cliente.nombre }}</p>
-        <p><strong>APELLIDO:</strong> {{ cliente.apellido }}</p>
-        <p><strong>DNI:</strong> {{ cliente.dni }}</p>
-        <p>
-          <strong>CREACIÓN:</strong> {{ cliente.created_at | date: 'dd/MM/yyyy
-          HH:mm:ss' }} hs
-        </p>
-      </div>
-    </div>
+          Rechazar
+        </ion-button>
+      </ion-item>
+    </ion-list>
+    <ion-button fill="clear" color="medium" (click)="formActivo = null">
+      VOLVER
+    </ion-button>
   </div>
 
-  <!-- MODAL DE RECHAZO -->
+  <!-- Modal Rechazo -->
   <ion-modal [isOpen]="modalRechazoVisible" (didDismiss)="cerrarModalRechazo()">
     <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Rechazar Cliente</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalRechazo()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
       <ion-content class="ion-padding">
-        <h2>Rechazar cliente</h2>
-
         <p>
-          ¿Por qué rechazás a
-          <strong>{{ clienteSeleccionado?.nombre }}</strong>?
+          ¿Estás seguro de que querés rechazar al cliente
+          <strong
+            >{{ clienteSeleccionado?.nombre }} {{ clienteSeleccionado?.apellido
+            }}</strong
+          >?
         </p>
-
         <ion-item>
           <ion-textarea
+            label="Motivo del rechazo"
+            label-placement="floating"
             [(ngModel)]="motivoRechazo"
-            placeholder="Escribí el motivo..."
-            autoGrow="true"
+            rows="4"
           ></ion-textarea>
         </ion-item>
-
         <ion-button expand="block" color="danger" (click)="confirmarRechazo()">
-          Confirmar rechazo
-        </ion-button>
-
-        <ion-button expand="block" fill="clear" (click)="cerrarModalRechazo()">
-          Cancelar
+          Confirmar Rechazo
         </ion-button>
       </ion-content>
     </ng-template>

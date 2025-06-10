@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import {
   IonContent,
@@ -12,7 +20,8 @@ import {
   IonToolbar,
   IonInput,
   IonItem,
-  IonText
+  IonText,
+  IonButtons, // ← ESTE TE FALTA
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -29,8 +38,12 @@ import {
     IonIcon,
     IonInput,
     IonItem,
-    IonText
-  ]
+    IonText,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButtons, // ← ESTE TE FALTA
+  ],
 })
 export class MeitrePage implements OnInit {
   formClienteActivo = false;
@@ -38,7 +51,7 @@ export class MeitrePage implements OnInit {
   mensajeOk = '';
   formCliente: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.formCliente = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -46,11 +59,14 @@ export class MeitrePage implements OnInit {
       cuil: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      confirmar: ['', Validators.required]
+      confirmar: ['', Validators.required],
     });
   }
 
   ngOnInit() {}
+
+  auth = inject(AuthService);
+  supabase = this.auth.sb.supabase;
 
   async guardarCliente() {
     const c = this.formCliente.value;
@@ -61,12 +77,17 @@ export class MeitrePage implements OnInit {
       this.mensajeError = 'Las contraseñas no coinciden';
       return;
     }
-    
+
     // Por ahora simula que se guarda
     console.log('Cliente a guardar:', c);
 
     this.mensajeOk = '¡Cliente registrado con éxito!';
     this.formCliente.reset();
     this.formClienteActivo = false;
+  }
+
+  salir() {
+    this.auth.cerrarSesion();
+    this.router.navigateByUrl('/login');
   }
 }

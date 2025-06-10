@@ -36,7 +36,6 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
     IonItem,
     IonText,
     IonIcon,
-    IonSpinner,
   ],
 })
 export class RegisterPage implements OnInit {
@@ -141,7 +140,7 @@ export class RegisterPage implements OnInit {
     this.mensajeOk = '';
 
     if (c.password !== c.confirmar) {
-      this.mensajeError = 'Las contraseñas no coinciden';
+      this.mensajeError = '❌ Las contraseñas no coinciden.';
       return;
     }
 
@@ -161,7 +160,7 @@ export class RegisterPage implements OnInit {
       this.subiendoImagen = false;
 
       if (error) {
-        this.mensajeError = 'Error al subir imagen.';
+        this.mensajeError = '❌ Error al subir imagen.';
         return;
       }
 
@@ -169,30 +168,47 @@ export class RegisterPage implements OnInit {
     }
 
     try {
-      await this.auth.crearCuenta(c.email, c.password, c.nombre);
+      // Paso 1: crear cuenta en Supabase Auth
+      const { data, error: errorAuth } =
+        await this.auth.sb.supabase.auth.signUp({
+          email: c.email,
+          password: c.password,
+        });
 
+      if (errorAuth || !data?.user) {
+        this.mensajeError =
+          '❌ Error al registrar en Auth: ' +
+          (errorAuth?.message || 'Usuario no creado');
+        return;
+      }
+
+      const userId = data.user.id;
+
+      // Paso 2: guardar en tabla 'usuarios' con el mismo ID
       const { error } = await this.auth.sb.supabase.from('usuarios').insert({
+        id: userId, // 👈 clave para relacionar Auth con datos personales
         nombre: c.nombre,
         apellido: c.apellido,
         dni: c.dni,
         cuil: c.cuil,
         email: c.email,
-        password: c.password,
         rol: 'cliente',
         tipo: 'cliente',
         imagen_url: urlImagen,
+        aprobado: false, // o true según tu lógica
       });
 
       if (error) {
-        this.mensajeError = 'Error al guardar: ' + error.message;
+        this.mensajeError = '❌ Error al guardar en usuarios: ' + error.message;
       } else {
-        this.mensajeOk = '¡Cliente registrado con éxito!';
+        this.mensajeOk =
+          '✅ Cliente registrado con éxito. Esperando aprobación.';
         this.formCliente.reset();
         this.imagenSeleccionada = null;
         this.imagenPreviewUrl = null;
       }
     } catch (err) {
-      this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
+      this.mensajeError = '❌ Hubo un problema: ' + (err as Error).message;
     }
   }
 }

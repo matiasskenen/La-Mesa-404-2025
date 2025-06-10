@@ -16,9 +16,9 @@ import {
   IonCardHeader,
   IonCardContent,
   IonIcon,
+  IonText,
 } from '@ionic/angular/standalone';
 
-import { AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
 import { gridSharp, star, eye, eyeOff } from 'ionicons/icons';
@@ -40,12 +40,12 @@ import { Router } from '@angular/router';
     IonCardHeader,
     IonCardContent,
     IonIcon,
+    IonText,
   ],
 })
 export class LoginPage {
   auth = inject(AuthService);
   fb = inject(FormBuilder);
-  alertCtrl = inject(AlertController);
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -54,6 +54,9 @@ export class LoginPage {
 
   verPassword = false;
   mostrarUsuarios = false;
+
+  mensajeExito = '';
+  mensajeError = '';
 
   usuarios = [
     {
@@ -105,6 +108,9 @@ export class LoginPage {
   }
 
   async loguearse() {
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -112,7 +118,7 @@ export class LoginPage {
 
     const { email, password } = this.loginForm.value;
 
-    // ✅ PRIMERO verificamos en la tabla 'usuarios'
+    // Verificamos si el usuario existe
     const { data: usuario, error } = await this.auth.sb.supabase
       .from('usuarios')
       .select('*')
@@ -120,46 +126,30 @@ export class LoginPage {
       .single();
 
     if (error || !usuario) {
-      await this.mostrarAlerta(
-        'Acceso denegado',
-        'Tu cuenta fue rechazada o eliminada.'
-      );
+      this.mensajeError = '❌ Tu cuenta fue rechazada o eliminada.';
       return;
     }
 
     if (!usuario.aprobado) {
-      await this.mostrarAlerta(
-        'Pendiente de aprobación',
-        'Tu cuenta todavía no fue aprobada por un administrador.'
-      );
+      this.mensajeError =
+        '⚠️ Tu cuenta aún no fue aprobada por el administrador.';
       return;
     }
 
-    // 🔐 Si todo está bien, ahora sí iniciamos sesión
     const resultado = await this.auth.iniciarSesion(email, password);
 
     if (!resultado.success) {
       if (resultado.error === 'Invalid login credentials') {
-        await this.mostrarAlerta(
-          'Error',
-          '¡Usuario y/o contraseña incorrectos!'
-        );
+        this.mensajeError = '❌ Usuario o contraseña incorrectos.';
       }
       return;
     }
 
-    // ✅ Login aprobado, redireccionamos
-    this.router.navigateByUrl('/principal');
-  }
-
-  async mostrarAlerta(titulo: string, mensaje: string) {
-    const alert = await this.alertCtrl.create({
-      header: titulo,
-      message: mensaje,
-      buttons: ['OK'],
-    });
-
-    await alert.present();
+    // Aprobado
+    this.mensajeExito = '✅ Bienvenido, acceso concedido.';
+    setTimeout(() => {
+      this.router.navigateByUrl('/principal');
+    }, 1000);
   }
 
   autocompletar(email: string, pass: string) {

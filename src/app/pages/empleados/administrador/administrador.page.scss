@@ -1,102 +1,78 @@
 .fondo {
-  padding: 1rem;
-}
-
-/* MENSAJES */
-ion-text p {
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* BOTONES PRINCIPALES */
-.menu-container {
+  --background: #e6f0f5;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+  padding: 0;
+  margin: 0;
 }
 
-/* FORMULARIO */
-.formulario {
+ion-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-top: 1rem;
-}
-
-/* CARDS DE CLIENTES */
-.card-cliente {
-  background: rgb(189, 187, 187);
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* IMAGEN CLIENTE */
-.imagen-cliente {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  align-self: center;
-  margin-bottom: 0.5rem;
-  border: 2px solid #ccc;
-}
-
-/* BOTONES DE ACCIÓN */
-.acciones {
-  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* DATOS DEL CLIENTE */
-.datos {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-/* MODAL DE RECHAZO */
-ion-modal::part(backdrop) {
-  background: rgba(0, 0, 0, 0.4);
-}
-
-ion-modal ion-content {
-  border-radius: 15px 15px 0 0;
-}
-
-ion-modal h2 {
-  margin-top: 200px;
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-ion-modal p {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-ion-modal ion-textarea {
+  height: 100%;
   width: 100%;
-  background: #e25757;
-  border-radius: 10px;
-  padding: 0.5rem;
+  padding: 0;
+  --overflow: hidden;
+  overflow: hidden !important;
 }
 
-ion-button.volver-btn {
-  --background: #e74c3c; /* rojo fuerte */
-  --color: white; /* texto blanco */
-  margin: 1rem auto;
-  display: block;
-  font-weight: bold;
-  padding: 0.5rem 1.5rem;
+/* Contenedor principal */
+.menu-container,
+.formulario {
+  flex: 1;
+  height: 100%;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* Botón volver */
+.boton-volver {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --color: #007bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.boton-volver:hover {
+  transform: scale(1.1);
+}
+
+ion-item {
+  width: 100%;
+  --background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin-bottom: 0.5rem;
+}
+
+ion-button {
+  width: 100%;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.volver-wrapper {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 1rem;
 }
