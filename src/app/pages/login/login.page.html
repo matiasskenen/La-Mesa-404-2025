@@ -8,7 +8,6 @@
       <img src="../assets/logo_splash.png" alt="logo_kinetico" />
     </ion-card>
 
-    <!-- ✅ MENSAJES DE CONFIRMACIÓN O ERROR -->
     <ion-text *ngIf="mensajeExito" class="mensaje-confirmacion">
       <p class="ion-padding">{{ mensajeExito }}</p>
     </ion-text>
@@ -47,7 +46,7 @@
             <ion-input
               [type]="verPassword ? 'text' : 'password'"
               formControlName="password"
-              placeholder="clave secreta"
+              placeholder="Contraseña"
             >
             </ion-input>
             <ion-button
@@ -64,6 +63,14 @@
           >
             La contraseña es obligatoria
           </div>
+
+          <br />
+          <ion-text color="medium" class="texto-anonimo">
+            <p class="ion-text-center">
+              O continuar como
+              <strong (click)="ingresoAnonimo()">Anonimo</strong>
+            </p>
+          </ion-text>
         </div>
 
         <div class="boton-container">
@@ -108,6 +115,23 @@
         <img [src]="u.img" alt="{{ u.nombre }}" />
         <p>{{ u.nombre }}</p>
       </div>
+    </div>
+  </div>
+
+  <div *ngIf="cargando" class="spinner-overlay">
+    <div class="lds-spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
   </div>
 </ion-content>
