@@ -10,26 +10,142 @@
 </ion-header>
 
 <ion-content fullscreen="true" class="fondo ion-padding">
-  <div class="menu-container">
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      color="primary"
-      (click)="formClienteActivo = true"
-    >
-      ALTA DE CLIENTE
-    </ion-button>
+  <div *ngIf="formClienteActivo">
+    <ion-text color="danger" *ngIf="mensajeError">
+      <p class="ion-padding">{{ mensajeError }}</p>
+    </ion-text>
+    <ion-text color="success" *ngIf="mensajeOk">
+      <p class="ion-padding">{{ mensajeOk }}</p>
+    </ion-text>
 
-    <ion-button expand="block" class="boton-opcion" color="primary">
-      LISTA DE ESPERA
-    </ion-button>
+    <form [formGroup]="formCliente" (ngSubmit)="guardarCliente()">
+      <ion-item>
+        <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="apellido"
+          placeholder="Apellido"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="dni"
+          placeholder="DNI"
+          type="number"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="email"
+          placeholder="Email"
+          type="email"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          placeholder="Contraseña"
+          type="password"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="confirmar"
+          placeholder="Confirmar contraseña"
+          type="password"
+        ></ion-input>
+      </ion-item>
 
-    <ion-button expand="block" class="boton-opcion" color="primary">
-      RELEVAMIENTO LUGAR DE TRABAJO
-    </ion-button>
+      <div class="ion-margin-top">
+        <ion-button expand="block" (click)="seleccionarFuenteImagen()"
+          >📸 Subir Imagen</ion-button
+        >
+        <ion-img
+          *ngIf="imagenPreviewUrl"
+          [src]="imagenPreviewUrl"
+          class="ion-margin-top"
+        ></ion-img>
+      </div>
 
-    <ion-button expand="block" class="boton-opcion" color="primary">
-      VER ENCUESTAS DE OTROS EMPLEADOS
-    </ion-button>
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="!formularioValido()"
+        color="success"
+        class="ion-margin-top"
+      >
+        Guardar Cliente
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="outline"
+        (click)="formClienteActivo = false"
+        color="medium"
+      >
+        Cancelar
+      </ion-button>
+    </form>
+  </div>
+
+  <div *ngIf="!formClienteActivo">
+    <div class="menu-container">
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        color="primary"
+        (click)="formClienteActivo = true"
+      >
+        ALTA DE CLIENTE
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        color="primary"
+        (click)="cargarListaEspera()"
+      >
+        LISTA DE ESPERA
+      </ion-button>
+    </div>
+
+    <ion-list *ngIf="clientesEnEspera.length">
+      <ion-card *ngFor="let cliente of clientesEnEspera">
+        <ion-card-content>
+          <ion-label>
+            <h2>{{ cliente.email }}</h2>
+            <p>Clave QR: {{ cliente.clave }}</p>
+          </ion-label>
+
+          <div class="botones-decision">
+            <ion-button
+              expand="block"
+              fill="solid"
+              color="success"
+              (click)="confirmarIngreso(cliente.email, true)"
+            >
+              ✅ Aceptar
+            </ion-button>
+
+            <ion-button
+              expand="block"
+              fill="outline"
+              color="danger"
+              (click)="confirmarIngreso(cliente.email, false)"
+            >
+              ❌ Rechazar
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-text *ngIf="!clientesEnEspera.length" class="ion-padding">
+      <p>No hay clientes en espera.</p>
+    </ion-text>
   </div>
 </ion-content>

@@ -7,6 +7,16 @@
   </ion-text>
 
   <form [formGroup]="formCliente" (ngSubmit)="guardarCliente()">
+    <!-- BOTÓN ESCANEAR DNI -->
+    <ion-button expand="block" color="tertiary" (click)="leerQrDni()">
+      <ion-icon slot="start" name="scan-outline"></ion-icon>
+      Escanear QR del DNI
+    </ion-button>
+
+    <button id="cancelar-qr" (click)="cancelarQr()" *ngIf="qrActivo">
+      ❌ Cancelar
+    </button>
+
     <div>
       <div class="input-group margen-nombre">
         <ion-item>
@@ -174,15 +184,3 @@
     </ion-button>
   </form>
 </ion-content>
-
-<style>
-  .imagen-preview-container {
-    text-align: center;
-    margin: 1rem 0;
-  }
-  .imagen-preview {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-  }
-</style>

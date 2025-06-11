@@ -10,7 +10,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <div class="scanner-container">
+  <div class="scanner-container" *ngIf="estadoCliente === 'ninguno'">
     <ion-button
       expand="block"
       color="warning"
@@ -22,5 +22,11 @@
       {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar' }}
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
+  </div>
+
+  <div *ngIf="estadoCliente !== 'ninguno'" class="estado-cliente ion-padding">
+    <ion-text>
+      <h2>{{ mensajeEstado }}</h2>
+    </ion-text>
   </div>
 </ion-content>

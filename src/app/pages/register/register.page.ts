@@ -20,6 +20,7 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
   selector: 'app-register',
@@ -107,7 +108,7 @@ export class RegisterPage implements OnInit {
       });
 
       this.imagenSeleccionada = file;
-      this.imagenPreviewUrl = image.dataUrl!; // 👈 esto faltaba
+      this.imagenPreviewUrl = image.dataUrl!;
     } catch (err) {
       this.mensajeError = 'No se pudo tomar la foto.';
     }
@@ -132,6 +133,56 @@ export class RegisterPage implements OnInit {
   borrarImagen() {
     this.imagenSeleccionada = null;
     this.imagenPreviewUrl = null;
+  }
+
+  async leerQrDni() {
+    this.qrActivo = true;
+    this.mensajeError = '';
+
+    try {
+      const permiso = await BarcodeScanner.checkPermission({ force: true });
+      if (!permiso.granted) {
+        this.mensajeError = 'No se otorgó permiso a la cámara.';
+        return;
+      }
+
+      BarcodeScanner.hideBackground();
+      document.body.classList.add('qr-activo'); // 👈 activa fondo oscuro + botón cancelar
+
+      const resultado = await BarcodeScanner.startScan();
+
+      BarcodeScanner.showBackground();
+      document.body.classList.remove('qr-activo');
+
+      if (resultado.hasContent) {
+        const datos = resultado.content.split('@');
+        if (datos.length > 5) {
+          this.formCliente.patchValue({
+            apellido: datos[1],
+            nombre: datos[2],
+            dni: datos[4],
+          });
+        } else {
+          this.mensajeError = '❌ QR no válido o incompleto.';
+        }
+      } else {
+        this.mensajeError = '❌ No se detectó ningún código.';
+      }
+    } catch (error) {
+      this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
+      BarcodeScanner.showBackground();
+      document.body.classList.remove('qr-activo');
+    }
+
+    this.qrActivo = false;
+  }
+
+  qrActivo = false;
+
+  cancelarQr() {
+    BarcodeScanner.showBackground();
+    BarcodeScanner.stopScan();
+    this.qrActivo = false;
   }
 
   async guardarCliente() {
@@ -168,7 +219,6 @@ export class RegisterPage implements OnInit {
     }
 
     try {
-      // Paso 1: crear cuenta en Supabase Auth
       const { data, error: errorAuth } =
         await this.auth.sb.supabase.auth.signUp({
           email: c.email,
@@ -184,9 +234,8 @@ export class RegisterPage implements OnInit {
 
       const userId = data.user.id;
 
-      // Paso 2: guardar en tabla 'usuarios' con el mismo ID
       const { error } = await this.auth.sb.supabase.from('usuarios').insert({
-        id: userId, // 👈 clave para relacionar Auth con datos personales
+        id: userId,
         nombre: c.nombre,
         apellido: c.apellido,
         dni: c.dni,
@@ -195,7 +244,7 @@ export class RegisterPage implements OnInit {
         rol: 'cliente',
         tipo: 'cliente',
         imagen_url: urlImagen,
-        aprobado: false, // o true según tu lógica
+        aprobado: false,
       });
 
       if (error) {

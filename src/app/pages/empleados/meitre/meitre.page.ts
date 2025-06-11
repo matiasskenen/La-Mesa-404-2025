@@ -1,10 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-
 import { StatusBar } from '@capacitor/status-bar';
-
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -25,6 +24,10 @@ import {
   IonItem,
   IonText,
   IonButtons,
+  IonList,
+  IonLabel,
+  IonCard,
+  IonCardContent,
   ActionSheetController,
 } from '@ionic/angular/standalone';
 
@@ -49,6 +52,11 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
     IonTitle,
     IonToolbar,
     IonButtons,
+    IonList,
+    IonLabel,
+    IonCard,
+    IonCardContent,
+    IonImg,
   ],
 })
 export class MeitrePage implements OnInit {
@@ -57,6 +65,7 @@ export class MeitrePage implements OnInit {
   mensajeOk = '';
   formCliente: FormGroup;
 
+  clientesEnEspera: any[] = [];
   auth = inject(AuthService);
   supabase = this.auth.sb.supabase;
   actionSheetCtrl = inject(ActionSheetController);
@@ -64,6 +73,9 @@ export class MeitrePage implements OnInit {
   imagenSeleccionada: File | null = null;
   imagenPreviewUrl: string | null = null;
   subiendoImagen = false;
+
+  mesasDisponibles: string[] = ['1', '2', '3', '4'];
+  canalEspera: RealtimeChannel | null = null;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.configurarStatusBar();
@@ -80,17 +92,84 @@ export class MeitrePage implements OnInit {
 
   async configurarStatusBar() {
     try {
-      await StatusBar.setOverlaysWebView({ overlay: false }); // 🔴 ← IMPORTANTE
+      await StatusBar.setOverlaysWebView({ overlay: false });
     } catch (error) {
       console.log('No se pudo configurar StatusBar:', error);
     }
   }
 
+  ngOnInit() {
+    this.cargarListaEspera();
+    this.escucharEsperaEnTiempoReal();
+  }
+
+  async cargarListaEspera() {
+    const { data, error } = await this.supabase
+      .from('espera_local')
+      .select('*')
+      .eq('estado', 'pendiente');
+
+    if (!error) this.clientesEnEspera = data;
+  }
+
+  async confirmarIngreso(
+    email: string,
+    aceptar: boolean,
+    mesaAsignada?: string
+  ) {
+    if (aceptar) {
+      const { data: maxData } = await this.supabase
+        .from('fila')
+        .select('numero')
+        .order('numero', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const siguienteNumero = (maxData?.numero || 0) + 1;
+
+      const mesa = prompt(`Asignar número de mesa a ${email}:`, '1');
+      if (!mesa) return;
+
+      const { error: insertError } = await this.supabase
+        .from('fila')
+        .insert({ email, numero: siguienteNumero, mesa });
+    }
+
+    const { error: updateError } = await this.supabase
+      .from('espera_local')
+      .update({ estado: aceptar ? 'aceptado' : 'rechazado' })
+      .eq('email', email);
+
+    if (!updateError) {
+      this.cargarListaEspera();
+    }
+  }
+
+  escucharEsperaEnTiempoReal() {
+    this.canalEspera = this.supabase
+      .channel('canal-espera-local')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'espera_local',
+          filter: 'estado=eq.pendiente',
+        },
+        (payload) => {
+          const nuevoCliente = payload.new;
+          this.clientesEnEspera.push({
+            ...nuevoCliente,
+            mesaSeleccionada: null, // para el ion-select
+          });
+        }
+      )
+      .subscribe();
+  }
+
   formularioValido(): boolean {
     return this.formCliente.valid && this.imagenSeleccionada !== null;
   }
-
-  ngOnInit() {}
 
   async seleccionarFuenteImagen() {
     const actionSheet = await this.actionSheetCtrl.create({
@@ -225,5 +304,9 @@ export class MeitrePage implements OnInit {
   salir() {
     this.auth.cerrarSesion();
     this.router.navigateByUrl('/login');
+  }
+
+  ngOnDestroy() {
+    this.canalEspera?.unsubscribe();
   }
 }

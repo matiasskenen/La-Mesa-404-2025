@@ -5,6 +5,7 @@ import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { Haptics } from '@capacitor/haptics';
+import { RealtimeChannel } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-clientes',
@@ -16,9 +17,19 @@ import { Haptics } from '@capacitor/haptics';
 export class ClientesPage {
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
-  procesando = false;
+  router = inject(Router);
 
-  constructor(private router: Router) {}
+  procesando = false;
+  canalFila: RealtimeChannel | null = null;
+  numeroFila: number | null = null;
+
+  // Estados posibles: ninguno, esperando, aceptado
+  estadoCliente: 'ninguno' | 'esperando' | 'aceptado' = 'ninguno';
+  mensajeEstado: string = '';
+
+  ngOnInit() {
+    this.escucharFila();
+  }
 
   async escanearQR() {
     this.procesando = true;
@@ -28,69 +39,69 @@ export class ClientesPage {
       const claveQR = barcodes[0]?.rawValue;
 
       if (!claveQR) {
-        this.procesando = false;
         this.mostrarAlerta('Error', 'No se detectó un código QR válido.');
         return;
       }
 
-      const { data: claveData, error: claveError } = await this.auth.sb.supabase
-        .from('claves_validas')
-        .select('*')
-        .eq('clave', claveQR)
-        .eq('activa', true)
-        .maybeSingle();
+      const { data: userData } = await this.auth.sb.supabase.auth.getUser();
+      const email = userData?.user?.email || 'anonimo';
 
-      if (claveError || !claveData) {
-        this.procesando = false;
-        this.mostrarAlerta(
-          'Clave inválida',
-          'Este código QR no es válido o ya fue usado.'
-        );
-        return;
-      }
-
-      const { data: maxData } = await this.auth.sb.supabase
-        .from('fila')
-        .select('numero')
-        .order('numero', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      const siguienteNumero = (maxData?.numero || 0) + 1;
-
-      const { error: insertarError } = await this.auth.sb.supabase
-        .from('fila')
+      const { error } = await this.auth.sb.supabase
+        .from('espera_local')
         .insert({
-          numero: siguienteNumero,
+          email,
           clave: claveQR,
-          email:
-            (await this.auth.sb.supabase.auth.getUser()).data?.user?.email ||
-            'anonimo',
+          estado: 'pendiente',
         });
 
-      if (insertarError) {
-        this.procesando = false;
-        this.mostrarAlerta('Error', 'No se pudo ingresar a la fila.');
-        return;
+      if (error) {
+        this.mostrarAlerta(
+          'Error',
+          'No se pudo registrar en la lista de espera.'
+        );
+      } else {
+        await Haptics.vibrate();
+        this.estadoCliente = 'esperando';
+        this.mensajeEstado =
+          '📥 Estás en lista de espera. Un maître te asignará una mesa.';
       }
-
-      await this.auth.sb.supabase
-        .from('claves_validas')
-        .update({ activa: false })
-        .eq('clave', claveQR);
-
-      await Haptics.vibrate();
-
-      this.mostrarAlerta(
-        '✅ Ingreso exitoso',
-        `Tu número en la fila es: ${siguienteNumero}`
-      );
     } catch (err) {
       console.error(err);
-      this.mostrarAlerta('Error', 'Hubo un problema al escanear el código.');
+      this.mostrarAlerta('Error', 'Hubo un problema al escanear el QR.');
     } finally {
       this.procesando = false;
     }
+  }
+
+  async escucharFila() {
+    const { data: session } = await this.auth.sb.supabase.auth.getUser();
+    const email = session?.user?.email;
+
+    if (!email) return;
+
+    this.canalFila = this.auth.sb.supabase
+      .channel('canal-fila')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'fila',
+          filter: `email=eq.${email}`,
+        },
+        (payload) => {
+          const numero = payload.new['numero'];
+          const mesa = payload.new['mesa'];
+
+          this.estadoCliente = 'aceptado';
+          this.numeroFila = numero;
+
+          this.mensajeEstado = mesa
+            ? `🎉 Te asignaron la mesa ${mesa}. ¡Escaneá el menú!`
+            : `🎟️ Estás en la fila con el número ${numero}. Esperá a que se te asigne una mesa.`;
+        }
+      )
+      .subscribe();
   }
 
   async mostrarAlerta(titulo: string, mensaje: string) {
