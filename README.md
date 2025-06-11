@@ -52,6 +52,15 @@
 | Zampella, Tomás     | Gestión de productos del menú                                          | 1/06/2025        | 1/06/2025           | main   |
 | Skenen, Matias      | Registro de imagen en formulario Cliente                               | 5/06/2025        | 5/06/2025           | main   |
 | Zampella, Tomás     | Validacion de formulario Cliente                                       | 5/05/2025        | 5/06/2025           | main   |
-| Skenen, Matias      | Envio de correo Confirmacion o Rechazo Validado                        | 6/05/2025        | 6/05/2025            | main   |
+| Skenen, Matias      | Envio de correo Confirmacion o Rechazo Validado                        | 6/05/2025        | 6/05/2025            | main  |
+
+<h3>QR INGRESO AL LOCAL</h3>
+<img src="https://github.com/user-attachments/assets/3c51970c-e768-44eb-9bb6-7c01c783aea7" width="160"/>
+
+<h3>QR's MESAS</h3>
+<img src="https://github.com/user-attachments/assets/3188f288-ef0a-4e25-bc6d-7c9432b016d7" width="160"/>
+<img src="https://github.com/user-attachments/assets/d45c7a55-f907-447d-a19a-50046eca2236" width="160"/>
+<img src="https://github.com/user-attachments/assets/dcd9b6ca-1bb7-41ff-9b6a-472c1503707b" width="160"/>
+<img src="https://github.com/user-attachments/assets/36a21a53-2d75-402a-ab16-7e578e9b3313" width="160"/>
 
 ---
