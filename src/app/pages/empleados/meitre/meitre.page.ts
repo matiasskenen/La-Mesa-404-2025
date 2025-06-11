@@ -127,7 +127,7 @@ export class MeitrePage implements OnInit {
 
       const siguienteNumero = (maxData?.numero || 0) + 1;
 
-      const mesa = prompt(`Asignar número de mesa a ${email}:`, '1');
+      const mesa = prompt(`Asignar número de mesa a ${email}:`);
       if (!mesa) return;
 
       const { error: insertError } = await this.supabase
