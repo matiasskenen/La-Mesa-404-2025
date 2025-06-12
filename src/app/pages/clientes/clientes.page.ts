@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { Haptics } from '@capacitor/haptics';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import {qrCodeOutline} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-clientes',
@@ -26,6 +28,11 @@ export class ClientesPage {
   // Estados posibles: ninguno, esperando, aceptado
   estadoCliente: 'ninguno' | 'esperando' | 'aceptado' = 'ninguno';
   mensajeEstado: string = '';
+
+  //Para pasar mesa por parametro (ver escucharFila() === 'aceptado')
+  constructor(private routerParametro: Router){
+    addIcons({qrCodeOutline});
+  }
 
   ngOnInit() {
     this.escucharFila();
@@ -99,7 +106,15 @@ export class ClientesPage {
           this.mensajeEstado = mesa
             ? `🎉 Te asignaron la mesa ${mesa}. ¡Escaneá el menú!`
             : `🎟️ Estás en la fila con el número ${numero}. Esperá a que se te asigne una mesa.`;
+
+            // Voy a /mesa si estadoCliente es 'aceptado' y hay mesa asignada
+          if (this.estadoCliente === 'aceptado' && mesa) {
+            this.router.navigate(['/mesa'], {
+              queryParams: { mesa }
+            });
+          }
         }
+        
       )
       .subscribe();
   }
@@ -115,6 +130,5 @@ export class ClientesPage {
 
   salir() {
     this.auth.cerrarSesion();
-    this.router.navigateByUrl('/login');
   }
 }

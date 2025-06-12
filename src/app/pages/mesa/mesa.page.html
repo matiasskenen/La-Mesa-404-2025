@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true" class="pagina-mesa">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Mesa {{this.mesaAsignada}}</ion-title>
+      <ion-buttons slot="primary">
+        <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
+          SALIR
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="scanner-container" *ngIf="!mesaVerificada">
+    <ion-button expand="block" color="warning" size="large" (click)="escanearQR()" [disabled]="procesando">
+      <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su mesa' }}
+      <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
+    </ion-button>
+  </div>
+
+  <div class="scanner-container" *ngIf="mesaVerificada">
+    <ion-button expand="block" color="warning" size="large">Realizar pedido</ion-button>
+    <ion-button expand="block" color="warning" size="large">Consultar al mozo</ion-button>
+  </div>
+</ion-content>

@@ -19,7 +19,7 @@
       [disabled]="procesando"
     >
       <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar' }}
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar al local' }}
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
   </div>
@@ -29,4 +29,6 @@
       <h2>{{ mensajeEstado }}</h2>
     </ion-text>
   </div>
+
+  
 </ion-content>

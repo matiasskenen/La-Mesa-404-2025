@@ -6,11 +6,26 @@ import { SupabaseService } from './supabase.service';
 })
 export class DatabaseService {
   sb = inject(SupabaseService);
+  tablaUsuarios;
   tablaProductos;
   constructor() {
     //La inicializo acá para organizar el codigo pero no cambia nada
     this.tablaProductos = this.sb.supabase.from("productos");
+    this.tablaUsuarios = this.sb.supabase.from("usuarios");
   }
+  async traerUsuario(id: string) {
+  const { data, error } = await this.tablaUsuarios
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error('Error al solicitar usuario', error.message);
+    return null;
+  }
+
+  return data; //Devuelvo un objeto para se acceda objeto.id, objeto.apellido
+}
 
   async traerTodosLosProductos(){
     const { data, error } = await this.tablaProductos
@@ -20,4 +35,6 @@ export class DatabaseService {
     }
     return data as any[];
   }
+
+
 }

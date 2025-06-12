@@ -68,5 +68,9 @@ export const routes: Routes = [
     path: 'menu',
     loadComponent: () =>
       import('./pages/menu/menu.page').then((m) => m.MenuPage),
+  },  {
+    path: 'mesa',
+    loadComponent: () => import('./pages/mesa/mesa.page').then( m => m.MesaPage)
   },
+
 ];

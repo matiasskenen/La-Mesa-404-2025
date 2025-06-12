@@ -2,17 +2,23 @@ import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   sb = inject(SupabaseService);
+  db = inject(DatabaseService);
   router = inject(Router);
   nombreUsuario: string = '';
+  usuarioObj: any = null;
+  idUsuario:string = '';
   usuarioActual: User | null = null;
+  primerInicio: boolean = false;
 
   constructor() {
+    
     /// Saber si el usuario está logueado o no
     this.sb.supabase.auth.onAuthStateChange((event, session) => {
       console.log(event, session);
@@ -21,6 +27,7 @@ export class AuthService {
       if (event === 'SIGNED_OUT') {
         this.usuarioActual = null;
         this.nombreUsuario = '';
+        this.primerInicio = false;
         window.location.href = '/login';
       }
       // Si la sesión es nula
@@ -30,12 +37,45 @@ export class AuthService {
       // Si hay sesión
       else {
         this.usuarioActual = session.user;
-        this.nombreUsuario =
-          this.usuarioActual.user_metadata?.['nombre_usuario'];
-        this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión
+        this.nombreUsuario = this.usuarioActual.user_metadata?.['nombre_usuario'];
+        this.idUsuario = this.usuarioActual.id;
+        if (event === 'SIGNED_IN' && !this.primerInicio) {
+          this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión
+          this.primerInicio = true;
+        }
       }
     });
   }
+
+  //iniciar sesion
+  async iniciarSesion(
+    correo: string,
+    contraseña: string
+  ): Promise<{ success: boolean; error?: string }> {
+    this.usuarioActual = null;
+    this.nombreUsuario = '';
+    this.idUsuario = '';
+    const { data, error } = await this.sb.supabase.auth.signInWithPassword({
+      email: correo,
+      password: contraseña,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+    //Prueba para setear this.usuarioObj y poder acceder a las propiedades ej: this.usuarioObj.nombre
+
+    // const { data: sessionData } = await this.sb.supabase.auth.getUser();
+    // const userId = sessionData?.user?.id;
+    // if(userId){
+    //   const objetoUsuario = await this.db.traerUsuario(userId);
+    //   console.log('objeto usuario desde iniciar sesion:', objetoUsuario);
+    //   this.usuarioObj = objetoUsuario;
+    // }
+
+    return { success: true };
+  }
+
 
   async subirImagenArchivo(
     file: File,
@@ -70,26 +110,6 @@ export class AuthService {
     });
 
     // console.log(data, error);
-  }
-
-  //iniciar sesion
-  async iniciarSesion(
-    correo: string,
-    contraseña: string
-  ): Promise<{ success: boolean; error?: string }> {
-    this.usuarioActual = null;
-    this.nombreUsuario = '';
-
-    const { data, error } = await this.sb.supabase.auth.signInWithPassword({
-      email: correo,
-      password: contraseña,
-    });
-
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
   }
 
   async cerrarSesion() {

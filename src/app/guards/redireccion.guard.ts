@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class RedireccionGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
+  primerIngreso = false;
 
   async canActivate(): Promise<boolean> {
     const supabase = this.auth.sb.supabase;
@@ -23,6 +24,8 @@ export class RedireccionGuard implements CanActivate {
       .select('rol')
       .eq('id', userId)
       .single();
+
+    
 
     switch (usuario?.rol) {
       case 'cliente':

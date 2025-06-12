@@ -303,7 +303,6 @@ export class MeitrePage implements OnInit {
 
   salir() {
     this.auth.cerrarSesion();
-    this.router.navigateByUrl('/login');
   }
 
   ngOnDestroy() {
