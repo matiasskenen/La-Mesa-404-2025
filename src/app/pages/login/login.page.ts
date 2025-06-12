@@ -20,6 +20,7 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonLoading,
 } from '@ionic/angular/standalone';
 
 import { AuthService } from 'src/app/services/auth.service';
@@ -44,6 +45,7 @@ import { Router } from '@angular/router';
     IonCardContent,
     IonIcon,
     IonText,
+    IonLoading,
   ],
 })
 export class LoginPage {
@@ -60,6 +62,8 @@ export class LoginPage {
 
   mensajeExito = '';
   mensajeError = '';
+
+  cargando = false;
 
   usuarios = [
     {
@@ -168,5 +172,33 @@ export class LoginPage {
 
   irARegistro() {
     this.router.navigateByUrl('/register');
+  }
+
+  async ingresoAnonimo() {
+    this.cargando = true;
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
+    const email = 'anonimo@gmail.com';
+    const password = '123456';
+
+    // Esperamos 2 segundos con el spinner visible
+    setTimeout(async () => {
+      const resultado = await this.auth.iniciarSesion(email, password);
+
+      if (!resultado.success) {
+        this.cargando = false;
+        this.mensajeError = '❌ Error al ingresar como anónimo.';
+        return;
+      }
+
+      this.mensajeExito = '✅ Ingreso anónimo exitoso.';
+
+      // 🔁 Esperamos un poco más con el spinner para no mostrar el login otra vez
+      setTimeout(() => {
+        this.cargando = false;
+        this.router.navigateByUrl('/principal');
+      }, 500); // medio segundo más, opcional
+    }, 2000);
   }
 }
