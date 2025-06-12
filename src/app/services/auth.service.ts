@@ -40,7 +40,7 @@ export class AuthService {
         this.nombreUsuario = this.usuarioActual.user_metadata?.['nombre_usuario'];
         this.idUsuario = this.usuarioActual.id;
         if (event === 'SIGNED_IN' && !this.primerInicio) {
-          this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión
+          this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión y solo si es el primer ingreso
           this.primerInicio = true;
         }
       }
@@ -55,6 +55,7 @@ export class AuthService {
     this.usuarioActual = null;
     this.nombreUsuario = '';
     this.idUsuario = '';
+    this.primerInicio = false;
     const { data, error } = await this.sb.supabase.auth.signInWithPassword({
       email: correo,
       password: contraseña,

@@ -25,7 +25,7 @@ export class RedireccionGuard implements CanActivate {
       .eq('id', userId)
       .single();
 
-    
+      
 
     switch (usuario?.rol) {
       case 'cliente':

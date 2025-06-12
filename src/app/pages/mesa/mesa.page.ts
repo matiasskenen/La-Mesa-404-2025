@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar,IonButton, IonButtons, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { Haptics } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
@@ -15,7 +14,7 @@ import {qrCodeOutline} from 'ionicons/icons';
   templateUrl: './mesa.page.html',
   styleUrls: ['./mesa.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonButtons, IonIcon, IonSpinner]
+  imports: [CommonModule, FormsModule,IonicModule]
 })
 export class MesaPage implements OnInit {
   auth = inject(AuthService);
@@ -30,8 +29,10 @@ export class MesaPage implements OnInit {
   ngOnInit() {
   this.route.queryParams.subscribe(params => {
     this.mesaAsignada = params['mesa'];
-    console.log('Mesa recibida:', this.mesaAsignada );
   });
+
+  //Alerta de prueba para ver si al entrar a /mesa salta la alerta desde el celu (no me salta)
+  this.mostrarAlerta('prueba alerta', 'texto de prueba desde ngOnInit');
 }
 
 async escanearQR() {
