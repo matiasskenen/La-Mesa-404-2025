@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 import { Haptics } from '@capacitor/haptics';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import {qrCodeOutline} from 'ionicons/icons';
