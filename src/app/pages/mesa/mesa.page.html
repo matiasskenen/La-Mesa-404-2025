@@ -1,7 +1,8 @@
 <ion-content [fullscreen]="true" class="pagina-mesa">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Mesa {{this.mesaAsignada}}</ion-title>
+      <ion-title *ngIf="!mesaVerificada">Mesa</ion-title>
+      <ion-title *ngIf="mesaVerificada">Mesa {{this.mesaAsignada}}</ion-title>
       <ion-buttons slot="primary">
         <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
           SALIR
@@ -20,6 +21,6 @@
 
   <div class="scanner-container" *ngIf="mesaVerificada">
     <ion-button expand="block" color="warning" size="large">Realizar pedido</ion-button>
-    <ion-button expand="block" color="warning" size="large">Consultar al mozo</ion-button>
+    <ion-button expand="block" color="warning" size="large">Consulta al mozo</ion-button>
   </div>
 </ion-content>
