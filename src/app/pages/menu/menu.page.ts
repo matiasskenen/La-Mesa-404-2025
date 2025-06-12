@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList,IonCard, 
-IonCardContent, IonCardHeader, IonCardTitle} from '@ionic/angular/standalone';
 import { DatabaseService } from 'src/app/services/database.service';
 import { register } from 'swiper/element/bundle';
+import { IonicModule } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {removeCircle, addCircle, checkmarkSharp} from 'ionicons/icons';
 
 register();
 
@@ -15,13 +16,16 @@ register();
   styleUrls: ['./menu.page.scss'],
   standalone: true,
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,
-      IonList, IonCard, IonCardHeader,IonCardTitle, IonCardContent]
+  imports: [CommonModule, FormsModule,IonicModule]
 })
 export class MenuPage implements OnInit {
   db = inject(DatabaseService);
   productos: any[] = [];
-  constructor() { }
+  importeTotal:number = 0;
+  demora:number = 0;
+  constructor() { 
+    addIcons({removeCircle, addCircle, checkmarkSharp});
+  }
 
   ngOnInit() {
     this.mostrarMenu();
@@ -29,8 +33,10 @@ export class MenuPage implements OnInit {
 
   async mostrarMenu(){
     const todosLosProductos = await this.db.traerTodosLosProductos();
-    this.productos = todosLosProductos;
+    this.productos = todosLosProductos.sort((a, b) => a.id - b.id);
   }
+
+  terminarPedido(){}
 
 
 }

@@ -1,17 +1,31 @@
-ion-content{
+ion-content {
   --background: red;
   overflow: hidden;
+
+  .contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .custom-card {
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    margin: 8px;
+  }
+
+  .contenido-listado {
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+    padding: 8px;
+  }
 }
 
-ion-list {
-  --background: transparent !important; // Evitás el fondo negro del modo oscuro
-  background: transparent !important;
-}
 
-
-.custom-card{
-   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 16px;
+.visor-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 
