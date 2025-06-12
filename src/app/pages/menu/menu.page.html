@@ -8,9 +8,10 @@
   <div class="contenedor-flex">
     <ion-card class="custom-card">
       <div class="visor-info">
+
         <div>
-          <p class="importe">Importe total: {{ importeTotal }}</p>
-          <p class="demora">Demora: {{ demora }} min</p>
+          <h2 class="importe">Importe total: $ {{ importeTotal }}</h2>
+          <h2 class="demora">Demora: {{ demora }} min</h2>
         </div>
         <ion-button size="large" fill="solid" color="success" (click)="terminarPedido()">
           <ion-icon name="checkmark-sharp" size="large"></ion-icon>
@@ -32,21 +33,35 @@
         </swiper-container>
 
         <ion-card-header>
-          <ion-card-title>{{ producto.nombre }}</ion-card-title>
+          <div class="nombre-precio">
+            <span class="titulo-nombre">{{ producto.nombre }}</span>
+            <span class="titulo-precio">$ {{ producto.precio }}</span>
+          </div>
         </ion-card-header>
         <ion-card-content>
-          <p>{{ producto.descripcion }}</p>
-          <p>$ {{ producto.precio }}</p>
-          <p>Tiempo estimado: {{ producto.tiempo }} minutos</p>
+          <p class="descripcion-producto">{{ producto.descripcion }}</p>
+          <p class="descripcion-producto">Tiempo estimado: {{ producto.tiempo }} minutos</p>
         </ion-card-content>
-        <!-- Boton menos (-) -->
-        <ion-button fill="solid" shape="round" color="light">
-          <ion-icon slot="icon-only" name="remove-circle" size="large"></ion-icon>
-        </ion-button>
-        <!-- Boton mas (+) -->
-        <ion-button fill="solid" shape="round" color="light">
-          <ion-icon slot="icon-only" name="add-circle" size="large"></ion-icon>
-        </ion-button>
+        <!-- footer de la card -->
+        <div class="visor-footer-card">
+          <div class="visor-cantidad">
+
+            <!-- Boton menos (-) -->
+            <ion-button fill="solid" shape="round" color="light" (click)="disminuirCantidad()">
+              <ion-icon slot="icon-only" name="remove-circle" size="large"></ion-icon>
+            </ion-button>
+
+            <!-- Cantidad -->
+            <p>{{ cantidad }}</p>
+
+            <!-- Boton mas (+) -->
+            <ion-button fill="solid" shape="round" color="light" (click)="aumentarCantidad()">
+              <ion-icon slot="icon-only" name="add-circle" size="large"></ion-icon>
+            </ion-button>
+          </div>
+
+          <ion-button fill="solid" shape="round" color="success" (click)="agregarProducto()">Agregar</ion-button>
+        </div>
       </ion-card>
       }
       } @else {

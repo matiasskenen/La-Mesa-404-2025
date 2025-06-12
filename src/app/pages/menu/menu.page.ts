@@ -23,6 +23,8 @@ export class MenuPage implements OnInit {
   productos: any[] = [];
   importeTotal:number = 0;
   demora:number = 0;
+  cantidad:number = 0;
+  
   constructor() { 
     addIcons({removeCircle, addCircle, checkmarkSharp});
   }
@@ -37,6 +39,8 @@ export class MenuPage implements OnInit {
   }
 
   terminarPedido(){}
-
+  agregarProducto(){}
+  aumentarCantidad(){}
+  disminuirCantidad(){}
 
 }
