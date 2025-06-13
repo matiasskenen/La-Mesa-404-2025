@@ -1,1 +1,122 @@
+ion-content::part(scroll) {
+  background-color: #19647e !important;
+  overflow: hidden !important;
+}
 
+.formulario,
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+ion-item {
+  --background: #ffffff;
+  --border-radius: 10px;
+  --min-height: 36px;
+  padding: 1px 8px;
+  font-size: 0.88rem;
+  box-shadow: none !important;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
+ion-input,
+ion-select,
+ion-textarea {
+  font-size: 0.88rem;
+  padding: 2px 0;
+}
+
+.boton-opcion {
+  width: 100%;
+  max-width: 280px;
+  height: 42px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  --background: #d22f19;
+  --border-radius: 10px;
+  --color: white;
+  letter-spacing: 0.5px;
+}
+
+.boton-opcion-warning {
+  --background: #fdd835;
+  --color: black;
+}
+
+.boton-salir {
+  height: 34px;
+  font-size: 0.75rem;
+  padding: 0 10px;
+  --border-radius: 10px;
+  --background: #e53935;
+  --color: white;
+  min-width: 100px;
+}
+
+.boton-volver {
+  --background: white;
+  --color: black;
+  font-weight: bold;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  border-radius: 10px;
+  margin-top: 0.3rem;
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  box-shadow: 0 0 0 2px white;
+  transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boton-volver:hover {
+  --background: #ffffff;
+  --color: #19647e;
+  box-shadow: 0 0 0 2px #19647e;
+}
+
+.boton-cancelar {
+  margin-top: 15px;
+  --background: #a51b1b;
+  --color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 10px;
+  height: 42px;
+  font-size: 0.88rem;
+  max-width: 280px;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+
+.boton-cancelar:hover {
+  --background: #d34343;
+}
+
+.texto-blanco {
+  color: white;
+}
+
+.botones-decision {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+ion-button.boton-volver:focus {
+  outline: none;
+  box-shadow: none !important;
+}

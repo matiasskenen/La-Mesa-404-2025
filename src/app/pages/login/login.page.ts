@@ -45,7 +45,6 @@ import { Router } from '@angular/router';
     IonCardContent,
     IonIcon,
     IonText,
-    IonLoading,
   ],
 })
 export class LoginPage {
@@ -60,7 +59,6 @@ export class LoginPage {
   verPassword = false;
   mostrarUsuarios = false;
 
-  mensajeExito = '';
   mensajeError = '';
 
   cargando = false;
@@ -121,7 +119,6 @@ export class LoginPage {
   }
 
   async loguearse() {
-    this.mensajeExito = '';
     this.mensajeError = '';
 
     if (this.loginForm.invalid) {
@@ -158,8 +155,6 @@ export class LoginPage {
       return;
     }
 
-    // Aprobado
-    this.mensajeExito = '✅ Bienvenido, acceso concedido.';
     setTimeout(() => {
       this.router.navigateByUrl('/principal');
     }, 1000);
@@ -176,7 +171,6 @@ export class LoginPage {
 
   async ingresoAnonimo() {
     this.cargando = true;
-    this.mensajeExito = '';
     this.mensajeError = '';
 
     const email = 'anonimo@gmail.com';
@@ -191,8 +185,6 @@ export class LoginPage {
         this.mensajeError = '❌ Error al ingresar como anónimo.';
         return;
       }
-
-      this.mensajeExito = '✅ Ingreso anónimo exitoso.';
 
       // 🔁 Esperamos un poco más con el spinner para no mostrar el login otra vez
       setTimeout(() => {

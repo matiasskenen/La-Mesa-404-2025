@@ -1,78 +1,114 @@
-.fondo {
-  --background: #e6f0f5;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-}
-
-ion-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  --overflow: hidden;
+/* ======================
+   FONDO GENERAL
+====================== */
+ion-content::part(scroll) {
+  background-color: #19647e !important;
   overflow: hidden !important;
 }
 
-/* Contenedor principal */
-.menu-container,
-.formulario {
-  flex: 1;
-  height: 100%;
-  padding: 2rem 1.5rem;
-  box-sizing: border-box;
-  background-color: white;
+/* ======================
+   CONTENEDORES
+====================== */
+.formulario,
+.menu-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  border-radius: 0;
-  box-shadow: none;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
   overflow: hidden;
 }
 
-/* Botón volver */
+/* ======================
+   INPUTS
+====================== */
+ion-item {
+  --background: #ffffff;
+  --border-radius: 10px;
+  --min-height: 36px;
+  padding: 1px 8px;
+  font-size: 0.88rem;
+  box-shadow: none !important;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
+.formulario ion-item:first-of-type {
+  margin-top: 0 !important;
+}
+
+ion-input,
+ion-select,
+ion-textarea {
+  font-size: 0.88rem;
+  padding: 2px 0;
+}
+
+/* ======================
+   BOTONES DE MENÚ
+====================== */
+.boton-opcion {
+  width: 100%;
+  max-width: 280px;
+  height: 42px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  --background: #d22f19;
+  --border-radius: 10px;
+  --color: white;
+  letter-spacing: 0.5px;
+}
+
+.boton-opcion-warning {
+  --background: #fdd835;
+  --color: black;
+}
+
+/* ======================
+   BOTÓN SALIR
+====================== */
+.boton-salir {
+  height: 34px;
+  font-size: 0.75rem;
+  padding: 0 10px;
+  --border-radius: 10px;
+  --background: #e53935;
+  --color: white;
+  min-width: 100px;
+}
+
+/* ======================
+   BOTÓN VOLVER CORREGIDO
+====================== */
 .boton-volver {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 1000;
-  width: 48px;
-  height: 48px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  --color: #007bff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
+  --background: white;
+  --color: black;
+  font-weight: bold;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  border-radius: 10px;
+  margin-top: 0.3rem;
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  box-shadow: 0 0 0 2px white; /* contorno exterior */
+  transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .boton-volver:hover {
-  transform: scale(1.1);
-}
-
-ion-item {
-  width: 100%;
   --background: #ffffff;
-  border-radius: 10px;
-  margin-bottom: 0.5rem;
+  --color: #19647e;
+  box-shadow: 0 0 0 2px #19647e;
 }
 
-ion-button {
-  width: 100%;
-  font-weight: bold;
-  border-radius: 10px;
-}
-
-.volver-wrapper {
-  width: 100%;
-  text-align: right;
-  margin-bottom: 1rem;
+.texto-blanco {
+  color: white;
 }

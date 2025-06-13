@@ -6,8 +6,8 @@
         <ion-button
           fill="solid"
           shape="round"
+          class="boton-salir"
           (click)="volverAtras()"
-          color="danger"
         >
           Salir
         </ion-button>
@@ -25,33 +25,96 @@
 
   <!-- Menú principal -->
   <div class="menu-container" *ngIf="formActivo === null">
-    <ion-button expand="block" (click)="formActivo = 'duenio'">
+    <ion-button
+      expand="block"
+      class="boton-opcion"
+      (click)="formActivo = 'duenio'"
+    >
       ALTA DE DUEÑO / SUPERVISOR
     </ion-button>
-    <ion-button expand="block" (click)="formActivo = 'empleado'">
+    <ion-button
+      expand="block"
+      class="boton-opcion"
+      (click)="formActivo = 'empleado'"
+    >
       ALTA DE EMPLEADO
     </ion-button>
-    <ion-button expand="block" (click)="formActivo = 'altaClientes'">
+    <ion-button
+      expand="block"
+      class="boton-opcion"
+      (click)="formActivo = 'altaClientes'"
+    >
       APROBAR NUEVOS CLIENTES
     </ion-button>
     <ion-button
       expand="block"
-      color="warning"
+      class="boton-opcion boton-opcion-warning"
       (click)="migrarUsuariosATablaAuth()"
     >
       MIGRAR USUARIOS A AUTH 🔁
     </ion-button>
   </div>
 
-  <!-- Form Alta Dueño/Supervisor -->
+  <!-- Form Alta Dueño/Admin -->
   <form
     *ngIf="formActivo === 'duenio'"
     [formGroup]="formDuenio"
     (ngSubmit)="guardarDuenio()"
     class="formulario"
   >
+    <ion-item>
+      <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="apellido" placeholder="Apellido"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="dni"
+        type="number"
+        placeholder="DNI"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="email"
+        type="email"
+        placeholder="Correo electrónico"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="password"
+        type="password"
+        placeholder="Contraseña"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="confirmar"
+        type="password"
+        placeholder="Confirmar contraseña"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select formControlName="rol" placeholder="Seleccionar rol">
+        <ion-select-option value="admin">Admin</ion-select-option>
+        <ion-select-option value="dueño">Dueño</ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <ion-button expand="block" type="submit" color="success">
       GUARDAR
+    </ion-button>
+
+    <ion-button class="boton-volver" (click)="formActivo = null">
+      VOLVER
     </ion-button>
   </form>
 
@@ -62,35 +125,78 @@
     (ngSubmit)="guardarEmpleado()"
     class="formulario"
   >
-    <ion-list>
-      <ion-radio-group formControlName="rol">
-        <ion-item>
-          <ion-label>Mozo</ion-label>
-          <ion-radio slot="start" value="mozo"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Cocinero</ion-label>
-          <ion-radio slot="start" value="cocinero"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Barra</ion-label>
-          <ion-radio slot="start" value="barra"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
-    </ion-list>
+    <ion-item>
+      <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="apellido" placeholder="Apellido"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="dni"
+        type="number"
+        placeholder="DNI"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="cuil"
+        type="text"
+        placeholder="CUIL"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="email"
+        type="email"
+        placeholder="Correo electrónico"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="password"
+        type="password"
+        placeholder="Contraseña"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        formControlName="confirmar"
+        type="password"
+        placeholder="Confirmar contraseña"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select formControlName="rol" placeholder="Seleccionar rol">
+        <ion-select-option value="mozo">Mozo</ion-select-option>
+        <ion-select-option value="cocinero">Cocinero</ion-select-option>
+        <ion-select-option value="barra">Barra</ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <ion-button expand="block" type="submit" color="success">
       GUARDAR
     </ion-button>
-    <ion-button fill="clear" color="medium" (click)="formActivo = null">
+
+    <ion-button class="boton-volver" (click)="formActivo = null">
       VOLVER
     </ion-button>
   </form>
 
   <!-- Aprobar Nuevos Clientes -->
   <div *ngIf="formActivo === 'altaClientes'" class="formulario">
-    <h2 class="ion-text-center">Aprobar Nuevos Clientes</h2>
+    <h2 class="ion-text-center" class="texto-blanco">
+      Aprobar Nuevos Clientes
+    </h2>
     <div *ngIf="clientesPendientes.length === 0" class="ion-text-center">
-      <p>No hay clientes pendientes de aprobación.</p>
+      <p class="texto-blanco">No hay clientes pendientes de aprobación.</p>
     </div>
     <ion-list *ngIf="clientesPendientes.length > 0">
       <ion-item *ngFor="let cliente of clientesPendientes">
@@ -116,7 +222,7 @@
         </ion-button>
       </ion-item>
     </ion-list>
-    <ion-button fill="clear" color="medium" (click)="formActivo = null">
+    <ion-button class="boton-volver" (click)="formActivo = null">
       VOLVER
     </ion-button>
   </div>

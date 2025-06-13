@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
-
 import {
   FormsModule,
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
+  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -29,6 +29,8 @@ import {
   IonToolbar,
   IonTitle,
   IonButtons,
+  IonSelect,
+  IonSelectOption,
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -54,6 +56,9 @@ import {
     IonToolbar,
     IonTitle,
     IonButtons,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
   ],
 })
 export class AdministradorPage implements OnInit {
@@ -67,8 +72,6 @@ export class AdministradorPage implements OnInit {
   mensajeOk = '';
 
   clientesPendientes: any[] = [];
-
-  // Modal rechazo
   modalRechazoVisible = false;
   motivoRechazo = '';
   clienteSeleccionado: any = null;
@@ -79,31 +82,25 @@ export class AdministradorPage implements OnInit {
     private location: Location
   ) {
     this.formDuenio = this.fb.group({
-      apellido: [''],
-      nombre: [''],
-      dni: [''],
-      cuil: [''],
-      email: [''],
-      password: [''],
-      confirmar: [''],
-      rol: ['dueño'],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      dni: ['', [Validators.required, Validators.minLength(7)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmar: ['', Validators.required],
+      rol: ['', Validators.required],
     });
 
     this.formEmpleado = this.fb.group({
-      nombre: [''],
-      apellido: [''],
-      dni: [''],
-      cuil: [''],
-      email: [''],
-      password: [''],
-      confirmar: [''],
-      rol: ['mozo'],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      dni: ['', [Validators.required, Validators.minLength(7)]],
+      cuil: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmar: ['', Validators.required],
+      rol: ['mozo', Validators.required],
     });
-  }
-
-  volverAtras() {
-    this.auth.cerrarSesion();
-    this.router.navigateByUrl('/login');
   }
 
   ngOnInit() {
@@ -114,7 +111,7 @@ export class AdministradorPage implements OnInit {
     this.cargarClientesPendientes();
   }
 
-  volver() {
+  volverAtras() {
     this.auth.cerrarSesion();
     this.router.navigateByUrl('/login');
   }
@@ -127,9 +124,7 @@ export class AdministradorPage implements OnInit {
       .eq('aprobado', false)
       .order('created_at', { ascending: false });
 
-    if (error) {
-      console.error('Error al traer clientes pendientes:', error.message);
-    } else {
+    if (!error && data) {
       this.clientesPendientes = data;
     }
   }
@@ -140,12 +135,12 @@ export class AdministradorPage implements OnInit {
       .update({ aprobado: true })
       .eq('id', cliente.id);
 
-    if (error) {
-      this.mensajeError = 'Error al aprobar cliente: ' + error.message;
-    } else {
+    if (!error) {
       await this.enviarCorreoCliente(cliente.email, cliente.nombre, true);
       this.mensajeOk = 'Cliente aprobado correctamente.';
       this.cargarClientesPendientes();
+    } else {
+      this.mensajeError = 'Error al aprobar cliente: ' + error.message;
     }
   }
 
@@ -163,7 +158,7 @@ export class AdministradorPage implements OnInit {
 
   async confirmarRechazo() {
     if (!this.motivoRechazo.trim()) {
-      this.mensajeError = 'Tenés que escribir un motivo para rechazar.';
+      this.mensajeError = 'Debe indicar un motivo para el rechazo.';
       return;
     }
 
@@ -174,9 +169,7 @@ export class AdministradorPage implements OnInit {
       .delete()
       .eq('id', cliente.id);
 
-    if (error) {
-      this.mensajeError = 'Error al eliminar cliente: ' + error.message;
-    } else {
+    if (!error) {
       await this.enviarCorreoCliente(
         cliente.email,
         cliente.nombre,
@@ -187,6 +180,8 @@ export class AdministradorPage implements OnInit {
         (c) => c.id !== cliente.id
       );
       this.mensajeOk = 'Cliente rechazado correctamente.';
+    } else {
+      this.mensajeError = 'Error al eliminar cliente: ' + error.message;
     }
 
     this.cerrarModalRechazo();
@@ -197,35 +192,40 @@ export class AdministradorPage implements OnInit {
     this.mensajeError = '';
     this.mensajeOk = '';
 
-    if (d.password !== d.confirmar) {
-      this.mensajeError = 'Las contraseñas no coinciden';
+    if (this.formDuenio.invalid || d.password !== d.confirmar) {
+      this.mensajeError = 'Complete todos los campos correctamente.';
       return;
     }
 
-    try {
-      await this.auth.crearCuenta(d.email, d.password, d.nombre);
+    const { data, error: errorAuth } = await this.auth.sb.supabase.auth.signUp({
+      email: d.email,
+      password: d.password,
+    });
 
-      const { error } = await this.auth.sb.supabase.from('usuarios').insert({
-        nombre: d.nombre,
-        apellido: d.apellido,
-        dni: d.dni,
-        cuil: d.cuil,
-        email: d.email,
-        password: d.password,
-        rol: d.rol,
-        tipo: 'dueño_supervisor',
-        aprobado: true,
-      });
+    if (errorAuth || !data?.user) {
+      this.mensajeError = 'Error en Auth: ' + (errorAuth?.message || '');
+      return;
+    }
 
-      if (error) {
-        this.mensajeError = 'Error al guardar: ' + error.message;
-      } else {
-        this.mensajeOk = '¡Registro exitoso!';
-        this.formDuenio.reset();
-        this.formActivo = null;
-      }
-    } catch (err) {
-      this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
+    const userId = data.user.id;
+
+    const { error } = await this.auth.sb.supabase.from('usuarios').insert({
+      id: userId,
+      nombre: d.nombre,
+      apellido: d.apellido,
+      dni: d.dni,
+      email: d.email,
+      rol: d.rol,
+      tipo: 'duenio',
+      aprobado: true,
+    });
+
+    if (!error) {
+      this.mensajeOk = 'Dueño o administrador registrado correctamente.';
+      this.formDuenio.reset();
+      this.formActivo = null;
+    } else {
+      this.mensajeError = 'Error al guardar en usuarios: ' + error.message;
     }
   }
 
@@ -234,35 +234,41 @@ export class AdministradorPage implements OnInit {
     this.mensajeError = '';
     this.mensajeOk = '';
 
-    if (e.password !== e.confirmar) {
-      this.mensajeError = 'Las contraseñas no coinciden';
+    if (this.formEmpleado.invalid || e.password !== e.confirmar) {
+      this.mensajeError = 'Complete todos los campos correctamente.';
       return;
     }
 
-    try {
-      await this.auth.crearCuenta(e.email, e.password, e.nombre);
+    const { data, error: errorAuth } = await this.auth.sb.supabase.auth.signUp({
+      email: e.email,
+      password: e.password,
+    });
 
-      const { error } = await this.auth.sb.supabase.from('usuarios').insert({
-        nombre: e.nombre,
-        apellido: e.apellido,
-        dni: e.dni,
-        cuil: e.cuil,
-        email: e.email,
-        password: e.password,
-        rol: e.rol,
-        tipo: 'empleado',
-        aprobado: true,
-      });
+    if (errorAuth || !data?.user) {
+      this.mensajeError = 'Error en Auth: ' + (errorAuth?.message || '');
+      return;
+    }
 
-      if (error) {
-        this.mensajeError = 'Error al guardar: ' + error.message;
-      } else {
-        this.mensajeOk = '¡Empleado registrado con éxito!';
-        this.formEmpleado.reset();
-        this.formActivo = null;
-      }
-    } catch (err) {
-      this.mensajeError = 'Hubo un problema: ' + (err as Error).message;
+    const userId = data.user.id;
+
+    const { error } = await this.auth.sb.supabase.from('usuarios').insert({
+      id: userId,
+      nombre: e.nombre,
+      apellido: e.apellido,
+      dni: e.dni,
+      cuil: e.cuil,
+      email: e.email,
+      rol: e.rol,
+      tipo: 'empleado',
+      aprobado: true,
+    });
+
+    if (!error) {
+      this.mensajeOk = 'Empleado registrado con éxito.';
+      this.formEmpleado.reset();
+      this.formActivo = null;
+    } else {
+      this.mensajeError = 'Error al guardar: ' + error.message;
     }
   }
 
@@ -281,19 +287,12 @@ export class AdministradorPage implements OnInit {
       logo_url: 'https://i.imgur.com/G6Zwxv1.png',
     };
 
-    emailjs
-      .send(
-        'service_8xl5hfr',
-        'template_eqs9mhe',
-        templateParams,
-        'ugJXF6nqC7DtIYSSr'
-      )
-      .then((result) => {
-        console.log('Correo enviado ✅', result.text);
-      })
-      .catch((error) => {
-        console.error('Error al enviar correo ❌', error.text);
-      });
+    emailjs.send(
+      'service_8xl5hfr',
+      'template_eqs9mhe',
+      templateParams,
+      'ugJXF6nqC7DtIYSSr'
+    );
   }
 
   async migrarUsuariosATablaAuth() {
@@ -305,7 +304,7 @@ export class AdministradorPage implements OnInit {
       .select('*');
 
     if (error || !usuarios) {
-      this.mensajeError = '❌ Error al obtener usuarios: ' + error?.message;
+      this.mensajeError = 'Error al obtener usuarios: ' + error?.message;
       this.mensajeOk = '';
       return;
     }
@@ -315,26 +314,20 @@ export class AdministradorPage implements OnInit {
         const { data, error: errorAuth } =
           await this.auth.sb.supabase.auth.signUp({
             email: u.email,
-            password: u.password || 'clave1234', // ⚠️ Si no guardaste password, usá una temporal
+            password: u.password || 'clave1234',
           });
 
-        if (errorAuth) {
-          console.warn(`🔸 ${u.email} no migrado: ${errorAuth.message}`);
-          continue;
-        }
-
-        const userId = data.user?.id;
-        if (userId) {
+        if (data?.user?.id) {
           await this.auth.sb.supabase
             .from('usuarios')
-            .update({ id: userId })
+            .update({ id: data.user.id })
             .eq('email', u.email);
         }
       } catch (e) {
-        console.error('⚠️ Error con usuario:', u.email, e);
+        console.error('Error en migración de usuario:', u.email);
       }
     }
 
-    this.mensajeOk = '✅ Migración completada. Revisá consola para detalles.';
+    this.mensajeOk = 'Migración completada.';
   }
 }

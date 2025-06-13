@@ -8,10 +8,6 @@
       <img src="../assets/logo_splash.png" alt="logo_kinetico" />
     </ion-card>
 
-    <ion-text *ngIf="mensajeExito" class="mensaje-confirmacion">
-      <p class="ion-padding">{{ mensajeExito }}</p>
-    </ion-text>
-
     <ion-text *ngIf="mensajeError" class="mensaje-rechazo">
       <p class="ion-padding">{{ mensajeError }}</p>
     </ion-text>
@@ -63,7 +59,6 @@
           >
             La contraseña es obligatoria
           </div>
-
         </div>
         <br />
         <ion-text color="medium" class="texto-anonimo">
@@ -115,23 +110,6 @@
         <img [src]="u.img" alt="{{ u.nombre }}" />
         <p>{{ u.nombre }}</p>
       </div>
-    </div>
-  </div>
-
-  <div *ngIf="cargando" class="spinner-overlay">
-    <div class="lds-spinner">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
     </div>
   </div>
 </ion-content>

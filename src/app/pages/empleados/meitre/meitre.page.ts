@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { StatusBar } from '@capacitor/status-bar';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
@@ -44,7 +44,6 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
     ReactiveFormsModule,
     IonContent,
     IonButton,
-    IonIcon,
     IonInput,
     IonItem,
     IonText,
@@ -59,8 +58,9 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
     IonImg,
   ],
 })
-export class MeitrePage implements OnInit {
+export class MeitrePage implements OnInit, OnDestroy {
   formClienteActivo = false;
+  mostrarListaEspera = false;
   mensajeError = '';
   mensajeOk = '';
   formCliente: FormGroup;
@@ -99,11 +99,13 @@ export class MeitrePage implements OnInit {
   }
 
   ngOnInit() {
-    this.cargarListaEspera();
     this.escucharEsperaEnTiempoReal();
   }
 
   async cargarListaEspera() {
+    this.formClienteActivo = false;
+    this.mostrarListaEspera = true;
+
     const { data, error } = await this.supabase
       .from('espera_local')
       .select('*')
@@ -112,11 +114,12 @@ export class MeitrePage implements OnInit {
     if (!error) this.clientesEnEspera = data;
   }
 
-  async confirmarIngreso(
-    email: string,
-    aceptar: boolean,
-    mesaAsignada?: string
-  ) {
+  activarFormularioAlta() {
+    this.formClienteActivo = true;
+    this.mostrarListaEspera = false;
+  }
+
+  async confirmarIngreso(email: string, aceptar: boolean) {
     if (aceptar) {
       const { data: maxData } = await this.supabase
         .from('fila')
@@ -130,19 +133,17 @@ export class MeitrePage implements OnInit {
       const mesa = prompt(`Asignar número de mesa a ${email}:`);
       if (!mesa) return;
 
-      const { error: insertError } = await this.supabase
+      await this.supabase
         .from('fila')
         .insert({ email, numero: siguienteNumero, mesa });
     }
 
-    const { error: updateError } = await this.supabase
+    await this.supabase
       .from('espera_local')
       .update({ estado: aceptar ? 'aceptado' : 'rechazado' })
       .eq('email', email);
 
-    if (!updateError) {
-      this.cargarListaEspera();
-    }
+    this.cargarListaEspera();
   }
 
   escucharEsperaEnTiempoReal() {
@@ -160,7 +161,7 @@ export class MeitrePage implements OnInit {
           const nuevoCliente = payload.new;
           this.clientesEnEspera.push({
             ...nuevoCliente,
-            mesaSeleccionada: null, // para el ion-select
+            mesaSeleccionada: null,
           });
         }
       )
