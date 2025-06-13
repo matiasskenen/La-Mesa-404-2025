@@ -37,4 +37,21 @@ export class DatabaseService {
   }
 
 
+  // Chat
+  async traerTodosMensajes() {
+    const { data, error } = await this.sb.supabase.from("mensajes")
+      .select("id, mensaje, created_at, id_usuario (nombre)");
+    if (error) {
+      console.error('Error al solicitar mensajes', error.message);
+    }
+    return data as any[];
+  }
+
+  async guardarMensaje(mensaje: string, id_usuario: string) {
+    const { data } = await this.sb.supabase.from("mensajes").insert({
+      mensaje: mensaje, id_usuario: id_usuario
+    })
+  }
+
+
 }

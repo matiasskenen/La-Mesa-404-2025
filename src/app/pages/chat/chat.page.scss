@@ -1,0 +1,191 @@
+ion-content {
+    --background: var(--ion-color-celeste);
+}
+
+//Contenedor toda la pantalla
+.contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+ion-card {
+    width: 90%;
+    max-width: 400px;
+    box-shadow:
+        0px 4px 16px rgba(0, 0, 0, 0.2),
+        0 4px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+}
+
+ion-button,
+ion-input,
+ion-title{
+    font-family: 'Montserrat', sans-serif;
+}
+
+ion-input {
+    --color: var(--ion-color-danger);
+    --placeholder-color: var(--ion-color-celeste);
+    --placeholder-opacity: 1;
+    --highlight-color: var(--ion-color-danger);
+    /* Ajusta el grosor si quieres más o menos pronunciado */
+    --highlight-height: 2px;
+}
+
+
+
+//componente contenedor de todo el cuadro de chat
+.chat-card {
+    background: var(--ion-color-medium);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    animation: fadeInRight 2s ease-out;
+}
+
+.pantalla-chat-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%; // para que la pantalla azul este completa
+    background-color: aquamarine;
+}
+
+//Contenedor Solo para los mensajes que llegan de la base de datos tiene que ser scrolleable
+.contenedor-mensajes-flex {
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+@keyframes slideInFwdCenter {
+  0% {
+    transform: translateZ(-1400px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideInFwdCenter 1s ease-out 0s both;
+}
+
+
+
+//Header por fuera del componente mensajes-card
+.mensajes-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    ion-label{
+        padding: 13px 0px 0px 0px;
+    }
+}
+
+.mensajes-card-title {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000000;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+//Estilos para mensajes
+
+.mensaje {
+    width: 60%;
+    margin: 8px 16px;
+}
+
+.mensaje-ajeno {
+    background: var(--ion-color-light);
+    align-self: flex-start;
+
+    ion-label {
+        text-align: start;
+        color: var(--ion-color-crema);
+    }
+
+    ion-card-content {
+        color: var(--ion-color-crema);
+    }
+}
+
+.mensaje-propio {
+    background: var(--ion-color-dark);
+    align-self: flex-end;
+
+    ion-label {
+        text-align: end;
+        color: #000000;
+    }
+
+    ion-card-content {
+        color: #000000;
+    }
+}
+
+//Lo usa el input para mensajes y los mensajes que vienen de la BD
+.componente-card {
+    /* Separación interna */
+    padding: 13px 16px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; // ⛔️ NO permitir que se achique
+
+
+    min-height: auto; // Asegura que la altura sea la del contenido
+
+}
+
+.componente-card ion-label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.7rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.componente-card ion-card-content {
+    padding: 0;
+    font-size: 0.85rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+//Solo para el componente que tiene al input
+.input-card ion-input {
+    --color: var(--ion-color-medium);
+    --background: transparent;
+    /* ya el ion-item trae el fondo */
+    --padding: 8px;
+    --color: var(--ion-color-crema);
+    --placeholder-color: #7d7d7d;
+    --highlight-color: var(--ion-color-dark);
+}
+
+.input-card ion-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+ion-input.custom {
+    --placeholder-opacity: 1;
+    /* Ajusta el grosor si quieres más o menos pronunciado */
+    --highlight-height: 2px;
+
+}

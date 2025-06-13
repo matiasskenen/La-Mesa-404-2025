@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true">
+  <!-- Contenedor toda la pantalla -->
+  <div class="contenedor-flex">
+
+    <!--Componente contenedor de todo el cuadro de chat-->
+    <ion-card class="chat-card">
+      <!-- Header personalizado fuera del chat -->
+      <div class="mensajes-card-header">
+       <ion-label class="mensajes-card-title">Consultas</ion-label>
+      </div>
+      <!-- Pantalla del chat-->
+      <ion-card class="pantalla-chat-card">
+
+
+        <!-- Contenedor scrolleable de Mensajes -->
+        <div
+  *ngIf="mostrarMensajes"
+  #contenedorMensajes
+  class="contenedor-mensajes-flex slide-in"
+>
+  @for (m of mensajes(); track m.id){
+    @if(m.usuarios?.nombre === auth.nombreUsuario){
+      <!-- Mensaje propio -->
+      <ion-card class="componente-card mensaje mensaje-propio">
+        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }}</ion-label>
+        <ion-card-content>{{ m.mensaje }}</ion-card-content>
+      </ion-card>
+    }
+    @else {
+      <!-- Mensaje ajeno -->
+      <ion-card class="componente-card mensaje mensaje-ajeno">
+        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }} - {{ m.usuarios?.nombre }}</ion-label>
+        <ion-card-content>{{ m.mensaje }}</ion-card-content>
+      </ion-card>
+    }
+  }
+</div>
+
+
+      </ion-card>
+
+
+      <!-- input del chat -->
+      <ion-card class="componente-card input-card">
+        <ion-input placeholder="mensaje" type="text" [(ngModel)]="mensaje" class="custom">
+          <ion-button fill="solid" slot="end" color="favorito" (click)="enviarMensaje()">
+            <ion-icon name="send" size="small"></ion-icon>
+          </ion-button>
+        </ion-input>
+      </ion-card>
+
+
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- footer -->
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="solid" routerLink="/principal" color="danger">
+        <ion-icon name="home-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+   <ion-title color="danger" slot="end" *ngIf="nombreUser !== ''" style="padding: 0px ;">
+  {{ nombreUser}}
+</ion-title>
+<ion-icon color="danger" slot="end" name="school-sharp" size="large" style="margin-right: 8px; margin-left: 8px;"></ion-icon>
+  </ion-toolbar>
+</ion-footer>

@@ -72,5 +72,9 @@ export const routes: Routes = [
     path: 'mesa',
     loadComponent: () => import('./pages/mesa/mesa.page').then( m => m.MesaPage)
   },
+  {
+    path: 'chat',
+    loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
+  },
 
 ];
