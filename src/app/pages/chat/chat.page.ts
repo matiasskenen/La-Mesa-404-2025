@@ -5,9 +5,10 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { IonicModule } from '@ionic/angular';
-import { RouterLink } from '@angular/router';
-import { addIcons } from 'ionicons';
-import { person, schoolSharp, send,homeOutline} from 'ionicons/icons';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+
+import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constructor
+import { send,homeOutline} from 'ionicons/icons'; //nombre de los iconos
 
 @Component({
   selector: 'app-chat',
@@ -23,16 +24,27 @@ export class ChatPage implements OnInit {
   mensajes = signal<any>([]);
   mensaje = "";
   mostrarMensajes = false;
-  nombreUser:string = '';
 
-  constructor() { 
-    this.nombreUser = this.auth.nombreUsuario;
-    addIcons({send, person, schoolSharp, homeOutline});
+   //solo para pasarle por parametro la mesa
+  mesaRecibida:string = '';
+
+  
+  //solo para pasarle por parametro la mesa
+  constructor(private route: ActivatedRoute) { 
+    
+    addIcons({send, homeOutline});//nombre de los iconos en el constructor
   }
 
   ngOnInit() {
+     //solo para pasarle por parametro la mesa
+    this.route.queryParams.subscribe(params => {
+    this.mesaRecibida = params['mesa'];
+  });
+
     this.db.traerTodosMensajes().then((data) => {
       this.mensajes.set([...data]);
+        for (let m of data) {
+    }
        setTimeout(() => {
     this.mostrarMensajes = true;
   }, 500); // Espera 1 segundo antes de mostrar con animación
@@ -51,7 +63,9 @@ export class ChatPage implements OnInit {
       async (cambios: any) => {
         console.log(cambios);
         const {data} = await this.sb.supabase.from("usuarios").select("nombre").eq("id", cambios.new["id_usuario"]);
-        cambios.new.usuarios = { nombre: data![0].nombre}
+        cambios.new.usuarios = { nombre: data![0].nombre};
+        
+
         
         this.mensajes.update((valor_anterior) => {
           valor_anterior.push(cambios.new);
@@ -66,7 +80,14 @@ export class ChatPage implements OnInit {
     if (this.mensaje.trim() === '') {
       return; // No envía mensajes vacíos
     }
-    this.db.guardarMensaje(this.mensaje, this.auth.idUsuario);
+    if(this.auth.rolUsuario === 'mozo')
+    {
+      this.db.guardarMensaje(this.mensaje, this.auth.idUsuario, 'Mozo');
+    }else{
+      //Si es cliente
+      const emisor = `Mesa ${this.mesaRecibida}`
+      this.db.guardarMensaje(this.mensaje, this.auth.idUsuario, emisor);
+    }
     // Limpiar el input
     this.mensaje = '';
   }

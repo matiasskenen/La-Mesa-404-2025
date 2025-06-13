@@ -40,16 +40,16 @@ export class DatabaseService {
   // Chat
   async traerTodosMensajes() {
     const { data, error } = await this.sb.supabase.from("mensajes")
-      .select("id, mensaje, created_at, id_usuario (nombre)");
+      .select("id, mensaje, created_at, id_usuario, emisor ,usuarios (nombre)");
     if (error) {
       console.error('Error al solicitar mensajes', error.message);
     }
     return data as any[];
   }
 
-  async guardarMensaje(mensaje: string, id_usuario: string) {
+  async guardarMensaje(mensaje: string, id_usuario: string, emisor:string) {
     const { data } = await this.sb.supabase.from("mensajes").insert({
-      mensaje: mensaje, id_usuario: id_usuario
+      mensaje: mensaje, id_usuario: id_usuario, emisor: emisor
     })
   }
 
