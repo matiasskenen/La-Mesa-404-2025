@@ -31,7 +31,9 @@ import {
   ActionSheetController,
 } from '@ionic/angular/standalone';
 
+import { addIcons } from 'ionicons';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { homeOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-meitre',
@@ -39,6 +41,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   styleUrls: ['./meitre.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -78,6 +81,7 @@ export class MeitrePage implements OnInit, OnDestroy {
   canalEspera: RealtimeChannel | null = null;
 
   constructor(private fb: FormBuilder, private router: Router) {
+    addIcons({ homeOutline });
     this.configurarStatusBar();
     this.formCliente = this.fb.group({
       nombre: ['', Validators.required],
@@ -302,7 +306,7 @@ export class MeitrePage implements OnInit, OnDestroy {
     }
   }
 
-  salir() {
+  volverAtras() {
     this.auth.cerrarSesion();
   }
 

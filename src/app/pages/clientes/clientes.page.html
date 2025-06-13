@@ -1,34 +1,51 @@
 <ion-content [fullscreen]="true" class="pagina-cliente">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Ingreso con QR</ion-title>
-      <ion-buttons slot="primary">
-        <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
-          SALIR
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="home-outline" class="icono-home"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
+  <!-- Ícono QR + botón escanear -->
   <div class="scanner-container" *ngIf="estadoCliente === 'ninguno'">
+    <ion-icon name="qr-code-outline" class="icono-qr"></ion-icon>
+
     <ion-button
       expand="block"
-      color="warning"
-      size="large"
+      class="boton-escanear"
       (click)="escanearQR()"
       [disabled]="procesando"
     >
       <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar al local' }}
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar al
+      local' }}
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
   </div>
 
-  <div *ngIf="estadoCliente !== 'ninguno'" class="estado-cliente ion-padding">
+  <!-- Estado mostrado al cliente -->
+  <div *ngIf="estadoCliente !== 'ninguno'" class="estado-cliente">
+    <ion-icon name="restaurant-outline" class="icono-estado"></ion-icon>
     <ion-text>
       <h2>{{ mensajeEstado }}</h2>
     </ion-text>
   </div>
 
-  
+  <!-- Botones de testeo -->
+  <div class="tester-container">
+    <ion-button expand="block" fill="outline" (click)="simularEspera()">
+      🧪 Simular Espera
+    </ion-button>
+    <ion-button
+      expand="block"
+      fill="outline"
+      color="success"
+      (click)="simularAsignacionMesa()"
+    >
+      🧪 Simular Mesa Asignada
+    </ion-button>
+  </div>
 </ion-content>

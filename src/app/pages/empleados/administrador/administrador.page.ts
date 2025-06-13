@@ -32,6 +32,9 @@ import {
   IonSelect,
   IonSelectOption,
 } from '@ionic/angular/standalone';
+import { homeOutline } from 'ionicons/icons';
+
+import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constructor
 
 @Component({
   selector: 'app-administrador',
@@ -39,6 +42,7 @@ import {
   styleUrls: ['./administrador.page.scss'],
   standalone: true,
   imports: [
+    IonIcon,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -81,6 +85,8 @@ export class AdministradorPage implements OnInit {
     private fb: FormBuilder,
     private location: Location
   ) {
+    addIcons({ homeOutline }); //nombre de los iconos en el constructor
+
     this.formDuenio = this.fb.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
@@ -113,7 +119,6 @@ export class AdministradorPage implements OnInit {
 
   volverAtras() {
     this.auth.cerrarSesion();
-    this.router.navigateByUrl('/login');
   }
 
   async cargarClientesPendientes() {

@@ -1,14 +1,8 @@
-/* ======================
-   FONDO GENERAL
-====================== */
 ion-content::part(scroll) {
   background-color: #19647e !important;
   overflow: hidden !important;
 }
 
-/* ======================
-   CONTENEDORES
-====================== */
 .formulario,
 .menu-container {
   display: flex;
@@ -26,9 +20,6 @@ ion-content::part(scroll) {
   overflow: hidden;
 }
 
-/* ======================
-   INPUTS
-====================== */
 ion-item {
   --background: #ffffff;
   --border-radius: 10px;
@@ -51,9 +42,6 @@ ion-textarea {
   padding: 2px 0;
 }
 
-/* ======================
-   BOTONES DE MENÚ
-====================== */
 .boton-opcion {
   width: 100%;
   max-width: 280px;
@@ -72,22 +60,6 @@ ion-textarea {
   --color: black;
 }
 
-/* ======================
-   BOTÓN SALIR
-====================== */
-.boton-salir {
-  height: 34px;
-  font-size: 0.75rem;
-  padding: 0 10px;
-  --border-radius: 10px;
-  --background: #e53935;
-  --color: white;
-  min-width: 100px;
-}
-
-/* ======================
-   BOTÓN VOLVER CORREGIDO
-====================== */
 .boton-volver {
   --background: white;
   --color: black;
@@ -99,7 +71,7 @@ ion-textarea {
   width: 100%;
   max-width: 200px;
   height: 40px;
-  box-shadow: 0 0 0 2px white; /* contorno exterior */
+  box-shadow: 0 0 0 2px white;
   transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -111,4 +83,34 @@ ion-textarea {
 
 .texto-blanco {
   color: white;
+}
+
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19; // color de fondo
+  --color: black; // color del ícono (texto)
+  border-radius: 20%; // opcional si lo querés circular
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  color: white;
+  font-size: 84px;
 }

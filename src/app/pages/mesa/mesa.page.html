@@ -1,30 +1,42 @@
 <ion-content [fullscreen]="true" class="pagina-mesa">
   <ion-header>
     <ion-toolbar>
-      <ion-title *ngIf="!mesaVerificada">Mesa</ion-title>
-      <ion-title *ngIf="mesaVerificada">Mesa {{this.mesaAsignada}}</ion-title>
-      <ion-buttons slot="primary">
-        <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
-          SALIR
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="home-outline" class="icono-home"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
   <div class="scanner-container" *ngIf="!mesaVerificada">
-    <ion-button expand="block" color="warning" size="large" (click)="escanearQR()" [disabled]="procesando">
+    <ion-button
+      expand="block"
+      color="warning"
+      size="large"
+      (click)="escanearQR()"
+      [disabled]="procesando"
+    >
       <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su mesa' }}
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su
+      mesa' }}
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
   </div>
 
   <div class="scanner-container" *ngIf="mesaVerificada">
-    <ion-button expand="block" color="warning" size="large" routerLink="/menu">Realizar pedido</ion-button>
-    <ion-button expand="block" color="warning" size="large" [routerLink]="['/chat']"
-      [queryParams]="{ mesa: mesaAsignada }">Consulta al mozo</ion-button>
+    <ion-button expand="block" color="warning" size="large" routerLink="/menu"
+      >Realizar pedido</ion-button
+    >
+    <ion-button
+      expand="block"
+      color="warning"
+      size="large"
+      [routerLink]="['/chat']"
+      [queryParams]="{ mesa: mesaAsignada }"
+      >Consulta al mozo</ion-button
+    >
   </div>
-
 
   <!-- Modal alerta -->
   @if (modalAlerta) {
@@ -36,18 +48,22 @@
       </div>
 
       <!-- Mensaje Error -->
-       <div class="modal-mensaje">
+      <div class="modal-mensaje">
         <span> {{mensajeAlerta}} </span>
-       </div>
+      </div>
 
       <!-- Footer con botón de agregar -->
       <div class="modal-footer">
-        <ion-button fill="solid" shape="round" color="light" (click)="mostrarModalAlerta(false)">
+        <ion-button
+          fill="solid"
+          shape="round"
+          color="light"
+          (click)="mostrarModalAlerta(false)"
+        >
           <ion-icon name="checkmark-sharp"></ion-icon>
         </ion-button>
       </div>
     </div>
   </div>
   }
-
 </ion-content>

@@ -1,15 +1,9 @@
 <ion-content [fullscreen]="true" class="fondo">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Administrador</ion-title>
-      <ion-buttons slot="primary">
-        <ion-button
-          fill="solid"
-          shape="round"
-          class="boton-salir"
-          (click)="volverAtras()"
-        >
-          Salir
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="home-outline" class="icono-home"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>

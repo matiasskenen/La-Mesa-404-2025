@@ -25,7 +25,7 @@ import {
 
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
-import { gridSharp, star, eye, eyeOff } from 'ionicons/icons';
+import { gridSharp, star, eye, eyeOff, logInOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 
 @Component({
@@ -115,7 +115,7 @@ export class LoginPage {
   ];
 
   constructor(private router: Router) {
-    addIcons({ star, gridSharp, eye, eyeOff });
+    addIcons({ star, eye, eyeOff, logInOutline });
   }
 
   async loguearse() {

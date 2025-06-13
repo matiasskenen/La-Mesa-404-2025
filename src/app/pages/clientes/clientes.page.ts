@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Haptics } from '@capacitor/haptics';
 import { RealtimeChannel } from '@supabase/supabase-js';
-import {qrCodeOutline} from 'ionicons/icons';
+import { homeOutline, qrCodeOutline, restaurantOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -25,13 +25,11 @@ export class ClientesPage {
   canalFila: RealtimeChannel | null = null;
   numeroFila: number | null = null;
 
-  // Estados posibles: ninguno, esperando, aceptado
   estadoCliente: 'ninguno' | 'esperando' | 'aceptado' = 'ninguno';
   mensajeEstado: string = '';
 
-  //Para pasar mesa por parametro (ver escucharFila() === 'aceptado')
-  constructor(private routerParametro: Router){
-    addIcons({qrCodeOutline});
+  constructor(private routerParametro: Router) {
+    addIcons({ qrCodeOutline, restaurantOutline, homeOutline });
   }
 
   ngOnInit() {
@@ -40,7 +38,6 @@ export class ClientesPage {
 
   async escanearQR() {
     this.procesando = true;
-
     try {
       const { barcodes } = await BarcodeScanner.scan();
       const claveQR = barcodes[0]?.rawValue;
@@ -70,7 +67,7 @@ export class ClientesPage {
         await Haptics.vibrate();
         this.estadoCliente = 'esperando';
         this.mensajeEstado =
-          '📥 Estás en lista de espera. Un maître te asignará una mesa.';
+          'Estás en lista de espera. Un maître te asignará una mesa.';
       }
     } catch (err) {
       console.error(err);
@@ -83,7 +80,6 @@ export class ClientesPage {
   async escucharFila() {
     const { data: session } = await this.auth.sb.supabase.auth.getUser();
     const email = session?.user?.email;
-
     if (!email) return;
 
     this.canalFila = this.auth.sb.supabase
@@ -96,25 +92,41 @@ export class ClientesPage {
           table: 'fila',
           filter: `email=eq.${email}`,
         },
-        (payload) => {
+        async (payload) => {
           const numero = payload.new['numero'];
           const mesa = payload.new['mesa'];
 
           this.estadoCliente = 'aceptado';
           this.numeroFila = numero;
 
-          this.mensajeEstado = mesa
-            ? `🎉 Te asignaron la mesa ${mesa}. ¡Escaneá el menú!`
-            : `🎟️ Estás en la fila con el número ${numero}. Esperá a que se te asigne una mesa.`;
+          if (mesa) {
+            // ✅ Caso con mesa asignada
+            this.mensajeEstado = `🎉 Te asignaron la mesa ${mesa}. ¡Escaneá el menú!`;
 
-            // Voy a /mesa si estadoCliente es 'aceptado' y hay mesa asignada
-          if (this.estadoCliente === 'aceptado' && mesa) {
+            // 🚀 Redirección automática
             this.router.navigate(['/mesa'], {
-              queryParams: { mesa }
+              queryParams: { mesa },
             });
+          } else {
+            // 🔄 Obtener toda la fila ordenada
+            const { data: fila } = await this.auth.sb.supabase
+              .from('fila')
+              .select('*')
+              .order('numero', { ascending: true });
+
+            let posicion = 0;
+
+            if (fila && Array.isArray(fila)) {
+              posicion = fila.findIndex((item) => item.email === email) + 1;
+            }
+
+            // 📥 Mensaje dinámico
+            this.mensajeEstado =
+              posicion > 0
+                ? `🎟️ Estás en la fila con el número ${numero}. Tu posición actual es: ${posicion}.`
+                : `🎟️ Estás en la fila con el número ${numero}. Posición actual: desconocida.`;
           }
         }
-        
       )
       .subscribe();
   }
@@ -128,7 +140,21 @@ export class ClientesPage {
     await alert.present();
   }
 
-  salir() {
+  volverAtras() {
     this.auth.cerrarSesion();
+  }
+
+  simularEspera() {
+    this.estadoCliente = 'esperando';
+    this.mensajeEstado = 'Estás en lista de espera (simulado).';
+  }
+
+  simularAsignacionMesa() {
+    this.estadoCliente = 'aceptado';
+    this.mensajeEstado =
+      '🎉 Te asignaron la mesa 1 (simulado). ¡Escaneá el menú!';
+    this.router.navigate(['/mesa'], {
+      queryParams: { mesa: 1 },
+    });
   }
 }

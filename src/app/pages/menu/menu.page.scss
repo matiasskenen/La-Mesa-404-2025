@@ -1,5 +1,5 @@
 ion-content {
-  --background: red;
+  --background: #19647e;
   overflow: hidden;
 
   .contenedor-flex {
@@ -12,6 +12,7 @@ ion-content {
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
     margin: 8px;
+    background-color: red;
   }
 
   .contenido-listado {
@@ -20,30 +21,29 @@ ion-content {
   }
 }
 
-ion-card-content{
+ion-card-content {
   padding: 0px 16px 8px;
 }
 
-
 .visor-info {
+  background-color: rgb(214, 86, 86);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px;
 }
 
-.visor-footer-card{
+.visor-footer-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0px 16px 8px;
 }
 
-.visor-cantidad{
+.visor-cantidad {
   display: flex;
   flex-direction: row;
 }
-
 
 .galeria-img {
   width: 100%;
@@ -64,12 +64,12 @@ ion-card-content{
   color: white;
 }
 
-.descripcion-producto{
+.descripcion-producto {
   font-size: 1rem; // mismo tamaño que ion-card-title
   color: white;
 }
 
-.importe, .demora{
+.importe,
+.demora {
   color: white;
 }
-

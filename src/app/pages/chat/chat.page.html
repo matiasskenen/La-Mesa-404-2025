@@ -1,55 +1,58 @@
 <ion-content [fullscreen]="true">
   <!-- Contenedor toda la pantalla -->
   <div class="contenedor-flex">
-
     <!--Componente contenedor de todo el cuadro de chat-->
     <ion-card class="chat-card">
       <!-- Header personalizado fuera del chat -->
       <div class="mensajes-card-header">
-       <ion-label class="mensajes-card-title">Consultas</ion-label>
+        <ion-label class="mensajes-card-title">Consultas</ion-label>
       </div>
       <!-- Pantalla del chat-->
       <ion-card class="pantalla-chat-card">
-
-
         <!-- Contenedor scrolleable de Mensajes -->
         <div
-  *ngIf="mostrarMensajes"
-  #contenedorMensajes
-  class="contenedor-mensajes-flex slide-in"
->
-  @for (m of mensajes(); track m.id){
-    @if(m.id_usuario === auth.idUsuario){
-      <!-- Mensaje propio -->
-      <ion-card class="componente-card mensaje mensaje-propio">
-        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }}</ion-label>
-        <ion-card-content>{{ m.mensaje }}</ion-card-content>
+          *ngIf="mostrarMensajes"
+          #contenedorMensajes
+          class="contenedor-mensajes-flex slide-in"
+        >
+          @for (m of mensajes(); track m.id){ @if(m.id_usuario ===
+          auth.idUsuario){
+          <!-- Mensaje propio -->
+          <ion-card class="componente-card mensaje mensaje-propio">
+            <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }}</ion-label>
+            <ion-card-content>{{ m.mensaje }}</ion-card-content>
+          </ion-card>
+          } @else {
+          <!-- Mensaje ajeno -->
+          <ion-card class="componente-card mensaje mensaje-ajeno">
+            <ion-label
+              >{{ m.created_at | date: 'dd/MM/yy HH:mm' }} - {{ m.emisor
+              }}</ion-label
+            >
+            <ion-card-content>{{ m.mensaje }}</ion-card-content>
+          </ion-card>
+          } }
+        </div>
       </ion-card>
-    }
-    @else {
-      <!-- Mensaje ajeno -->
-      <ion-card class="componente-card mensaje mensaje-ajeno">
-        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }} - {{ m.emisor }}</ion-label>
-        <ion-card-content>{{ m.mensaje }}</ion-card-content>
-      </ion-card>
-    }
-  }
-</div>
-
-
-      </ion-card>
-
 
       <!-- input del chat -->
       <ion-card class="componente-card input-card">
-        <ion-input placeholder="mensaje" type="text" [(ngModel)]="mensaje" class="custom">
-          <ion-button fill="solid" slot="end" color="danger" (click)="enviarMensaje()">
+        <ion-input
+          placeholder="mensaje"
+          type="text"
+          [(ngModel)]="mensaje"
+          class="custom"
+        >
+          <ion-button
+            fill="solid"
+            slot="end"
+            color="danger"
+            (click)="enviarMensaje()"
+          >
             <ion-icon name="send" size="small"></ion-icon>
           </ion-button>
         </ion-input>
       </ion-card>
-
-
     </ion-card>
   </div>
 </ion-content>

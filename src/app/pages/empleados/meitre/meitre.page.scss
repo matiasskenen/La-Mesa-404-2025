@@ -120,3 +120,33 @@ ion-button.boton-volver:focus {
   outline: none;
   box-shadow: none !important;
 }
+
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19;
+  --color: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  font-size: 28px;
+  color: white;
+}

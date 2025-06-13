@@ -7,39 +7,38 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Haptics } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { addIcons } from 'ionicons';
-import {checkmarkSharp, qrCodeOutline} from 'ionicons/icons';
+import { checkmarkSharp, homeOutline, qrCodeOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-mesa',
   templateUrl: './mesa.page.html',
   styleUrls: ['./mesa.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule,IonicModule, RouterLink]
+  imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class MesaPage implements OnInit {
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
-  mesaAsignada:string = '';
+  mesaAsignada: string = '';
   procesando = false;
   mesaVerificada = false;
 
   //Alerta manual:
-  modalAlerta:boolean = false;
-  tituloAlerta:string = '';
-  mensajeAlerta:string = '';
+  modalAlerta: boolean = false;
+  tituloAlerta: string = '';
+  mensajeAlerta: string = '';
 
-  constructor(private route: ActivatedRoute) { 
-    addIcons({qrCodeOutline, checkmarkSharp});
+  constructor(private route: ActivatedRoute) {
+    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline });
   }
 
   ngOnInit() {
-  this.route.queryParams.subscribe(params => {
-    this.mesaAsignada = params['mesa'];
-  });
+    this.route.queryParams.subscribe((params) => {
+      this.mesaAsignada = params['mesa'];
+    });
+  }
 
-}
-
-async escanearQR() {
+  async escanearQR() {
     this.procesando = true;
 
     try {
@@ -47,7 +46,11 @@ async escanearQR() {
       const claveQR = barcodes[0]?.rawValue;
 
       if (!claveQR) {
-        this.mostrarModalAlerta(true, 'Error', 'No se detectó un código QR válido.');
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se detectó un código QR válido.'
+        );
         return;
       }
 
@@ -58,37 +61,51 @@ async escanearQR() {
 
       if (numeroQR) {
         if (this.mesaAsignada === numeroQR) {
-          this.mostrarModalAlerta(true, 'Éxito', 'QR correcto, estás en tu mesa.');
+          this.mostrarModalAlerta(
+            true,
+            'Éxito',
+            'QR correcto, estás en tu mesa.'
+          );
           this.mesaVerificada = true;
         } else {
-          this.mostrarModalAlerta(true, 'Error', 'Este QR no corresponde a tu mesa.');
+          this.mostrarModalAlerta(
+            true,
+            'Error',
+            'Este QR no corresponde a tu mesa.'
+          );
         }
       } else {
         this.mostrarModalAlerta(true, 'Error', 'Formato de QR no válido.');
       }
-      
     } catch (err) {
       console.error(err);
-      this.mostrarModalAlerta(true, 'Error', 'Hubo un problema al escanear el QR.');
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al escanear el QR.'
+      );
     } finally {
       this.procesando = false;
     }
   }
 
-
-  salir() {
+  volverAtras() {
     this.auth.cerrarSesion();
   }
 
-//Alerta manual:
+  //Alerta manual:
 
-mostrarModalAlerta(mostrar:boolean, titulo:string = '', mensaje:string = ''){
-  if(mostrar){
-    this.mensajeAlerta = mensaje;
-    this.tituloAlerta = titulo;
+  mostrarModalAlerta(
+    mostrar: boolean,
+    titulo: string = '',
+    mensaje: string = ''
+  ) {
+    if (mostrar) {
+      this.mensajeAlerta = mensaje;
+      this.tituloAlerta = titulo;
+    }
+
+    this.modalAlerta = mostrar;
+    return;
   }
-
-  this.modalAlerta = mostrar;
-  return;
-}
 }
