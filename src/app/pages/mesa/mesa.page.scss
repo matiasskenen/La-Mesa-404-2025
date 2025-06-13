@@ -1,30 +1,86 @@
+ion-content.pagina-mesa::part(scroll) {
+  background-color: #19647e !important;
+  overflow-y: auto !important;
+}
+
 .pagina-mesa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+
   .scanner-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: calc(100% - 56px);
-    padding: 1rem;
-    gap: 1rem;
-  }
-
-  zxing-scanner {
+    align-items: center;
+    flex: 1;
     width: 100%;
-    max-width: 400px;
-    height: 300px;
-    border: 3px solid #ffc107;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .resultado-qr {
-    font-size: 1.1rem;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 1rem;
+    gap: 1.5rem;
+    height: calc(100vh - 56px); // ocupa toda la pantalla menos el header
     text-align: center;
   }
 
-  //Alerta manual:
-  //Fondo modal transparente
+  /* Ícono QR grande */
+  .icono-qr {
+    font-size: 8rem;
+    color: white;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  /* Animación pulse */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+  }
+
+  /* Botón escanear */
+  .boton-escanear {
+    --background: #d22f19;
+    --color: white;
+    --border-radius: 12px;
+    width: 100%;
+    max-width: 300px;
+    font-weight: bold;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Botones secundarios */
+  .boton-opcion {
+    width: 100%;
+    max-width: 280px;
+    height: 42px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    --background: #d22f19;
+    --color: white;
+    --border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .boton-opcion[color="warning"] {
+    --background: #fdd835;
+    --color: black;
+  }
+
+  /* Modal personalizado (si lo usás) */
   .overlay {
     position: fixed;
     top: 0;
@@ -38,7 +94,6 @@
     z-index: 9999;
   }
 
-  //Modal
   .modal-content {
     background: red;
     padding: 1rem;
@@ -60,28 +115,21 @@
     text-align: center;
     font-size: 1.2rem;
     font-weight: bolder;
-    color: #000000;
+    color: white;
     font-family: "Montserrat", sans-serif;
   }
 
-  .modal-mensaje {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    //color mensaje
-    span {
-      color: white;
-      font-size: 1.2rem;
-    }
+  .modal-mensaje span {
+    color: white;
+    font-size: 1.2rem;
   }
 
   .modal-footer {
     display: flex;
     justify-content: center;
-    color: #000000;
   }
 
+  /* Toolbar y botón de home */
   ion-header ion-toolbar {
     --background: #d22f19;
     --color: black;

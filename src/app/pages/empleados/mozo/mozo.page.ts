@@ -44,18 +44,10 @@ import { homeOutline } from 'ionicons/icons';
     ReactiveFormsModule,
     IonContent,
     IonButton,
-    IonInput,
-    IonItem,
-    IonText,
     IonHeader,
     IonTitle,
     IonToolbar,
     IonButtons,
-    IonList,
-    IonLabel,
-    IonCard,
-    IonCardContent,
-    IonImg,
   ],
 })
 export class MozoPage implements OnInit {

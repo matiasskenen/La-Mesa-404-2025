@@ -51,7 +51,6 @@ import { homeOutline } from 'ionicons/icons';
     IonItem,
     IonText,
     IonHeader,
-    IonTitle,
     IonToolbar,
     IonButtons,
     IonList,

@@ -9,11 +9,13 @@
     </ion-toolbar>
   </ion-header>
 
+  <!-- Ícono QR + botón escanear -->
   <div class="scanner-container" *ngIf="!mesaVerificada">
+    <ion-icon name="checkbox-outline" class="icono-qr"></ion-icon>
+
     <ion-button
       expand="block"
-      color="warning"
-      size="large"
+      class="boton-escanear"
       (click)="escanearQR()"
       [disabled]="procesando"
     >
@@ -24,46 +26,18 @@
     </ion-button>
   </div>
 
+  <!-- Si ya está verificada la mesa -->
   <div class="scanner-container" *ngIf="mesaVerificada">
-    <ion-button expand="block" color="warning" size="large" routerLink="/menu"
-      >Realizar pedido</ion-button
-    >
+    <ion-button expand="block" class="boton-opcion" routerLink="/menu">
+      Realizar pedido
+    </ion-button>
     <ion-button
       expand="block"
-      color="warning"
-      size="large"
+      class="boton-opcion"
       [routerLink]="['/chat']"
       [queryParams]="{ mesa: mesaAsignada }"
-      >Consulta al mozo</ion-button
     >
+      Consulta al mozo
+    </ion-button>
   </div>
-
-  <!-- Modal alerta -->
-  @if (modalAlerta) {
-  <div class="overlay">
-    <div class="modal-content">
-      <!-- Header personalizado -->
-      <div class="modal-header">
-        <ion-label class="modal-title">{{tituloAlerta}}</ion-label>
-      </div>
-
-      <!-- Mensaje Error -->
-      <div class="modal-mensaje">
-        <span> {{mensajeAlerta}} </span>
-      </div>
-
-      <!-- Footer con botón de agregar -->
-      <div class="modal-footer">
-        <ion-button
-          fill="solid"
-          shape="round"
-          color="light"
-          (click)="mostrarModalAlerta(false)"
-        >
-          <ion-icon name="checkmark-sharp"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-  </div>
-  }
 </ion-content>

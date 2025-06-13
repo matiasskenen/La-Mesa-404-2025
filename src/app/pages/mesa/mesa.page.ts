@@ -7,7 +7,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Haptics } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { addIcons } from 'ionicons';
-import { checkmarkSharp, homeOutline, qrCodeOutline } from 'ionicons/icons';
+import {
+  bookOutline,
+  checkboxOutline,
+  checkmarkSharp,
+  homeOutline,
+  qrCodeOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-mesa',
@@ -29,7 +35,7 @@ export class MesaPage implements OnInit {
   mensajeAlerta: string = '';
 
   constructor(private route: ActivatedRoute) {
-    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline });
+    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline, checkboxOutline });
   }
 
   ngOnInit() {

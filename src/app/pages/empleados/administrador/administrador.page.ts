@@ -51,8 +51,6 @@ import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constru
     IonItem,
     IonLabel,
     IonList,
-    IonRadioGroup,
-    IonRadio,
     IonText,
     IonTextarea,
     IonModal,
