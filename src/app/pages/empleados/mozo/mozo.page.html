@@ -1,6 +1,11 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>mozo</ion-title>
+    <ion-title>Mozo</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="solid" shape="round" (click)="salir()" color="danger">
+        SALIR
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +15,5 @@
       <ion-title size="large">mozo</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-button expand="block" fill="solid" routerLink="/chat">Responder consultas</ion-button>
 </ion-content>

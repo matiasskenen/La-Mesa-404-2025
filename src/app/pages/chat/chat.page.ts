@@ -6,8 +6,9 @@ import { SupabaseService } from 'src/app/services/supabase.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { addIcons } from 'ionicons';
-import { person, schoolSharp, send,homeOutline} from 'ionicons/icons';
+
+import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constructor
+import { send,homeOutline} from 'ionicons/icons'; //nombre de los iconos
 
 @Component({
   selector: 'app-chat',
@@ -31,7 +32,7 @@ export class ChatPage implements OnInit {
   //solo para pasarle por parametro la mesa
   constructor(private route: ActivatedRoute) { 
     
-    addIcons({send, person, schoolSharp, homeOutline});
+    addIcons({send, homeOutline});//nombre de los iconos en el constructor
   }
 
   ngOnInit() {
@@ -79,9 +80,9 @@ export class ChatPage implements OnInit {
     if (this.mensaje.trim() === '') {
       return; // No envía mensajes vacíos
     }
-    if(this.auth.rolUsuario === 'meitre')
+    if(this.auth.rolUsuario === 'mozo')
     {
-      this.db.guardarMensaje(this.mensaje, this.auth.idUsuario, 'Meitre');
+      this.db.guardarMensaje(this.mensaje, this.auth.idUsuario, 'Mozo');
     }else{
       //Si es cliente
       const emisor = `Mesa ${this.mesaRecibida}`
