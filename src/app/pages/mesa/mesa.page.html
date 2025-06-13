@@ -21,6 +21,7 @@
 
   <div class="scanner-container" *ngIf="mesaVerificada">
     <ion-button expand="block" color="warning" size="large" routerLink="/menu">Realizar pedido</ion-button>
-    <ion-button expand="block" color="warning" size="large" routerLink="/chat">Consulta al mozo</ion-button>
+    <ion-button expand="block" color="warning" size="large" [routerLink]="['/chat']"
+      [queryParams]="{ mesa: mesaAsignada }">Consulta al mozo</ion-button>
   </div>
 </ion-content>

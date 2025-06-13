@@ -11,9 +11,9 @@ export class AuthService {
   sb = inject(SupabaseService);
   db = inject(DatabaseService);
   router = inject(Router);
-  nombreUsuario: string = '';
   usuarioObj: any = null;
   idUsuario:string = '';
+  rolUsuario:string = '';
   usuarioActual: User | null = null;
   primerInicio: boolean = false;
 
@@ -26,7 +26,7 @@ export class AuthService {
       // Si el evento es SIGNED_OUT
       if (event === 'SIGNED_OUT') {
         this.usuarioActual = null;
-        this.nombreUsuario = '';
+        
         this.primerInicio = false;
         window.location.href = '/login';
       }
@@ -37,11 +37,26 @@ export class AuthService {
       // Si hay sesión
       else {
         this.usuarioActual = session.user;
-        this.nombreUsuario = this.usuarioActual.user_metadata?.['nombre_usuario'];
+        
         this.idUsuario = this.usuarioActual.id;
+        
         if (event === 'SIGNED_IN' && !this.primerInicio) {
           this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión y solo si es el primer ingreso
           this.primerInicio = true;
+        }
+        if (this.rolUsuario === '') {
+          this.db.tablaUsuarios
+            .select('rol')
+            .eq('email', this.usuarioActual.email)
+            .single()
+            .then(({ data, error }) => {
+              if (error) {
+                console.error('Error al obtener rol del usuario:', error.message);
+                return;
+              }
+
+              this.rolUsuario = data.rol;
+            });
         }
       }
     });
@@ -53,7 +68,7 @@ export class AuthService {
     contraseña: string
   ): Promise<{ success: boolean; error?: string }> {
     this.usuarioActual = null;
-    this.nombreUsuario = '';
+    
     this.idUsuario = '';
     this.primerInicio = false;
     const { data, error } = await this.sb.supabase.auth.signInWithPassword({

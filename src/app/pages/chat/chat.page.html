@@ -19,7 +19,7 @@
   class="contenedor-mensajes-flex slide-in"
 >
   @for (m of mensajes(); track m.id){
-    @if(m.usuarios?.nombre === auth.nombreUsuario){
+    @if(m.id_usuario === auth.idUsuario){
       <!-- Mensaje propio -->
       <ion-card class="componente-card mensaje mensaje-propio">
         <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }}</ion-label>
@@ -29,7 +29,7 @@
     @else {
       <!-- Mensaje ajeno -->
       <ion-card class="componente-card mensaje mensaje-ajeno">
-        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }} - {{ m.usuarios?.nombre }}</ion-label>
+        <ion-label>{{ m.created_at | date: 'dd/MM/yy HH:mm' }} - {{ m.emisor }}</ion-label>
         <ion-card-content>{{ m.mensaje }}</ion-card-content>
       </ion-card>
     }
@@ -43,7 +43,7 @@
       <!-- input del chat -->
       <ion-card class="componente-card input-card">
         <ion-input placeholder="mensaje" type="text" [(ngModel)]="mensaje" class="custom">
-          <ion-button fill="solid" slot="end" color="favorito" (click)="enviarMensaje()">
+          <ion-button fill="solid" slot="end" color="danger" (click)="enviarMensaje()">
             <ion-icon name="send" size="small"></ion-icon>
           </ion-button>
         </ion-input>
@@ -58,14 +58,9 @@
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button fill="solid" routerLink="/principal" color="danger">
+      <ion-button fill="solid" routerLink="/mesa" color="danger">
         <ion-icon name="home-outline" size="large"></ion-icon>
       </ion-button>
     </ion-buttons>
-
-   <ion-title color="danger" slot="end" *ngIf="nombreUser !== ''" style="padding: 0px ;">
-  {{ nombreUser}}
-</ion-title>
-<ion-icon color="danger" slot="end" name="school-sharp" size="large" style="margin-right: 8px; margin-left: 8px;"></ion-icon>
   </ion-toolbar>
 </ion-footer>
