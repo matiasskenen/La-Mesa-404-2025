@@ -18,10 +18,14 @@ import {
   IonIcon,
   ActionSheetController,
   IonSpinner,
+  IonHeader,
+  IonButtons,
+  IonToolbar,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-
+import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -37,6 +41,10 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
     IonItem,
     IonText,
     IonIcon,
+    IonHeader,
+    IonToolbar,
+    IonButton,
+    IonButtons,
   ],
 })
 export class RegisterPage implements OnInit {
@@ -60,9 +68,16 @@ export class RegisterPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmar: ['', Validators.required],
     });
+    addIcons({
+      arrowBackCircleOutline,
+    });
   }
 
   ngOnInit() {}
+
+  volverAtras() {
+    window.history.back();
+  }
 
   formularioValido(): boolean {
     return this.formCliente.valid && this.imagenSeleccionada !== null;

@@ -21,7 +21,7 @@
             <ion-input
               type="email"
               formControlName="email"
-              placeholder="Correo electrónico "
+              placeholder="Correo electrónico"
             ></ion-input>
           </ion-item>
           <div
@@ -43,8 +43,7 @@
               [type]="verPassword ? 'text' : 'password'"
               formControlName="password"
               placeholder="Contraseña"
-            >
-            </ion-input>
+            ></ion-input>
             <ion-button
               fill="clear"
               slot="end"
@@ -60,11 +59,10 @@
             La contraseña es obligatoria
           </div>
         </div>
-        <br />
+
         <ion-text color="medium" class="texto-anonimo">
           <p class="ion-text-center">
-            O continuar como
-            <strong (click)="ingresoAnonimo()">Anonimo</strong>
+            O continuar como <strong (click)="ingresoAnonimo()">Anonimo</strong>
           </p>
         </ion-text>
 
@@ -78,19 +76,21 @@
             <ion-icon name="log-in-outline" size="large"></ion-icon>
           </ion-button>
 
-          <ion-button expand="block" color="warning" (click)="irARegistro()">
+          <ion-button expand="block" color="medium" (click)="irARegistro()">
             REGISTRARSE
           </ion-button>
         </div>
+        <ion-button
+          expand="block"
+          color="warning"
+          (click)="mostrarUsuarios = true"
+        >
+          INICIO RÁPIDO
+        </ion-button>
       </ion-card-content>
     </ion-card>
-
-    <ion-button expand="block" color="warning" (click)="mostrarUsuarios = true">
-      INICIO RÁPIDO
-    </ion-button>
   </form>
 
-  <!-- ✅ OVERLAY DE USUARIOS RÁPIDOS -->
   <div *ngIf="mostrarUsuarios" class="overlay-usuarios">
     <ion-button
       fill="clear"
