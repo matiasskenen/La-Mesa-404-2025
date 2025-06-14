@@ -80,7 +80,7 @@ export class LoginPage {
       nombre: 'Bartender',
       email: 'bartender@resto.com',
       pass: '123456',
-      img: 'assets/login/avatar_bartender.png',
+      img: 'assets/login/avatar_anonimo.png',
     },
     {
       nombre: 'Mozo',
@@ -105,12 +105,6 @@ export class LoginPage {
       email: 'cliente@resto.com',
       pass: '123456',
       img: 'assets/login/avatar_dueño.png',
-    },
-    {
-      nombre: 'Anónimo',
-      email: 'anonimo@gmail.com',
-      pass: '123456',
-      img: 'assets/login/avatar_anonimo.png',
     },
   ];
 
