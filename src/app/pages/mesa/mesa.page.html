@@ -1,97 +1,85 @@
-<ion-content
-  [fullscreen]="true"
-  [ngClass]="{ 'pagina-mesa': true, 'mesa-verificada': mesaVerificada }"
->
-  <!-- Encabezado -->
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="primary" class="toolbar-center">
-        <ion-button
-          class="boton-home"
-          (click)="volverAtras()"
-          [disabled]="modalAlerta"
-        >
-          <ion-icon name="home-outline" class="icono-home"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+<ion-content fullscreen="true" class="pagina-mesa">
+  <div [ngClass]="{ 'mesa-verificada': mesaVerificada }">
+    <!-- Encabezado -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="primary" class="toolbar-center">
+          <ion-button
+            class="boton-home"
+            (click)="volverAtras()"
+            [disabled]="modalAlerta"
+          >
+            <ion-icon name="home-outline" class="icono-home"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-  <!-- Escaneo QR -->
-  <div class="scanner-container" *ngIf="!mesaVerificada">
-    <ion-button
-      expand="block"
-      fill="outline"
-      color="success"
-      class="boton-opcion"
-      (click)="simularQR(true)"
-    >
-      Simular QR Correcto
-    </ion-button>
+    <!-- Escaneo QR -->
+    <div class="scanner-container" *ngIf="!mesaVerificada">
+      <ion-icon name="checkbox-outline" class="icono-qr"></ion-icon>
 
-    <ion-icon name="checkbox-outline" class="icono-qr"></ion-icon>
-
-    <ion-button
-      expand="block"
-      class="boton-escanear"
-      (click)="escanearQR()"
-      [disabled]="procesando || modalAlerta"
-    >
-      <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su
-      mesa' }}
-      <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
-    </ion-button>
-  </div>
-
-  <!-- MOSTRAR MESA GRANDE si fue verificada -->
-  <div class="mesa-numero" *ngIf="mesaVerificada">
-    <p>{{ mesaAsignada }}</p>
-  </div>
-
-  <!-- Acciones si ya está verificado -->
-  <div class="scanner-container" *ngIf="mesaVerificada">
-    <!-- Imagen decorativa -->
-    <ion-img
-      src="assets/mesa.png"
-      class="imagen-mesa"
-      alt="Mesa confirmada"
-    ></ion-img>
-
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      [routerLink]="!tienePedidoPendiente ? '/menu' : null"
-      [disabled]="modalAlerta || tienePedidoPendiente"
-    >
-      {{ tienePedidoPendiente ? 'Pedido en espera de confirmación' : 'Realizar
-      pedido' }}
-    </ion-button>
-
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      [routerLink]="['/chat']"
-      [queryParams]="{ mesa: mesaAsignada }"
-      [disabled]="modalAlerta"
-    >
-      Consulta al mozo
-    </ion-button>
-  </div>
-
-  <!-- Bloqueador + Alerta flotante -->
-  <div class="alerta-overlay" *ngIf="modalAlerta">
-    <div class="alerta-flotante">
-      <h2>{{ tituloAlerta }}</h2>
-      <p>{{ mensajeAlerta }}</p>
       <ion-button
-        size="small"
         expand="block"
-        class="boton-cerrar-alerta"
-        (click)="mostrarModalAlerta(false)"
+        class="boton-escanear"
+        (click)="escanearQR()"
+        [disabled]="procesando || modalAlerta"
       >
-        Aceptar
+        <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+        {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su
+        mesa' }}
+        <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
       </ion-button>
+    </div>
+
+    <!-- Acciones si ya está verificado -->
+    <div class="scanner-container" *ngIf="mesaVerificada">
+      <!-- MOSTRAR MESA GRANDE si fue verificada -->
+      <div class="mesa-numero" *ngIf="mesaVerificada">
+        <p>{{ mesaAsignada }}</p>
+      </div>
+
+      <ion-img
+        src="assets/mesa.png"
+        class="imagen-mesa"
+        alt="Mesa confirmada"
+      ></ion-img>
+
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        [routerLink]="!tienePedidoPendiente ? '/menu' : null"
+        [disabled]="modalAlerta || tienePedidoPendiente"
+      >
+        {{ tienePedidoPendiente ? 'Pedido en espera de confirmación' : 'Realizar
+        pedido' }}
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        [routerLink]="['/chat']"
+        [queryParams]="{ mesa: mesaAsignada }"
+        [disabled]="modalAlerta"
+      >
+        Consulta al mozo
+      </ion-button>
+    </div>
+
+    <!-- Bloqueador + Alerta flotante -->
+    <div class="alerta-overlay" *ngIf="modalAlerta">
+      <div class="alerta-flotante">
+        <h2>{{ tituloAlerta }}</h2>
+        <p>{{ mensajeAlerta }}</p>
+        <ion-button
+          size="small"
+          expand="block"
+          class="boton-cerrar-alerta"
+          (click)="mostrarModalAlerta(false)"
+        >
+          Aceptar
+        </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>

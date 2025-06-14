@@ -20,7 +20,6 @@ ion-content.pagina-mesa::part(scroll) {
     align-items: center;
     width: 100%;
     max-width: 360px;
-    margin: 0 auto;
     padding: 1.2rem 1rem;
     gap: 1.2rem;
     height: calc(100vh - 56px); // centrado vertical completo (menos toolbar)
@@ -189,11 +188,9 @@ ion-content.pagina-mesa::part(scroll) {
   .mesa-numero {
     text-align: center;
     color: white;
-    font-size: 2.8rem;
+    font-size: 3.8rem;
     font-weight: bold;
     letter-spacing: 2px;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
   }
 
   .imagen-mesa {
@@ -202,5 +199,23 @@ ion-content.pagina-mesa::part(scroll) {
     display: block;
     border-radius: 12px;
     margin-bottom: 1rem;
+  }
+
+  /* ✅ Cambiar fondo a verde si el QR fue verificado */
+  ion-content.pagina-mesa.mesa-verificada::part(scroll) {
+    background-color: #2e7d32 !important; /* Verde oscuro */
+    background-image: none !important;
+  }
+
+  /* ✅ Fondo alerta verde cuando QR es correcto */
+  .mesa-verificada .alerta-flotante {
+    background-color: #2e7d32 !important; /* Verde oscuro */
+    color: white;
+  }
+
+  /* ✅ Botón "Aceptar" blanco con texto verde */
+  .mesa-verificada .boton-cerrar-alerta {
+    --background: #ffffff;
+    --color: #2e7d32;
   }
 }
