@@ -1,35 +1,46 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>menu</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
+  <ion-card class="mesa-test-card">
+    <ion-item>
+      <ion-label position="floating">Número de mesa</ion-label>
+      <ion-input [(ngModel)]="mesaID" placeholder="Ej: 1, 2, 3"></ion-input>
+    </ion-item>
+    <ion-note class="ion-padding-start ion-margin-top"
+      >Mesa actual: {{ mesaID }}</ion-note
+    >
+  </ion-card>
+
   <div class="contenedor-flex">
     <ion-card class="custom-card">
       <div class="visor-info">
-
         <div>
           <h2 class="importe">Importe total: $ {{ importeTotal }}</h2>
           <h2 class="demora">Demora: {{ demora }} min</h2>
         </div>
-        <ion-button size="large" fill="solid" color="success" (click)="terminarPedido()">
+        <ion-button
+          size="large"
+          fill="solid"
+          color="success"
+          (click)="terminarPedido()"
+        >
           <ion-icon name="checkmark-sharp" size="large"></ion-icon>
         </ion-button>
       </div>
     </ion-card>
 
     <div class="contenido-listado">
-      <!-- Cards -->
-      @if (productos.length > 0) {
-
-      @for (producto of productos; track producto.id) {
+      @if (productos.length > 0) { @for (producto of productos; track
+      producto.id) {
       <ion-card class="custom-card">
-        <!-- Hay que usar esta libreria para deslizar fotos, el componente de ionic no se usa más "ionicSlider"  -->
         <swiper-container>
-          <swiper-slide><img [src]="producto.foto_1" alt="foto 1 del producto" class="galeria-img" /></swiper-slide>
-          <swiper-slide><img [src]="producto.foto_2" alt="foto 2 del producto" class="galeria-img" /></swiper-slide>
-          <swiper-slide><img [src]="producto.foto_3" alt="foto 3 del producto" class="galeria-img" /></swiper-slide>
+          <swiper-slide
+            ><img [src]="producto.foto_1" class="galeria-img"
+          /></swiper-slide>
+          <swiper-slide
+            ><img [src]="producto.foto_2" class="galeria-img"
+          /></swiper-slide>
+          <swiper-slide
+            ><img [src]="producto.foto_3" class="galeria-img"
+          /></swiper-slide>
         </swiper-container>
 
         <ion-card-header>
@@ -38,34 +49,59 @@
             <span class="titulo-precio">$ {{ producto.precio }}</span>
           </div>
         </ion-card-header>
+
         <ion-card-content>
           <p class="descripcion-producto">{{ producto.descripcion }}</p>
-          <p class="descripcion-producto">Tiempo estimado: {{ producto.tiempo }} minutos</p>
+          <p class="descripcion-producto">
+            Tiempo estimado: {{ producto.tiempo }} minutos
+          </p>
         </ion-card-content>
-        <!-- footer de la card -->
+
         <div class="visor-footer-card">
           <div class="visor-cantidad">
-
-            <!-- Boton menos (-) -->
-            <ion-button fill="solid" shape="round" color="light" (click)="disminuirCantidad()">
-              <ion-icon slot="icon-only" name="remove-circle" size="large"></ion-icon>
+            <ion-button
+              fill="solid"
+              shape="round"
+              color="light"
+              (click)="disminuirCantidad(producto)"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="remove-circle"
+                size="large"
+              ></ion-icon>
             </ion-button>
 
-            <!-- Cantidad -->
-            <p>{{ cantidad }}</p>
+            <p>{{ producto.cantidad }}</p>
 
-            <!-- Boton mas (+) -->
-            <ion-button fill="solid" shape="round" color="light" (click)="aumentarCantidad()">
-              <ion-icon slot="icon-only" name="add-circle" size="large"></ion-icon>
+            <ion-button
+              fill="solid"
+              shape="round"
+              color="light"
+              (click)="aumentarCantidad(producto)"
+            >
+              <ion-icon
+                slot="icon-only"
+                name="add-circle"
+                size="large"
+              ></ion-icon>
             </ion-button>
           </div>
 
-          <ion-button fill="solid" shape="round" color="success" (click)="agregarProducto()">Agregar</ion-button>
+          <ion-button
+            fill="solid"
+            shape="round"
+            color="success"
+            (click)="agregarProducto(producto)"
+          >
+            Agregar
+          </ion-button>
         </div>
       </ion-card>
-      }
-      } @else {
-      <p style="text-align: center; margin-top: 2rem;">No se encontraron productos.</p>
+      } } @else {
+      <p style="text-align: center; margin-top: 2rem">
+        No se encontraron productos.
+      </p>
       }
     </div>
   </div>

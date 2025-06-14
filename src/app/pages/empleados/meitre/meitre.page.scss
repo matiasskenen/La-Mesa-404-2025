@@ -1,8 +1,14 @@
+/* ======================
+   FONDO GENERAL
+====================== */
 ion-content::part(scroll) {
   background-color: #19647e !important;
   overflow: hidden !important;
 }
 
+/* ======================
+   FORMULARIOS Y CONTENEDORES
+====================== */
 .formulario,
 .menu-container {
   display: flex;
@@ -20,6 +26,9 @@ ion-content::part(scroll) {
   overflow: hidden;
 }
 
+/* ======================
+   INPUTS
+====================== */
 ion-item {
   --background: #ffffff;
   --border-radius: 10px;
@@ -38,6 +47,9 @@ ion-textarea {
   padding: 2px 0;
 }
 
+/* ======================
+   BOTONES PRINCIPALES
+====================== */
 .boton-opcion {
   width: 100%;
   max-width: 280px;
@@ -54,6 +66,24 @@ ion-textarea {
 .boton-opcion-warning {
   --background: #fdd835;
   --color: black;
+}
+
+.boton-cancelar {
+  margin-top: 15px;
+  --background: #a51b1b;
+  --color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 10px;
+  height: 42px;
+  font-size: 0.88rem;
+  max-width: 280px;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+
+.boton-cancelar:hover {
+  --background: #d34343;
 }
 
 .boton-salir {
@@ -87,40 +117,18 @@ ion-textarea {
   box-shadow: 0 0 0 2px #19647e;
 }
 
-.boton-cancelar {
-  margin-top: 15px;
-  --background: #a51b1b;
-  --color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 10px;
-  height: 42px;
-  font-size: 0.88rem;
-  max-width: 280px;
-  width: 100%;
-  letter-spacing: 0.5px;
-}
-
-.boton-cancelar:hover {
-  --background: #d34343;
-}
-
+/* ======================
+   TEXTOS
+====================== */
 .texto-blanco {
   color: white;
+  text-align: center;
+  font-size: 1rem;
 }
 
-.botones-decision {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-ion-button.boton-volver:focus {
-  outline: none;
-  box-shadow: none !important;
-}
-
+/* ======================
+   CABECERA Y ÍCONO HOME
+====================== */
 ion-header ion-toolbar {
   --background: #d22f19;
   --color: black;
@@ -149,4 +157,109 @@ ion-header ion-toolbar {
 .icono-home {
   font-size: 28px;
   color: white;
+}
+
+/* ======================
+   LISTA DE ESPERA (CARDS)
+====================== */
+ion-card {
+  background: #d34343;
+  border: 5px solid white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1rem;
+  max-width: 320px;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+ion-label h2,
+ion-label p {
+  text-align: center;
+  margin: 0;
+  color: #eaf0f1;
+  font-size: 1rem;
+}
+
+/* ======================
+   BOTONES ACEPTAR/RECHAZAR
+====================== */
+.botones-decision {
+  --background: #d34343;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.botones-decision ion-button {
+  --background: #d34343;
+  flex: 1;
+  height: 52px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+.botones-decision ion-button[color="success"] {
+  --background: #28a745;
+  --color: white;
+}
+
+.botones-decision ion-button[color="danger"] {
+  --color: #d22f19;
+  background: white;
+  padding: 10px;
+}
+.formulario {
+  background-color: transparent !important;
+}
+
+ion-list {
+  background: transparent !important;
+}
+
+.botones-decision {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.botones-decision ion-button {
+  flex: 1;
+  max-width: 140px;
+  height: 48px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  border-radius: 12px;
+  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ACEPTAR */
+.botones-decision ion-button[color="success"] {
+  --background: #2ecc71; /* Verde suave y moderno */
+  --color: white;
+  border: none;
+}
+
+/* RECHAZAR */
+.botones-decision ion-button[color="danger"] {
+  --background: transparent;
+  --color: #e74c3c;
+  border: 2px solid #e74c3c;
+  transition: background-color 0.3s ease;
+}
+
+.botones-decision ion-button[color="danger"]:hover {
+  --background: #e74c3c;
+  --color: white;
 }

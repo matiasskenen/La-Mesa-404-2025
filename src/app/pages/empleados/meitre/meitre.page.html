@@ -19,46 +19,46 @@
     </ion-text>
 
     <form [formGroup]="formCliente" (ngSubmit)="guardarCliente()">
-      <ion-item
-        ><ion-input formControlName="nombre" placeholder="Nombre"></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input
+      <ion-item>
+        <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
           formControlName="apellido"
           placeholder="Apellido"
-        ></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
           formControlName="dni"
           placeholder="DNI"
           type="number"
-        ></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input formControlName="cuil" placeholder="CUIL"></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
           formControlName="email"
           placeholder="Email"
           type="email"
-        ></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
           formControlName="password"
           placeholder="Contraseña"
           type="password"
-        ></ion-input
-      ></ion-item>
-      <ion-item
-        ><ion-input
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
           formControlName="confirmar"
           placeholder="Confirmar contraseña"
           type="password"
-        ></ion-input
-      ></ion-item>
+        ></ion-input>
+      </ion-item>
 
       <div class="ion-margin-top">
         <ion-button expand="block" (click)="seleccionarFuenteImagen()"
@@ -77,8 +77,9 @@
         [disabled]="!formularioValido()"
         color="success"
         class="ion-margin-top"
-        >Guardar Cliente</ion-button
       >
+        Guardar Cliente
+      </ion-button>
       <ion-button
         expand="block"
         fill="solid"
@@ -96,14 +97,16 @@
       expand="block"
       class="boton-opcion"
       (click)="activarFormularioAlta()"
-      >ALTA DE CLIENTE</ion-button
     >
+      ALTA DE CLIENTE
+    </ion-button>
     <ion-button
       expand="block"
       class="boton-opcion"
       (click)="cargarListaEspera()"
-      >LISTA DE ESPERA</ion-button
     >
+      LISTA DE ESPERA
+    </ion-button>
   </div>
 
   <!-- LISTA DE ESPERA -->
@@ -123,20 +126,19 @@
             <h2 class="texto-blanco">{{ cliente.email }}</h2>
             <p class="texto-blanco">Clave QR: {{ cliente.clave }}</p>
           </ion-label>
-          <div class="botones-decision">
+          <div class="botones-simples">
             <ion-button
-              expand="block"
               color="success"
               (click)="confirmarIngreso(cliente.email, true)"
-              >✅ Aceptar</ion-button
             >
+              Aceptar
+            </ion-button>
             <ion-button
-              expand="block"
-              fill="outline"
               color="danger"
               (click)="confirmarIngreso(cliente.email, false)"
-              >❌ Rechazar</ion-button
             >
+              Rechazar
+            </ion-button>
           </div>
         </ion-card-content>
       </ion-card>

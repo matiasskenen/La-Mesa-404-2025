@@ -12,13 +12,12 @@ export class AuthService {
   db = inject(DatabaseService);
   router = inject(Router);
   usuarioObj: any = null;
-  idUsuario:string = '';
-  rolUsuario:string = '';
+  idUsuario: string = '';
+  rolUsuario: string = '';
   usuarioActual: User | null = null;
   primerInicio: boolean = false;
 
   constructor() {
-    
     /// Saber si el usuario está logueado o no
     this.sb.supabase.auth.onAuthStateChange((event, session) => {
       console.log(event, session);
@@ -26,7 +25,7 @@ export class AuthService {
       // Si el evento es SIGNED_OUT
       if (event === 'SIGNED_OUT') {
         this.usuarioActual = null;
-        
+
         this.primerInicio = false;
         window.location.href = '/login';
       }
@@ -37,9 +36,9 @@ export class AuthService {
       // Si hay sesión
       else {
         this.usuarioActual = session.user;
-        
+
         this.idUsuario = this.usuarioActual.id;
-        
+
         if (event === 'SIGNED_IN' && !this.primerInicio) {
           this.router.navigateByUrl('/principal'); // Redirige a la ruta /principal si hay sesión y solo si es el primer ingreso
           this.primerInicio = true;
@@ -51,7 +50,10 @@ export class AuthService {
             .single()
             .then(({ data, error }) => {
               if (error) {
-                console.error('Error al obtener rol del usuario:', error.message);
+                console.error(
+                  'Error al obtener rol del usuario:',
+                  error.message
+                );
                 return;
               }
 
@@ -68,7 +70,7 @@ export class AuthService {
     contraseña: string
   ): Promise<{ success: boolean; error?: string }> {
     this.usuarioActual = null;
-    
+
     this.idUsuario = '';
     this.primerInicio = false;
     const { data, error } = await this.sb.supabase.auth.signInWithPassword({
@@ -91,7 +93,6 @@ export class AuthService {
 
     return { success: true };
   }
-
 
   async subirImagenArchivo(
     file: File,
@@ -130,5 +131,32 @@ export class AuthService {
 
   async cerrarSesion() {
     const { error } = await this.sb.supabase.auth.signOut();
+  }
+
+  async guardarPedidoPendiente(pedido: any) {
+    const { error } = await this.sb.supabase
+      .from('pedidos_pendientes')
+      .insert([pedido]);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async obtenerMesaAsignada(email: string): Promise<string | null> {
+    const { data, error } = await this.sb.supabase
+      .from('fila')
+      .select('mesa')
+      .eq('email', email)
+      .order('fecha', { ascending: false }) // la última asignación
+      .limit(1)
+      .single();
+
+    if (error || !data) {
+      console.error('No se encontró mesa para el cliente:', error?.message);
+      return null;
+    }
+
+    return data.mesa; // Ej: "3"
   }
 }
