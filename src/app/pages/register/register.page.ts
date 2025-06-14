@@ -20,7 +20,7 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+// import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 @Component({
   selector: 'app-register',
@@ -136,53 +136,53 @@ export class RegisterPage implements OnInit {
   }
 
   async leerQrDni() {
-    this.qrActivo = true;
-    this.mensajeError = '';
+    // this.qrActivo = true;
+    // this.mensajeError = '';
 
-    try {
-      const permiso = await BarcodeScanner.checkPermission({ force: true });
-      if (!permiso.granted) {
-        this.mensajeError = 'No se otorgó permiso a la cámara.';
-        return;
-      }
+    // try {
+    //   const permiso = await BarcodeScanner.checkPermission({ force: true });
+    //   if (!permiso.granted) {
+    //     this.mensajeError = 'No se otorgó permiso a la cámara.';
+    //     return;
+    //   }
 
-      BarcodeScanner.hideBackground();
-      document.body.classList.add('qr-activo'); // 👈 activa fondo oscuro + botón cancelar
+    //   BarcodeScanner.hideBackground();
+    //   document.body.classList.add('qr-activo'); // 👈 activa fondo oscuro + botón cancelar
 
-      const resultado = await BarcodeScanner.startScan();
+    //   const resultado = await BarcodeScanner.startScan();
 
-      BarcodeScanner.showBackground();
-      document.body.classList.remove('qr-activo');
+    //   BarcodeScanner.showBackground();
+    //   document.body.classList.remove('qr-activo');
 
-      if (resultado.hasContent) {
-        const datos = resultado.content.split('@');
-        if (datos.length > 5) {
-          this.formCliente.patchValue({
-            apellido: datos[1],
-            nombre: datos[2],
-            dni: datos[4],
-          });
-        } else {
-          this.mensajeError = '❌ QR no válido o incompleto.';
-        }
-      } else {
-        this.mensajeError = '❌ No se detectó ningún código.';
-      }
-    } catch (error) {
-      this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
-      BarcodeScanner.showBackground();
-      document.body.classList.remove('qr-activo');
-    }
+    //   if (resultado.hasContent) {
+    //     const datos = resultado.content.split('@');
+    //     if (datos.length > 5) {
+    //       this.formCliente.patchValue({
+    //         apellido: datos[1],
+    //         nombre: datos[2],
+    //         dni: datos[4],
+    //       });
+    //     } else {
+    //       this.mensajeError = '❌ QR no válido o incompleto.';
+    //     }
+    //   } else {
+    //     this.mensajeError = '❌ No se detectó ningún código.';
+    //   }
+    // } catch (error) {
+    //   this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
+    //   BarcodeScanner.showBackground();
+    //   document.body.classList.remove('qr-activo');
+    // }
 
-    this.qrActivo = false;
+    // this.qrActivo = false;
   }
 
   qrActivo = false;
 
   cancelarQr() {
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    this.qrActivo = false;
+    // BarcodeScanner.showBackground();
+    // BarcodeScanner.stopScan();
+    // this.qrActivo = false;
   }
 
   async guardarCliente() {

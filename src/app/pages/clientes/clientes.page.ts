@@ -8,6 +8,8 @@ import { Haptics } from '@capacitor/haptics';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { homeOutline, qrCodeOutline, restaurantOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-clientes',
@@ -28,6 +30,15 @@ export class ClientesPage {
   estadoCliente: 'ninguno' | 'esperando' | 'aceptado' = 'ninguno';
   mensajeEstado: string = '';
 
+  //notificaciones-----------
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: ''
+  }
+  //-------------------------
   constructor(private routerParametro: Router) {
     addIcons({ qrCodeOutline, restaurantOutline, homeOutline });
   }
@@ -72,6 +83,7 @@ export class ClientesPage {
     } catch (err) {
       console.error(err);
       this.mostrarAlerta('Error', 'Hubo un problema al escanear el QR.');
+      this.enviarNoti('error', 'hubo un problema al escanear el qr', '/login');
     } finally {
       this.procesando = false;
     }
@@ -156,5 +168,22 @@ export class ClientesPage {
     this.router.navigate(['/mesa'], {
       queryParams: { mesa: 1 },
     });
+  }
+
+
+  enviarNoti(titulo:string, contenido:string, ruta:string){
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log( "Antes de enviar la noti desde clientes",this.notificacion)
+    this.ns.enviarNotificacion(this.notificacion).then((responseStatus:boolean) =>{
+      if(responseStatus){
+        console.log("Se envió la notificacion");
+      }else{
+        console.log("No se envió la notificacion");
+      }
+    }).catch(error =>{
+      console.log("No se envió la notificacion por error: " + JSON.stringify(error));
+    })
   }
 }

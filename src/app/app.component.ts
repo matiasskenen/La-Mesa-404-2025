@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Component, inject, OnInit } from '@angular/core';
+import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { StatusBar } from '@capacitor/status-bar';
+import { NotificationsService } from './services/notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,15 @@ import { StatusBar } from '@capacitor/status-bar';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
+  private notiService = inject(NotificationsService);
+  private platform: Platform = inject(Platform);
   constructor() {}
 
   ngOnInit(): void {
+    this.platform.ready().then(()=>{
+      this.notiService.init();
+    })
+
     this.configurarStatusBar();
   }
 

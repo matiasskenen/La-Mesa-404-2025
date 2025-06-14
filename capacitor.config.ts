@@ -8,6 +8,12 @@ const config: CapacitorConfig = {
     StatusBar: {
       overlaysWebView: false, // ✅ nombre correcto de la propiedad
     },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"]
+    },
+    CapacitorHttp:{
+      enabled: true
+    },
   },
 };
 
