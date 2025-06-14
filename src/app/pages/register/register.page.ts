@@ -1,14 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
-  FormsModule,
-  ReactiveFormsModule,
   FormBuilder,
   FormGroup,
   Validators,
+  ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { CommonModule } from '@angular/common';
 import {
   IonContent,
   IonButton,
@@ -17,15 +16,16 @@ import {
   IonText,
   IonIcon,
   ActionSheetController,
-  IonSpinner,
   IonHeader,
   IonButtons,
   IonToolbar,
 } from '@ionic/angular/standalone';
+import { AuthService } from 'src/app/services/auth.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -43,7 +43,6 @@ import { addIcons } from 'ionicons';
     IonIcon,
     IonHeader,
     IonToolbar,
-    IonButton,
     IonButtons,
   ],
 })
@@ -57,6 +56,7 @@ export class RegisterPage implements OnInit {
   imagenSeleccionada: File | null = null;
   imagenPreviewUrl: string | null = null;
   subiendoImagen = false;
+  qrActivo = false;
 
   constructor(private router: Router, private fb: FormBuilder) {
     this.formCliente = this.fb.group({
@@ -68,9 +68,8 @@ export class RegisterPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmar: ['', Validators.required],
     });
-    addIcons({
-      arrowBackCircleOutline,
-    });
+
+    addIcons({ arrowBackCircleOutline });
   }
 
   ngOnInit() {}
@@ -91,18 +90,9 @@ export class RegisterPage implements OnInit {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Seleccionar imagen',
       buttons: [
-        {
-          text: '📷 Tomar foto',
-          handler: () => this.tomarFoto(),
-        },
-        {
-          text: '🖼️ Elegir de galería',
-          handler: () => this.abrirGaleria(),
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
+        { text: '📷 Tomar foto', handler: () => this.tomarFoto() },
+        { text: '🖼️ Elegir de galería', handler: () => this.abrirGaleria() },
+        { text: 'Cancelar', role: 'cancel' },
       ],
     });
     await actionSheet.present();
@@ -124,7 +114,7 @@ export class RegisterPage implements OnInit {
 
       this.imagenSeleccionada = file;
       this.imagenPreviewUrl = image.dataUrl!;
-    } catch (err) {
+    } catch {
       this.mensajeError = 'No se pudo tomar la foto.';
     }
   }
@@ -150,60 +140,15 @@ export class RegisterPage implements OnInit {
     this.imagenPreviewUrl = null;
   }
 
-  async leerQrDni() {
-    this.qrActivo = true;
-    this.mensajeError = '';
-
-    try {
-      const permiso = await BarcodeScanner.checkPermission({ force: true });
-      if (!permiso.granted) {
-        this.mensajeError = 'No se otorgó permiso a la cámara.';
-        return;
-      }
-
-      BarcodeScanner.hideBackground();
-      document.body.classList.add('qr-activo'); // 👈 activa fondo oscuro + botón cancelar
-
-      const resultado = await BarcodeScanner.startScan();
-
-      BarcodeScanner.showBackground();
-      document.body.classList.remove('qr-activo');
-
-      if (resultado.hasContent) {
-        const datos = resultado.content.split('@');
-        if (datos.length > 5) {
-          this.formCliente.patchValue({
-            apellido: datos[1],
-            nombre: datos[2],
-            dni: datos[4],
-          });
-        } else {
-          this.mensajeError = '❌ QR no válido o incompleto.';
-        }
-      } else {
-        this.mensajeError = '❌ No se detectó ningún código.';
-      }
-    } catch (error) {
-      this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
-      BarcodeScanner.showBackground();
-      document.body.classList.remove('qr-activo');
-    }
-
-    this.qrActivo = false;
-  }
-
-  qrActivo = false;
-
-  cancelarQr() {
-    BarcodeScanner.showBackground();
-    BarcodeScanner.stopScan();
-    this.qrActivo = false;
-  }
-
   async guardarCliente() {
     const c = this.formCliente.value;
     this.mensajeError = '';
     this.mensajeOk = '';
+
+    if (!c.email || !c.password || c.password.length < 6) {
+      this.mensajeError = '❌ Email o contraseña inválidos.';
+      return;
+    }
 
     if (c.password !== c.confirmar) {
       this.mensajeError = '❌ Las contraseñas no coinciden.';
@@ -214,7 +159,6 @@ export class RegisterPage implements OnInit {
 
     if (this.imagenSeleccionada) {
       this.subiendoImagen = true;
-
       const nombreArchivo = `cliente_${Date.now()}.jpg`;
       const ruta = `clientes/${nombreArchivo}`;
 
@@ -247,6 +191,8 @@ export class RegisterPage implements OnInit {
         return;
       }
 
+      await this.auth.sb.supabase.auth.signOut();
+
       const userId = data.user.id;
 
       const { error } = await this.auth.sb.supabase.from('usuarios').insert({
@@ -256,6 +202,7 @@ export class RegisterPage implements OnInit {
         dni: c.dni,
         cuil: c.cuil,
         email: c.email,
+        password: c.password,
         rol: 'cliente',
         tipo: 'cliente',
         imagen_url: urlImagen,
@@ -265,8 +212,10 @@ export class RegisterPage implements OnInit {
       if (error) {
         this.mensajeError = '❌ Error al guardar en usuarios: ' + error.message;
       } else {
-        this.mensajeOk =
-          '✅ Cliente registrado con éxito. Esperando aprobación.';
+        this.tituloAlerta = 'Registro exitoso';
+        this.mensajeAlerta =
+          'Cliente registrado correctamente. Esperando aprobación.';
+        this.modalAlerta = true;
         this.formCliente.reset();
         this.imagenSeleccionada = null;
         this.imagenPreviewUrl = null;
@@ -274,5 +223,67 @@ export class RegisterPage implements OnInit {
     } catch (err) {
       this.mensajeError = '❌ Hubo un problema: ' + (err as Error).message;
     }
+  }
+
+  modalAlerta = false;
+  tituloAlerta = '';
+  mensajeAlerta = '';
+
+  mostrarModalTest() {
+    this.tituloAlerta = 'Test exitoso';
+    this.mensajeAlerta = 'El sistema está respondiendo correctamente.';
+    this.modalAlerta = true;
+  }
+
+  mostrarModalAlerta(valor: boolean) {
+    this.modalAlerta = valor;
+  }
+
+  async leerQrDni() {
+    this.qrActivo = true;
+    this.mensajeError = '';
+
+    try {
+      const permiso = await BarcodeScanner.checkPermission({ force: true });
+      if (!permiso.granted) {
+        this.mensajeError = 'No se otorgó permiso a la cámara.';
+        return;
+      }
+
+      BarcodeScanner.hideBackground();
+      document.body.classList.add('qr-activo');
+
+      const resultado = await BarcodeScanner.startScan();
+
+      BarcodeScanner.showBackground();
+      document.body.classList.remove('qr-activo');
+
+      if (resultado.hasContent) {
+        const datos = resultado.content.split('@');
+        if (datos.length > 5) {
+          this.formCliente.patchValue({
+            apellido: datos[1],
+            nombre: datos[2],
+            dni: datos[4],
+          });
+        } else {
+          this.mensajeError = '❌ QR no válido o incompleto.';
+        }
+      } else {
+        this.mensajeError = '❌ No se detectó ningún código.';
+      }
+    } catch {
+      this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
+      BarcodeScanner.showBackground();
+      document.body.classList.remove('qr-activo');
+    }
+
+    this.qrActivo = false;
+  }
+
+  cancelarQr() {
+    BarcodeScanner.showBackground();
+    BarcodeScanner.stopScan();
+    this.qrActivo = false;
   }
 }

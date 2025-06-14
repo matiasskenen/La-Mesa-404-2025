@@ -136,3 +136,36 @@ ion-button[color="danger"] {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
+
+.alerta-flotante {
+  background: #2ecc71; /* verde éxito */
+  border-radius: 12px;
+  padding: 1.2rem;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  color: white; /* texto blanco */
+}
+
+.boton-cerrar-alerta {
+  margin-top: 1rem;
+  --background: white; /* fondo blanco */
+  --color: #2ecc71; /* texto verde */
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  --border-radius: 10px;
+}
+.alerta-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
