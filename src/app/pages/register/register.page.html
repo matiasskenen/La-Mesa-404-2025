@@ -1,159 +1,152 @@
 <ion-content [fullscreen]="true" class="fondo">
-  <ion-text color="danger" *ngIf="mensajeError">
-    <p class="ion-padding">{{ mensajeError }}</p>
-  </ion-text>
-  <ion-text color="success" *ngIf="mensajeOk">
-    <p class="ion-padding">{{ mensajeOk }}</p>
-  </ion-text>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon
+            name="arrow-back-circle-outline"
+            class="icono-home"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
   <form [formGroup]="formCliente" (ngSubmit)="guardarCliente()">
-    <!-- BOTÓN ESCANEAR DNI -->
-    <ion-button expand="block" color="tertiary" (click)="leerQrDni()">
-      <ion-icon slot="start" name="scan-outline"></ion-icon>
-      Escanear QR del DNI
-    </ion-button>
-
-    <button id="cancelar-qr" (click)="cancelarQr()" *ngIf="qrActivo">
-      ❌ Cancelar
-    </button>
-
-    <div>
-      <div class="input-group margen-nombre">
-        <ion-item>
-          <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('nombre')?.touched && formCliente.get('nombre')?.invalid"
+    <div class="input-group">
+      <ion-item>
+        <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('nombre')?.touched && formCliente.get('nombre')?.invalid"
+      >
+        <span *ngIf="formCliente.get('nombre')?.hasError('required')"
+          >El nombre es obligatorio</span
         >
-          <span *ngIf="formCliente.get('nombre')?.hasError('required')"
-            >El nombre es obligatorio</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input
-            formControlName="apellido"
-            placeholder="Apellido"
-          ></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('apellido')?.touched && formCliente.get('apellido')?.invalid"
-        >
-          <span *ngIf="formCliente.get('apellido')?.hasError('required')"
-            >El apellido es obligatorio</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input
-            type="number"
-            formControlName="dni"
-            placeholder="DNI"
-          ></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('dni')?.touched && formCliente.get('dni')?.invalid"
-        >
-          <span *ngIf="formCliente.get('dni')?.hasError('required')"
-            >El DNI es obligatorio</span
-          >
-          <span *ngIf="formCliente.get('dni')?.hasError('minlength')"
-            >Debe tener al menos 7 dígitos</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('cuil')?.touched && formCliente.get('cuil')?.invalid"
-        >
-          <span *ngIf="formCliente.get('cuil')?.hasError('required')"
-            >El CUIL es obligatorio</span
-          >
-          <span *ngIf="formCliente.get('cuil')?.hasError('minlength')"
-            >Debe tener al menos 11 dígitos</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input
-            type="email"
-            formControlName="email"
-            placeholder="Correo electrónico"
-          ></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('email')?.touched && formCliente.get('email')?.invalid"
-        >
-          <span *ngIf="formCliente.get('email')?.hasError('required')"
-            >El email es obligatorio</span
-          >
-          <span *ngIf="formCliente.get('email')?.hasError('email')"
-            >Formato de email inválido</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input
-            type="password"
-            formControlName="password"
-            placeholder="Contraseña"
-          ></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('password')?.touched && formCliente.get('password')?.invalid"
-        >
-          <span *ngIf="formCliente.get('password')?.hasError('required')"
-            >La contraseña es obligatoria</span
-          >
-          <span *ngIf="formCliente.get('password')?.hasError('minlength')"
-            >Mínimo 6 caracteres</span
-          >
-        </div>
-      </div>
-
-      <div class="input-group">
-        <ion-item>
-          <ion-input
-            type="password"
-            formControlName="confirmar"
-            placeholder="Confirmar contraseña"
-          ></ion-input>
-        </ion-item>
-        <div
-          class="error-tooltip"
-          *ngIf="formCliente.get('confirmar')?.touched && formCliente.get('confirmar')?.invalid"
-        >
-          <span *ngIf="formCliente.get('confirmar')?.hasError('required')"
-            >Debe confirmar la contraseña</span
-          >
-        </div>
       </div>
     </div>
 
-    <!-- Previsualización de imagen -->
+    <div class="input-group">
+      <ion-item>
+        <ion-input
+          formControlName="apellido"
+          placeholder="Apellido"
+        ></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('apellido')?.touched && formCliente.get('apellido')?.invalid"
+      >
+        <span *ngIf="formCliente.get('apellido')?.hasError('required')"
+          >El apellido es obligatorio</span
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input
+          type="number"
+          formControlName="dni"
+          placeholder="DNI"
+        ></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('dni')?.touched && formCliente.get('dni')?.invalid"
+      >
+        <span *ngIf="formCliente.get('dni')?.hasError('required')"
+          >El DNI es obligatorio</span
+        >
+        <span *ngIf="formCliente.get('dni')?.hasError('minlength')"
+          >Debe tener al menos 7 dígitos</span
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('cuil')?.touched && formCliente.get('cuil')?.invalid"
+      >
+        <span *ngIf="formCliente.get('cuil')?.hasError('required')"
+          >El CUIL es obligatorio</span
+        >
+        <span *ngIf="formCliente.get('cuil')?.hasError('minlength')"
+          >Debe tener 11 dígitos</span
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input
+          type="email"
+          formControlName="email"
+          placeholder="Correo electrónico"
+        ></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('email')?.touched && formCliente.get('email')?.invalid"
+      >
+        <span *ngIf="formCliente.get('email')?.hasError('required')"
+          >El email es obligatorio</span
+        >
+        <span *ngIf="formCliente.get('email')?.hasError('email')"
+          >Formato inválido</span
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input
+          type="password"
+          formControlName="password"
+          placeholder="Contraseña"
+        ></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('password')?.touched && formCliente.get('password')?.invalid"
+      >
+        <span *ngIf="formCliente.get('password')?.hasError('required')"
+          >Contraseña obligatoria</span
+        >
+        <span *ngIf="formCliente.get('password')?.hasError('minlength')"
+          >Mínimo 6 caracteres</span
+        >
+      </div>
+    </div>
+
+    <div class="input-group">
+      <ion-item>
+        <ion-input
+          type="password"
+          formControlName="confirmar"
+          placeholder="Confirmar contraseña"
+        ></ion-input>
+      </ion-item>
+      <div
+        class="error-tooltip"
+        *ngIf="formCliente.get('confirmar')?.touched && formCliente.get('confirmar')?.invalid"
+      >
+        <span *ngIf="formCliente.get('confirmar')?.hasError('required')"
+          >Debe confirmar la contraseña</span
+        >
+      </div>
+    </div>
+
     <div *ngIf="imagenPreviewUrl" class="imagen-preview-container">
       <img
         [src]="imagenPreviewUrl"
-        alt="Imagen seleccionada"
         class="imagen-preview"
+        alt="Imagen seleccionada"
       />
       <ion-button expand="block" color="danger" (click)="borrarImagen()">
         <ion-icon slot="start" name="trash-outline"></ion-icon>
@@ -178,9 +171,21 @@
     >
       REGISTRARSE
     </ion-button>
-
-    <ion-button fill="clear" color="medium" (click)="volver()">
-      VOLVER
-    </ion-button>
   </form>
+
+  <!-- ✅ MODAL ALERTA -->
+  <div class="alerta-overlay" *ngIf="modalAlerta">
+    <div class="alerta-flotante">
+      <h2>{{ tituloAlerta }}</h2>
+      <p>{{ mensajeAlerta }}</p>
+      <ion-button
+        size="small"
+        expand="block"
+        class="boton-cerrar-alerta"
+        (click)="mostrarModalAlerta(false)"
+      >
+        Aceptar
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
