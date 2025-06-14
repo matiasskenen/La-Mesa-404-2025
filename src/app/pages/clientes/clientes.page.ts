@@ -83,7 +83,6 @@ export class ClientesPage {
     } catch (err) {
       console.error(err);
       this.mostrarAlerta('Error', 'Hubo un problema al escanear el QR.');
-      this.enviarNoti('error', 'hubo un problema al escanear el qr', '/login');
     } finally {
       this.procesando = false;
     }

@@ -9,6 +9,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constructor
 import { send,homeOutline} from 'ionicons/icons'; //nombre de los iconos
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-chat',
@@ -27,6 +29,16 @@ export class ChatPage implements OnInit {
 
    //solo para pasarle por parametro la mesa
   mesaRecibida:string = '';
+
+  //notificaciones-----------
+    ns = inject(NotificationsService);
+  
+    public notificacion: INotification = {
+      title: '',
+      body: '',
+      url: ''
+    }
+    //-------------------------
 
   
   //solo para pasarle por parametro la mesa
@@ -87,9 +99,26 @@ export class ChatPage implements OnInit {
       //Si es cliente
       const emisor = `Mesa ${this.mesaRecibida}`
       this.db.guardarMensaje(this.mensaje, this.auth.idUsuario, emisor);
+      this.enviarNoti('Nueva Consulta', `Tienes una consulta de la mesa ${this.mesaRecibida}`, '/chat');
     }
     // Limpiar el input
     this.mensaje = '';
+  }
+
+   enviarNoti(titulo:string, contenido:string, ruta:string){
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log( "Antes de enviar la noti desde clientes",this.notificacion)
+    this.ns.enviarNotificacion(this.notificacion).then((responseStatus:boolean) =>{
+      if(responseStatus){
+        console.log("Se envió la notificacion");
+      }else{
+        console.log("No se envió la notificacion");
+      }
+    }).catch(error =>{
+      console.log("No se envió la notificacion por error: " + JSON.stringify(error));
+    })
   }
 
 }
