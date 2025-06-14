@@ -1,5 +1,8 @@
 ion-content.pagina-mesa::part(scroll) {
-  background-color: #19647e !important;
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   overflow-y: auto !important;
 }
 
@@ -15,24 +18,21 @@ ion-content.pagina-mesa::part(scroll) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex: 1;
     width: 100%;
     max-width: 360px;
     margin: 0 auto;
-    padding: 1rem;
-    gap: 1.5rem;
-    height: calc(100vh - 56px); // ocupa toda la pantalla menos el header
+    padding: 1.2rem 1rem;
+    gap: 1.2rem;
+    height: calc(100vh - 56px); // centrado vertical completo (menos toolbar)
     text-align: center;
   }
 
-  /* Ícono QR grande */
   .icono-qr {
     font-size: 8rem;
     color: white;
     animation: pulse 1.4s ease-in-out infinite;
   }
 
-  /* Animación pulse */
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -48,7 +48,6 @@ ion-content.pagina-mesa::part(scroll) {
     }
   }
 
-  /* Botón escanear */
   .boton-escanear {
     --background: #d22f19;
     --color: white;
@@ -61,7 +60,6 @@ ion-content.pagina-mesa::part(scroll) {
     text-transform: uppercase;
   }
 
-  /* Botones secundarios */
   .boton-opcion {
     width: 100%;
     max-width: 280px;
@@ -80,7 +78,6 @@ ion-content.pagina-mesa::part(scroll) {
     --color: black;
   }
 
-  /* Modal personalizado (si lo usás) */
   .overlay {
     position: fixed;
     top: 0;
@@ -104,32 +101,13 @@ ion-content.pagina-mesa::part(scroll) {
     gap: 1rem;
   }
 
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .modal-title {
-    flex: 1;
     text-align: center;
     font-size: 1.2rem;
     font-weight: bolder;
     color: white;
-    font-family: "Montserrat", sans-serif;
   }
 
-  .modal-mensaje span {
-    color: white;
-    font-size: 1.2rem;
-  }
-
-  .modal-footer {
-    display: flex;
-    justify-content: center;
-  }
-
-  /* Toolbar y botón de home */
   ion-header ion-toolbar {
     --background: #d22f19;
     --color: black;
@@ -158,5 +136,71 @@ ion-content.pagina-mesa::part(scroll) {
   .icono-home {
     font-size: 28px;
     color: white;
+  }
+
+  .alerta-flotante {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    width: 90%;
+    max-width: 320px;
+    padding: 1.5rem 1rem;
+    background-color: #f44336;
+    color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: aparecer 0.4s ease-out;
+  }
+
+  .alerta-flotante h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .alerta-flotante p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .boton-cerrar-alerta {
+    --background: #ffffff;
+    --color: #f44336;
+    --border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .mesa-numero {
+    text-align: center;
+    color: white;
+    font-size: 2.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .imagen-mesa {
+    width: 120px;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    margin-bottom: 1rem;
   }
 }

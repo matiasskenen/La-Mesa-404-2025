@@ -9,8 +9,16 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { addIcons } from 'ionicons';
-import { removeCircle, addCircle, checkmarkSharp } from 'ionicons/icons';
-
+import {
+  removeCircle,
+  addCircle,
+  checkmarkSharp,
+  homeOutline,
+  arrowBack,
+  arrowBackOutline,
+  arrowBackCircleOutline,
+} from 'ionicons/icons';
+import { Router } from '@angular/router';
 import { DatabaseService } from 'src/app/services/database.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -32,18 +40,25 @@ export class MenuPage implements OnInit {
   pedido: any[] = [];
   importeTotal: number = 0;
   demora: number = 0;
+  mesaID: string = '1'; // Se puede actualizar desde QR o base
 
-  // ⚠️ Acá podés poner el número real de mesa como texto (por ejemplo, "1" o "3")
-  mesaID: string = '1'; // Esto se puede setear desde escaneo QR o tabla `fila`
+  // Alerta flotante
+  modalAlerta: boolean = false;
+  tituloAlerta: string = '';
+  mensajeAlerta: string = '';
 
-  constructor() {
-    addIcons({ removeCircle, addCircle, checkmarkSharp });
+  constructor(private router: Router) {
+    addIcons({
+      removeCircle,
+      addCircle,
+      checkmarkSharp,
+      arrowBackCircleOutline,
+    });
   }
 
   async ngOnInit() {
     this.mostrarMenu();
 
-    // Si el cliente está logueado, buscamos su mesa
     if (this.auth.usuarioActual?.email) {
       const mesaAsignada = await this.auth.obtenerMesaAsignada(
         this.auth.usuarioActual.email
@@ -99,13 +114,13 @@ export class MenuPage implements OnInit {
 
   async terminarPedido() {
     if (this.pedido.length === 0) {
-      console.warn('No hay productos en el pedido.');
+      this.mostrarModalAlerta(true, 'Error', 'No hay productos en el pedido.');
       return;
     }
 
     const pedidoPendiente = {
-      cliente_id: this.auth.idUsuario || null,
-      mesa_id: this.mesaID, // ahora es tipo TEXT en la base
+      cliente_id: this.auth.usuarioActual?.email || 'anónimo',
+      mesa_id: this.mesaID,
       productos: this.pedido.map((p) => ({
         id: p.id,
         nombre: p.nombre,
@@ -121,14 +136,41 @@ export class MenuPage implements OnInit {
 
     try {
       await this.auth.guardarPedidoPendiente(pedidoPendiente);
-      console.log('Pedido guardado exitosamente');
+      this.mostrarModalAlerta(
+        true,
+        'Pedido enviado',
+        'Tu pedido fue guardado correctamente.'
+      );
 
-      // Reiniciar estado local
       this.pedido = [];
       this.importeTotal = 0;
       this.demora = 0;
     } catch (e: any) {
       console.error('Error al guardar el pedido:', e.message);
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al guardar el pedido.'
+      );
     }
+  }
+
+  mostrarModalAlerta(
+    mostrar: boolean,
+    titulo: string = '',
+    mensaje: string = ''
+  ) {
+    if (mostrar) {
+      this.tituloAlerta = titulo;
+      this.mensajeAlerta = mensaje;
+      this.modalAlerta = true;
+    } else {
+      this.modalAlerta = false;
+      window.history.back(); // 🔁 Vuelve atrás
+    }
+  }
+
+  volverAtras() {
+    window.history.back();
   }
 }

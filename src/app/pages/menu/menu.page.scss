@@ -1,6 +1,9 @@
 ion-content {
-  --background: #19647e;
-  overflow: hidden;
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-y: auto !important;
 
   .contenedor-flex {
     display: flex;
@@ -72,4 +75,75 @@ ion-card-content {
 .importe,
 .demora {
   color: white;
+}
+
+.alerta-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alerta-flotante {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.boton-cerrar-alerta {
+  margin-top: 1rem;
+  --background: #19d232;
+  --color: white;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  --border-radius: 10px;
+}
+
+.pagina-mesa {
+  --background: #19647e !important;
+}
+
+.mesa-verificada {
+  --background: #2ecc71 !important; /* Verde éxito */
+}
+
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19; // color de fondo
+  --color: black; // color del ícono (texto)
+  border-radius: 20%; // opcional si lo querés circular
+  width: 58px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  color: white;
+  font-size: 100px;
 }

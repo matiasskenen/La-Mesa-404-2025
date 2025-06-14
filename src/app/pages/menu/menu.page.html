@@ -1,13 +1,16 @@
 <ion-content [fullscreen]="true">
-  <ion-card class="mesa-test-card">
-    <ion-item>
-      <ion-label position="floating">Número de mesa</ion-label>
-      <ion-input [(ngModel)]="mesaID" placeholder="Ej: 1, 2, 3"></ion-input>
-    </ion-item>
-    <ion-note class="ion-padding-start ion-margin-top"
-      >Mesa actual: {{ mesaID }}</ion-note
-    >
-  </ion-card>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon
+            name="arrow-back-circle-outline"
+            class="icono-home"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
   <div class="contenedor-flex">
     <ion-card class="custom-card">
@@ -32,15 +35,15 @@
       producto.id) {
       <ion-card class="custom-card">
         <swiper-container>
-          <swiper-slide
-            ><img [src]="producto.foto_1" class="galeria-img"
-          /></swiper-slide>
-          <swiper-slide
-            ><img [src]="producto.foto_2" class="galeria-img"
-          /></swiper-slide>
-          <swiper-slide
-            ><img [src]="producto.foto_3" class="galeria-img"
-          /></swiper-slide>
+          <swiper-slide>
+            <img [src]="producto.foto_1" class="galeria-img" />
+          </swiper-slide>
+          <swiper-slide>
+            <img [src]="producto.foto_2" class="galeria-img" />
+          </swiper-slide>
+          <swiper-slide>
+            <img [src]="producto.foto_3" class="galeria-img" />
+          </swiper-slide>
         </swiper-container>
 
         <ion-card-header>
@@ -103,6 +106,22 @@
         No se encontraron productos.
       </p>
       }
+    </div>
+  </div>
+
+  <!-- Alerta flotante -->
+  <div class="alerta-overlay" *ngIf="modalAlerta">
+    <div class="alerta-flotante">
+      <h2>{{ tituloAlerta }}</h2>
+      <p>{{ mensajeAlerta }}</p>
+      <ion-button
+        size="small"
+        expand="block"
+        class="boton-cerrar-alerta"
+        (click)="mostrarModalAlerta(false)"
+      >
+        Aceptar
+      </ion-button>
     </div>
   </div>
 </ion-content>

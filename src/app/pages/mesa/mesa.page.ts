@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-import { Haptics } from '@capacitor/haptics';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { addIcons } from 'ionicons';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import {
-  bookOutline,
   checkboxOutline,
   checkmarkSharp,
   homeOutline,
@@ -23,16 +22,20 @@ import {
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class MesaPage implements OnInit {
+  canalPedido: RealtimeChannel | null = null;
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
   mesaAsignada: string = '';
   procesando = false;
   mesaVerificada = false;
 
-  //Alerta manual:
   modalAlerta: boolean = false;
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
+  tienePedidoPendiente: boolean = false;
+
+  qrEscaneado: string = '';
+  numeroQRextraido: string = '';
 
   constructor(private route: ActivatedRoute) {
     addIcons({ qrCodeOutline, checkmarkSharp, homeOutline, checkboxOutline });
@@ -41,7 +44,56 @@ export class MesaPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.mesaAsignada = params['mesa'];
+      this.verificarPedidoPendiente();
     });
+
+    this.escucharEstadoPedido();
+  }
+
+  escucharEstadoPedido() {
+    const email = this.auth.usuarioActual?.email;
+    if (!email) return;
+
+    this.canalPedido = this.auth.sb.supabase
+      .channel('canal-pedido-cliente')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'pedidos_pendientes',
+          filter: `cliente_id=eq.${email}`,
+        },
+        (payload) => {
+          const nuevoEstado = payload.new['estado'];
+          if (nuevoEstado === 'confirmado') {
+            this.mostrarModalAlerta(
+              true,
+              'Pedido confirmado',
+              'Tu pedido fue aceptado por el mozo.'
+            );
+          }
+        }
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.canalPedido?.unsubscribe();
+  }
+
+  async verificarPedidoPendiente() {
+    const email = this.auth.usuarioActual?.email;
+    if (!email) return;
+
+    const { data, error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .select('*')
+      .eq('cliente_id', email)
+      .eq('estado', 'pendiente_confirmacion')
+      .maybeSingle();
+
+    this.tienePedidoPendiente = !!data && !error;
   }
 
   async escanearQR() {
@@ -50,6 +102,7 @@ export class MesaPage implements OnInit {
     try {
       const { barcodes } = await BarcodeScanner.scan();
       const claveQR = barcodes[0]?.rawValue;
+      this.qrEscaneado = claveQR || '';
 
       if (!claveQR) {
         this.mostrarModalAlerta(
@@ -60,28 +113,23 @@ export class MesaPage implements OnInit {
         return;
       }
 
-      //En el texto que retorna claveQr, voy a donde dice qr y agarro solo los caracteres numericos (\d+)
-
-      const match = claveQR.match(/qr(\d+)$/);
+      const match = claveQR.match(/(?:-)?qr(\d+)/i);
       const numeroQR = match ? match[1] : null;
+      this.numeroQRextraido = numeroQR || '';
 
-      if (numeroQR) {
-        if (this.mesaAsignada === numeroQR) {
-          this.mostrarModalAlerta(
-            true,
-            'Éxito',
-            'QR correcto, estás en tu mesa.'
-          );
-          this.mesaVerificada = true;
-        } else {
-          this.mostrarModalAlerta(
-            true,
-            'Error',
-            'Este QR no corresponde a tu mesa.'
-          );
-        }
+      if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
+        this.mostrarModalAlerta(
+          true,
+          'Éxito',
+          'QR correcto, estás en tu mesa.'
+        );
+        this.mesaVerificada = true;
       } else {
-        this.mostrarModalAlerta(true, 'Error', 'Formato de QR no válido.');
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'Este QR no corresponde a tu mesa.'
+        );
       }
     } catch (err) {
       console.error(err);
@@ -99,8 +147,6 @@ export class MesaPage implements OnInit {
     this.auth.cerrarSesion();
   }
 
-  //Alerta manual:
-
   mostrarModalAlerta(
     mostrar: boolean,
     titulo: string = '',
@@ -110,8 +156,23 @@ export class MesaPage implements OnInit {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
     }
-
     this.modalAlerta = mostrar;
-    return;
+  }
+
+  simularQR(correcto: boolean) {
+    const numeroQR = correcto ? this.mesaAsignada : '9999';
+    this.qrEscaneado = 'Simulado';
+    this.numeroQRextraido = numeroQR;
+
+    if (numeroQR === this.mesaAsignada) {
+      this.mostrarModalAlerta(true, 'Éxito', 'QR correcto, estás en tu mesa.');
+      this.mesaVerificada = true;
+    } else {
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Este QR no corresponde a tu mesa.'
+      );
+    }
   }
 }

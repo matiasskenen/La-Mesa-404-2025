@@ -1,5 +1,8 @@
 ion-content.pagina-cliente::part(scroll) {
-  background-color: #19647e !important;
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   overflow-y: auto !important;
 }
 

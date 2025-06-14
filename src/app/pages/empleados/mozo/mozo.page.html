@@ -8,13 +8,65 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">mozo</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-button expand="block" fill="solid" routerLink="/chat"
-    >Responder consultas</ion-button
-  >
+<ion-content fullscreen="true" class="fondo ion-padding">
+  <!-- BOTONES PRINCIPALES -->
+  <div class="menu-container" *ngIf="!mostrarPedidos">
+    <ion-button
+      expand="block"
+      fill="solid"
+      routerLink="/chat"
+      class="boton-opcion"
+    >
+      Responder consultas
+    </ion-button>
+
+    <ion-button
+      expand="block"
+      fill="solid"
+      class="boton-opcion"
+      (click)="mostrarPedidos = true"
+    >
+      Ver pedidos pendientes
+    </ion-button>
+  </div>
+
+  <!-- LISTA DE PEDIDOS PENDIENTES -->
+  <div *ngIf="mostrarPedidos" class="formulario">
+    <ion-button
+      expand="block"
+      fill="solid"
+      class="boton-volver"
+      (click)="mostrarPedidos = false"
+    >
+      ⬅ Volver al menú
+    </ion-button>
+
+    <ion-list *ngIf="pedidos.length > 0">
+      <ion-card *ngFor="let pedido of pedidos">
+        <ion-card-content>
+          <ion-label>
+            <h2 class="texto-blanco">Mesa: {{ pedido.mesa_id }}</h2>
+            <p class="texto-blanco">
+              Cliente: {{ pedido.cliente_id || 'Anónimo' }}
+            </p>
+            <p class="texto-blanco">Total: ${{ pedido.importe_total }}</p>
+            <p class="texto-blanco">Demora: {{ pedido.demora_total }} min</p>
+          </ion-label>
+
+          <div class="botones-decision">
+            <ion-button color="success" (click)="confirmarPedido(pedido.id)">
+              Confirmar
+            </ion-button>
+            <ion-button color="danger" (click)="rechazarPedido(pedido.id)">
+              Rechazar
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
+      <p>No hay pedidos pendientes.</p>
+    </ion-text>
+  </div>
 </ion-content>
