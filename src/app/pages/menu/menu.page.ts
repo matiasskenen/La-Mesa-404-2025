@@ -136,6 +136,7 @@ export class MenuPage implements OnInit {
 
     try {
       await this.auth.guardarPedidoPendiente(pedidoPendiente);
+      localStorage.setItem('estadoPedido', 'pendiente');
       this.mostrarModalAlerta(
         true,
         'Pedido enviado',

@@ -51,6 +51,14 @@ export class MesaPage implements OnInit, OnDestroy {
   }
 
   async ionViewWillEnter() {
+    const estadoGuardado = localStorage.getItem('estadoPedido');
+    if (estadoGuardado) {
+      this.estadoPedido = estadoGuardado as
+        | 'pendiente'
+        | 'confirmado'
+        | 'ninguno';
+    }
+
     await this.verificarPedido();
   }
 
@@ -66,19 +74,17 @@ export class MesaPage implements OnInit, OnDestroy {
       .from('pedidos_pendientes')
       .select('estado')
       .eq('cliente_id', email)
-      .eq('mesa_id', this.mesaAsignada) // ✅ agregado
+      .eq('mesa_id', this.mesaAsignada)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle();
 
-    if (!error && data) {
-      if (data.estado === 'pendiente_confirmacion') {
-        this.estadoPedido = 'pendiente';
-      } else if (data.estado === 'confirmado') {
-        this.estadoPedido = 'confirmado';
-      } else {
-        this.estadoPedido = 'ninguno';
-      }
+    if (data?.estado === 'pendiente_confirmacion') {
+      this.estadoPedido = 'pendiente';
+    } else if (data?.estado === 'confirmado') {
+      this.estadoPedido = 'confirmado';
+    } else if (data) {
+      this.estadoPedido = 'pendiente';
     } else {
       this.estadoPedido = 'ninguno';
     }
@@ -186,7 +192,7 @@ export class MesaPage implements OnInit, OnDestroy {
       .from('pedidos_pendientes')
       .select('id')
       .eq('cliente_id', email)
-      .eq('mesa_id', this.mesaAsignada) // ✅ agregado
+      .eq('mesa_id', this.mesaAsignada)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -283,6 +289,94 @@ export class MesaPage implements OnInit, OnDestroy {
     } else {
       this.mostrarModalAlerta(false);
     }
+  }
+
+  async escanearEstadoDelPedido() {
+    this.procesando = true;
+
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      const claveQR = barcodes[0]?.rawValue;
+      if (!claveQR) {
+        this.mostrarModalAlerta(true, 'Error', 'QR inválido.');
+        return;
+      }
+
+      const match = claveQR.match(/(?:-)?qr(\d+)/i);
+      const numeroQR = match ? match[1] : null;
+
+      if (numeroQR?.toString() !== this.mesaAsignada?.toString()) {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'Este QR no corresponde a tu mesa.'
+        );
+        return;
+      }
+
+      this.consultarEstadoDespuesDeEscanear();
+    } catch (err) {
+      console.error(err);
+      this.mostrarModalAlerta(true, 'Error', 'Problema al escanear QR.');
+    } finally {
+      this.procesando = false;
+    }
+  }
+
+  iniciarPedido() {
+    this.estadoPedido = 'pendiente';
+    localStorage.setItem('estadoPedido', 'pendiente');
+  }
+
+  async consultarEstadoDespuesDeEscanear() {
+    const { data: detalle } = await this.auth.sb.supabase
+      .from('detalle_pedido_cliente')
+      .select('sector, estado, tiempo_estimado_min')
+      .eq('mesa', this.mesaAsignada);
+
+    if (!detalle || detalle.length === 0) {
+      this.mostrarModalAlerta(
+        true,
+        'Sin detalles',
+        'No hay productos asignados aún.'
+      );
+      return;
+    }
+
+    const resumen: {
+      [key: string]: { listos: number; total: number; maxTiempo: number };
+    } = {};
+
+    for (const item of detalle) {
+      const sector = item.sector || 'cocinero';
+      if (!resumen[sector]) {
+        resumen[sector] = { listos: 0, total: 0, maxTiempo: 0 };
+      }
+
+      resumen[sector].total++;
+      if (item.estado === 'listo') resumen[sector].listos++;
+
+      if (
+        typeof item.tiempo_estimado_min === 'number' &&
+        item.tiempo_estimado_min > resumen[sector].maxTiempo
+      ) {
+        resumen[sector].maxTiempo = item.tiempo_estimado_min;
+      }
+    }
+
+    let mensajeFinal = '';
+    for (const sector in resumen) {
+      const datos = resumen[sector];
+      const nombre = sector === 'cocinero' ? 'Cocinero' : 'Bartender';
+      const mensaje =
+        datos.listos === datos.total
+          ? 'Listo para entregar'
+          : `${datos.maxTiempo} min`;
+
+      mensajeFinal += `${nombre}: ${mensaje}\n`;
+    }
+
+    this.mostrarModalAlerta(true, 'Estado del pedido', mensajeFinal.trim());
   }
 
   simularQR(correcto: boolean) {

@@ -75,12 +75,9 @@ export class MozoPage implements OnInit, OnDestroy {
       }
 
       sectores[sector].total += 1;
-
       if (item.estado === 'listo') {
         sectores[sector].listos += 1;
       }
-
-      // ✅ Sumar solo si el tiempo es válido
       if (
         typeof item.tiempo_estimado_min === 'number' &&
         item.tiempo_estimado_min > 0
@@ -103,10 +100,7 @@ export class MozoPage implements OnInit, OnDestroy {
       .eq('id', pedidoID)
       .maybeSingle();
 
-    if (errorPedido || !pedido) {
-      console.error('Error al obtener el pedido:', errorPedido);
-      return;
-    }
+    if (errorPedido || !pedido) return;
 
     const mesa = parseInt(pedido.mesa_id);
 
@@ -123,19 +117,14 @@ export class MozoPage implements OnInit, OnDestroy {
       .from('detalle_pedido_cliente')
       .insert(inserts);
 
-    if (insertError) {
-      console.error(
-        '❌ Error al insertar productos individuales:',
-        insertError
-      );
+    if (!insertError) {
+      await this.supabase
+        .from('pedidos_pendientes')
+        .update({ estado: 'confirmado' })
+        .eq('id', pedidoID);
+
+      this.obtenerPedidosPendientes();
     }
-
-    await this.supabase
-      .from('pedidos_pendientes')
-      .update({ estado: 'confirmado' })
-      .eq('id', pedidoID);
-
-    this.obtenerPedidosPendientes();
   }
 
   async entregarPedido(mesaID: number) {
@@ -144,10 +133,7 @@ export class MozoPage implements OnInit, OnDestroy {
       .update({ estado: 'entregado' })
       .eq('mesa', mesaID);
 
-    if (error) {
-      console.error('❌ Error al entregar pedido:', error);
-    } else {
-      // También podés marcar el estado global del pedido como 'entregado'
+    if (!error) {
       await this.supabase
         .from('pedidos_pendientes')
         .update({ estado: 'entregado' })
