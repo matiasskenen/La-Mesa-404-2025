@@ -46,11 +46,10 @@
 
     <div class="input-group">
       <ion-item>
-        <ion-input
-          type="number"
-          formControlName="dni"
-          placeholder="DNI"
-        ></ion-input>
+        <ion-input type="number" formControlName="dni" placeholder="DNI"></ion-input>
+        <ion-button fill="clear" slot="end" (click)="escanearQR()">
+          <ion-icon name="qr-code-outline" size="large" color="light"></ion-icon>
+        </ion-button>
       </ion-item>
       <div
         class="error-tooltip"

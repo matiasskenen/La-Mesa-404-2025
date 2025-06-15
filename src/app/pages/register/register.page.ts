@@ -22,9 +22,10 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-// import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { arrowBackCircleOutline } from 'ionicons/icons';
+import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+
 import { addIcons } from 'ionicons';
+import { arrowBackCircleOutline, cameraOutline, qrCodeOutline, trashOutline } from 'ionicons/icons';
 
 
 @Component({
@@ -57,7 +58,10 @@ export class RegisterPage implements OnInit {
   imagenSeleccionada: File | null = null;
   imagenPreviewUrl: string | null = null;
   subiendoImagen = false;
-  qrActivo = false;
+
+  modalAlerta: boolean = false;
+  tituloAlerta: string = '';
+  mensajeAlerta: string = '';
 
   constructor(private router: Router, private fb: FormBuilder) {
     this.formCliente = this.fb.group({
@@ -70,10 +74,10 @@ export class RegisterPage implements OnInit {
       confirmar: ['', Validators.required],
     });
 
-    addIcons({ arrowBackCircleOutline });
+    addIcons({ arrowBackCircleOutline, qrCodeOutline, trashOutline, cameraOutline});
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   volverAtras() {
     window.history.back();
@@ -141,55 +145,6 @@ export class RegisterPage implements OnInit {
     this.imagenPreviewUrl = null;
   }
 
-  async leerQrDni() {
-    // this.qrActivo = true;
-    // this.mensajeError = '';
-
-    // try {
-    //   const permiso = await BarcodeScanner.checkPermission({ force: true });
-    //   if (!permiso.granted) {
-    //     this.mensajeError = 'No se otorgó permiso a la cámara.';
-    //     return;
-    //   }
-
-    //   BarcodeScanner.hideBackground();
-    //   document.body.classList.add('qr-activo'); // 👈 activa fondo oscuro + botón cancelar
-
-    //   const resultado = await BarcodeScanner.startScan();
-
-    //   BarcodeScanner.showBackground();
-    //   document.body.classList.remove('qr-activo');
-
-    //   if (resultado.hasContent) {
-    //     const datos = resultado.content.split('@');
-    //     if (datos.length > 5) {
-    //       this.formCliente.patchValue({
-    //         apellido: datos[1],
-    //         nombre: datos[2],
-    //         dni: datos[4],
-    //       });
-    //     } else {
-    //       this.mensajeError = '❌ QR no válido o incompleto.';
-    //     }
-    //   } else {
-    //     this.mensajeError = '❌ No se detectó ningún código.';
-    //   }
-    // } catch (error) {
-    //   this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
-    //   BarcodeScanner.showBackground();
-    //   document.body.classList.remove('qr-activo');
-    // }
-
-    // this.qrActivo = false;
-  }
-
-  // qrActivo = false;
-
-  cancelarQr() {
-    // BarcodeScanner.showBackground();
-    // BarcodeScanner.stopScan();
-    // this.qrActivo = false;
-  }
 
   async guardarCliente() {
     const c = this.formCliente.value;
@@ -276,65 +231,55 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  modalAlerta = false;
-  tituloAlerta = '';
-  mensajeAlerta = '';
-
-  mostrarModalTest() {
-    this.tituloAlerta = 'Test exitoso';
-    this.mensajeAlerta = 'El sistema está respondiendo correctamente.';
-    this.modalAlerta = true;
+  mostrarModalAlerta(mostrar: boolean, titulo: string = '', mensaje: string = '') {
+    if (mostrar) {
+      this.mensajeAlerta = mensaje;
+      this.tituloAlerta = titulo;
+    }
+    this.modalAlerta = mostrar;
   }
 
-  mostrarModalAlerta(valor: boolean) {
-    this.modalAlerta = valor;
+async escanearQR() {
+  try {
+    const { barcodes } = await BarcodeScanner.scan();
+    const claveQR = barcodes[0]?.rawValue;
+
+    if (!claveQR) {
+      this.mostrarModalAlerta(true, 'Error', 'No se detectó un código QR válido.');
+      return;
+    }
+
+    // Intentar extraer DNI de ambos formatos
+    let dni: string | null = null;
+
+    // Formato 1: buscar el 5º campo (separado por @) (DNI NUEVO)
+    const campos = claveQR.split('@');
+    if (campos.length > 4 && /^\d{7,8}$/.test(campos[4])) {
+      dni = campos[4];
+    }
+
+    // Si no se encontró, intentar Formato 2: buscar primer número de 7 u 8 cifras entre @ (DNI VIEJO)
+    if (!dni) {
+      const matchFormato2 = claveQR.match(/@(\d{7,8})\s+@/);
+      if (matchFormato2) {
+        dni = matchFormato2[1];
+      }
+    }
+
+    if (dni) {
+      // Setear el dni en el input
+      this.formCliente.get('dni')?.setValue(dni);
+
+      this.mostrarModalAlerta(true, 'Éxito', `QR correcto, DNI ${dni} cargado.`);
+    } else {
+      this.mostrarModalAlerta(true, 'Error', 'No se pudo extraer un DNI válido del QR.');
+    }
+
+  } catch (err) {
+    console.error(err);
+    this.mostrarModalAlerta(true, 'Error', 'Hubo un problema al escanear el QR.');
   }
+}
 
-  // async leerQrDni() {
-  //   this.qrActivo = true;
-  //   this.mensajeError = '';
 
-  //   try {
-  //     const permiso = await BarcodeScanner.checkPermission({ force: true });
-  //     if (!permiso.granted) {
-  //       this.mensajeError = 'No se otorgó permiso a la cámara.';
-  //       return;
-  //     }
-
-  //     BarcodeScanner.hideBackground();
-  //     document.body.classList.add('qr-activo');
-
-  //     const resultado = await BarcodeScanner.startScan();
-
-  //     BarcodeScanner.showBackground();
-  //     document.body.classList.remove('qr-activo');
-
-  //     if (resultado.hasContent) {
-  //       const datos = resultado.content.split('@');
-  //       if (datos.length > 5) {
-  //         this.formCliente.patchValue({
-  //           apellido: datos[1],
-  //           nombre: datos[2],
-  //           dni: datos[4],
-  //         });
-  //       } else {
-  //         this.mensajeError = '❌ QR no válido o incompleto.';
-  //       }
-  //     } else {
-  //       this.mensajeError = '❌ No se detectó ningún código.';
-  //     }
-  //   } catch {
-  //     this.mensajeError = '❌ Escaneo cancelado o error inesperado.';
-  //     BarcodeScanner.showBackground();
-  //     document.body.classList.remove('qr-activo');
-  //   }
-
-  //   this.qrActivo = false;
-  // }
-
-  // cancelarQr() {
-  //   BarcodeScanner.showBackground();
-  //   BarcodeScanner.stopScan();
-  //   this.qrActivo = false;
-  // }
 }
