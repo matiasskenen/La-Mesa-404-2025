@@ -137,25 +137,8 @@ ion-button[color="danger"] {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
-.alerta-flotante {
-  background: #2ecc71; /* verde éxito */
-  border-radius: 12px;
-  padding: 1.2rem;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  color: white; /* texto blanco */
-}
+/* === ALERTA CON CLASE DINAMICA === */
 
-.boton-cerrar-alerta {
-  margin-top: 1rem;
-  --background: white; /* fondo blanco */
-  --color: #2ecc71; /* texto verde */
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  --border-radius: 10px;
-}
 .alerta-overlay {
   position: fixed;
   top: 0;
@@ -169,3 +152,33 @@ ion-button[color="danger"] {
   align-items: center;
   justify-content: center;
 }
+
+.alerta-flotante {
+  border-radius: 12px;
+  padding: 1.2rem;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.boton-cerrar-alerta {
+  margin-top: 1rem;
+  --background: white;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  --border-radius: 10px;
+}
+
+/* ✅ Colores dinámicos según clase */
+.exito {
+  background: #2ecc71; // fondo verde
+  --color: #2ecc71; // texto botón verde
+}
+
+.error {
+  background: #f44336; // fondo rojo
+  --color: #f44336; // texto botón rojo
+}
+
