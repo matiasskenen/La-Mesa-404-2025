@@ -62,6 +62,7 @@ export class RegisterPage implements OnInit {
   modalAlerta: boolean = false;
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
+  tipoAlerta: 'exito' | 'error' = 'exito'; // o también tipoAlerta: string = 'exito';
 
   constructor(private router: Router, private fb: FormBuilder) {
     this.formCliente = this.fb.group({
@@ -231,13 +232,18 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  mostrarModalAlerta(mostrar: boolean, titulo: string = '', mensaje: string = '') {
-    if (mostrar) {
-      this.mensajeAlerta = mensaje;
-      this.tituloAlerta = titulo;
-    }
-    this.modalAlerta = mostrar;
+ mostrarModalAlerta(mostrar: boolean, titulo?: string, mensaje?: string) {
+  this.modalAlerta = mostrar;
+  this.tituloAlerta = titulo || '';
+  this.mensajeAlerta = mensaje || '';
+  
+  // Detectar si es un error o éxito según el título
+  if (titulo?.toLowerCase().includes('error')) {
+    this.tipoAlerta = 'error';
+  } else {
+    this.tipoAlerta = 'exito';
   }
+}
 
 async escanearQR() {
   try {

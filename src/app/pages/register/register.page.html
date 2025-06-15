@@ -173,18 +173,20 @@
   </form>
 
   <!-- ✅ MODAL ALERTA -->
-  <div class="alerta-overlay" *ngIf="modalAlerta">
-    <div class="alerta-flotante">
-      <h2>{{ tituloAlerta }}</h2>
-      <p>{{ mensajeAlerta }}</p>
-      <ion-button
-        size="small"
-        expand="block"
-        class="boton-cerrar-alerta"
-        (click)="mostrarModalAlerta(false)"
-      >
-        Aceptar
-      </ion-button>
-    </div>
+<div class="alerta-overlay" *ngIf="modalAlerta">
+  <div class="alerta-flotante" [ngClass]="tipoAlerta">
+    <h2>{{ tituloAlerta }}</h2>
+    <p>{{ mensajeAlerta }}</p>
+    <ion-button
+      size="small"
+      expand="block"
+      class="boton-cerrar-alerta"
+      [ngClass]="tipoAlerta"
+      (click)="mostrarModalAlerta(false)"
+    >
+      Aceptar
+    </ion-button>
   </div>
+</div>
+
 </ion-content>
