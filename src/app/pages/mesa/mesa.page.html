@@ -34,8 +34,7 @@
 
     <!-- Acciones si ya está verificado -->
     <div class="scanner-container" *ngIf="mesaVerificada">
-      <!-- MOSTRAR MESA GRANDE si fue verificada -->
-      <div class="mesa-numero" *ngIf="mesaVerificada">
+      <div class="mesa-numero">
         <p>{{ mesaAsignada }}</p>
       </div>
 
@@ -45,16 +44,29 @@
         alt="Mesa confirmada"
       ></ion-img>
 
+      <!-- Mostrar REALIZAR PEDIDO solo si no hay pedido -->
       <ion-button
         expand="block"
         class="boton-opcion"
-        [routerLink]="!tienePedidoPendiente ? '/menu' : null"
-        [disabled]="modalAlerta || tienePedidoPendiente"
+        routerLink="/menu"
+        *ngIf="estadoPedido === 'ninguno'"
+        [disabled]="modalAlerta"
       >
-        {{ tienePedidoPendiente ? 'Pedido en espera de confirmación' : 'Realizar
-        pedido' }}
+        Realizar pedido
       </ion-button>
 
+      <!-- Mostrar VER ESTADO solo si hay pedido pendiente o confirmado -->
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        (click)="verEstadoDelPedido()"
+        *ngIf="estadoPedido !== 'ninguno'"
+        [disabled]="modalAlerta"
+      >
+        Ver estado del pedido
+      </ion-button>
+
+      <!-- Botón para consultar al mozo -->
       <ion-button
         expand="block"
         class="boton-opcion"
@@ -66,11 +78,11 @@
       </ion-button>
     </div>
 
-    <!-- Bloqueador + Alerta flotante -->
+    <!-- Alerta flotante -->
     <div class="alerta-overlay" *ngIf="modalAlerta">
       <div class="alerta-flotante">
         <h2>{{ tituloAlerta }}</h2>
-        <p>{{ mensajeAlerta }}</p>
+        <pre>{{ mensajeAlerta }}</pre>
         <ion-button
           size="small"
           expand="block"
@@ -83,3 +95,50 @@
     </div>
   </div>
 </ion-content>
+
+<!-- BOTONES DE PRUEBA -->
+<div class="botones-test">
+  <ion-button
+    fill="outline"
+    size="small"
+    color="success"
+    (click)="simularQR(true)"
+  >
+    Simular QR correcto
+  </ion-button>
+  <ion-button
+    fill="outline"
+    size="small"
+    color="danger"
+    (click)="simularQR(false)"
+  >
+    Simular QR incorrecto
+  </ion-button>
+</div>
+
+<div class="botones-test">
+  <ion-button
+    fill="outline"
+    size="small"
+    color="warning"
+    (click)="simularCambioEstadoPedido('pendiente')"
+  >
+    Simular pedido pendiente
+  </ion-button>
+  <ion-button
+    fill="outline"
+    size="small"
+    color="tertiary"
+    (click)="simularCambioEstadoPedido('confirmado')"
+  >
+    Simular pedido confirmado
+  </ion-button>
+  <ion-button
+    fill="outline"
+    size="small"
+    color="medium"
+    (click)="simularCambioEstadoPedido('ninguno')"
+  >
+    Reset estado de pedido
+  </ion-button>
+</div>

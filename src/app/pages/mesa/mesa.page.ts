@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -21,7 +21,7 @@ import {
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
-export class MesaPage implements OnInit {
+export class MesaPage implements OnInit, OnDestroy {
   canalPedido: RealtimeChannel | null = null;
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
@@ -32,7 +32,8 @@ export class MesaPage implements OnInit {
   modalAlerta: boolean = false;
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
-  tienePedidoPendiente: boolean = false;
+
+  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' = 'ninguno';
 
   qrEscaneado: string = '';
   numeroQRextraido: string = '';
@@ -44,10 +45,43 @@ export class MesaPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.mesaAsignada = params['mesa'];
-      this.verificarPedidoPendiente();
     });
 
     this.escucharEstadoPedido();
+  }
+
+  async ionViewWillEnter() {
+    await this.verificarPedido();
+  }
+
+  ngOnDestroy() {
+    this.canalPedido?.unsubscribe();
+  }
+
+  async verificarPedido() {
+    const email = this.auth.usuarioActual?.email;
+    if (!email) return;
+
+    const { data, error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .select('estado')
+      .eq('cliente_id', email)
+      .eq('mesa_id', this.mesaAsignada) // ✅ agregado
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!error && data) {
+      if (data.estado === 'pendiente_confirmacion') {
+        this.estadoPedido = 'pendiente';
+      } else if (data.estado === 'confirmado') {
+        this.estadoPedido = 'confirmado';
+      } else {
+        this.estadoPedido = 'ninguno';
+      }
+    } else {
+      this.estadoPedido = 'ninguno';
+    }
   }
 
   escucharEstadoPedido() {
@@ -67,33 +101,23 @@ export class MesaPage implements OnInit {
         (payload) => {
           const nuevoEstado = payload.new['estado'];
           if (nuevoEstado === 'confirmado') {
+            this.estadoPedido = 'confirmado';
             this.mostrarModalAlerta(
               true,
               'Pedido confirmado',
               'Tu pedido fue aceptado por el mozo.'
             );
+          } else if (nuevoEstado === 'pendiente_confirmacion') {
+            this.estadoPedido = 'pendiente';
+            this.mostrarModalAlerta(
+              true,
+              'Pedido pendiente',
+              'Tu pedido está esperando confirmación del mozo.'
+            );
           }
         }
       )
       .subscribe();
-  }
-
-  ngOnDestroy() {
-    this.canalPedido?.unsubscribe();
-  }
-
-  async verificarPedidoPendiente() {
-    const email = this.auth.usuarioActual?.email;
-    if (!email) return;
-
-    const { data, error } = await this.auth.sb.supabase
-      .from('pedidos_pendientes')
-      .select('*')
-      .eq('cliente_id', email)
-      .eq('estado', 'pendiente_confirmacion')
-      .maybeSingle();
-
-    this.tienePedidoPendiente = !!data && !error;
   }
 
   async escanearQR() {
@@ -118,12 +142,23 @@ export class MesaPage implements OnInit {
       this.numeroQRextraido = numeroQR || '';
 
       if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
-        this.mostrarModalAlerta(
-          true,
-          'Éxito',
-          'QR correcto, estás en tu mesa.'
-        );
         this.mesaVerificada = true;
+        await this.verificarPedido();
+
+        let titulo = 'Mesa verificada';
+        let mensaje = 'Bienvenido nuevamente.';
+
+        if (this.estadoPedido === 'confirmado') {
+          titulo = 'Pedido confirmado';
+          mensaje = 'Tu pedido fue aceptado. En breve llegará a tu mesa.';
+        } else if (this.estadoPedido === 'pendiente') {
+          titulo = 'Pedido en espera';
+          mensaje = 'Tu pedido está esperando confirmación del mozo.';
+        } else {
+          mensaje = 'Podés comenzar tu pedido desde el menú.';
+        }
+
+        this.mostrarModalAlerta(true, titulo, mensaje);
       } else {
         this.mostrarModalAlerta(
           true,
@@ -143,6 +178,75 @@ export class MesaPage implements OnInit {
     }
   }
 
+  async verEstadoDelPedido() {
+    const email = this.auth.usuarioActual?.email;
+    if (!email) return;
+
+    const { data: pedido, error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .select('id')
+      .eq('cliente_id', email)
+      .eq('mesa_id', this.mesaAsignada) // ✅ agregado
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!pedido || error) {
+      this.mostrarModalAlerta(
+        true,
+        'Sin pedido',
+        'No hay pedidos activos para mostrar.'
+      );
+      return;
+    }
+
+    const { data: detalle, error: errorDetalle } = await this.auth.sb.supabase
+      .from('pedido_detalle_estado')
+      .select('sector, estado, tiempo_estimado_min')
+      .eq('pedido_id', pedido.id);
+
+    if (errorDetalle || !detalle || detalle.length === 0) {
+      this.mostrarModalAlerta(
+        true,
+        'Sin detalles',
+        'No hay información disponible del pedido.'
+      );
+      return;
+    }
+
+    const resumen: {
+      [key: string]: { listos: number; total: number; maxTiempo: number };
+    } = {};
+
+    for (const item of detalle) {
+      const sector = item.sector;
+      if (!resumen[sector]) {
+        resumen[sector] = { listos: 0, total: 0, maxTiempo: 0 };
+      }
+
+      resumen[sector].total++;
+      if (item.estado === 'listo') resumen[sector].listos++;
+      if (item.tiempo_estimado_min > resumen[sector].maxTiempo) {
+        resumen[sector].maxTiempo = item.tiempo_estimado_min;
+      }
+    }
+
+    let mensajeFinal = '';
+
+    for (const sector in resumen) {
+      const datos = resumen[sector];
+      const nombre = sector.charAt(0).toUpperCase() + sector.slice(1);
+      const mensaje =
+        datos.listos === datos.total
+          ? 'Listo para entregar'
+          : `${datos.maxTiempo} min`;
+
+      mensajeFinal += `${nombre}: ${mensaje}\n`;
+    }
+
+    this.mostrarModalAlerta(true, 'Estado del pedido', mensajeFinal.trim());
+  }
+
   volverAtras() {
     this.auth.cerrarSesion();
   }
@@ -159,14 +263,36 @@ export class MesaPage implements OnInit {
     this.modalAlerta = mostrar;
   }
 
+  simularCambioEstadoPedido(
+    nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado'
+  ) {
+    this.estadoPedido = nuevoEstado;
+
+    if (nuevoEstado === 'confirmado') {
+      this.mostrarModalAlerta(
+        true,
+        'Pedido confirmado',
+        'Tu pedido fue aceptado por el mozo.'
+      );
+    } else if (nuevoEstado === 'pendiente') {
+      this.mostrarModalAlerta(
+        true,
+        'Pedido pendiente',
+        'Tu pedido está esperando confirmación.'
+      );
+    } else {
+      this.mostrarModalAlerta(false);
+    }
+  }
+
   simularQR(correcto: boolean) {
     const numeroQR = correcto ? this.mesaAsignada : '9999';
     this.qrEscaneado = 'Simulado';
     this.numeroQRextraido = numeroQR;
 
     if (numeroQR === this.mesaAsignada) {
-      this.mostrarModalAlerta(true, 'Éxito', 'QR correcto, estás en tu mesa.');
       this.mesaVerificada = true;
+      this.mostrarModalAlerta(true, 'Éxito', 'QR correcto, estás en tu mesa.');
     } else {
       this.mostrarModalAlerta(
         true,

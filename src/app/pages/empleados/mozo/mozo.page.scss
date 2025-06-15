@@ -2,8 +2,11 @@
    FONDO GENERAL
 ====================== */
 ion-content::part(scroll) {
-  background-color: #19647e !important;
-  overflow: hidden !important;
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-y: auto !important;
 }
 
 /* ======================
@@ -134,12 +137,41 @@ ion-card-content {
   padding: 1rem;
 }
 
-ion-label h2,
-ion-label p {
+ion-card-content h2 {
+  color: white;
+  font-size: 1.2rem;
   text-align: center;
-  margin: 0;
-  color: #eaf0f1;
-  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ======================
+   LISTA DE PRODUCTOS
+====================== */
+ion-item {
+  --background: transparent !important;
+  --inner-padding-start: 12px;
+  --inner-padding-end: 12px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --min-height: 40px;
+  --inner-border-width: 0;
+  --highlight-color-focused: transparent;
+  --ripple-color: transparent;
+  border: none !important;
+  box-shadow: none !important;
+  margin-bottom: 4px;
+}
+
+ion-item ion-label {
+  color: white;
+  font-size: 0.95rem;
+  white-space: normal;
+  text-align: left;
+}
+
+ion-icon[slot="end"] {
+  font-size: 1.2rem;
+  color: white;
 }
 
 /* ======================
@@ -165,7 +197,7 @@ ion-label p {
 }
 
 .botones-decision ion-button[color="success"] {
-  --background: #2ecc71; /* verde moderno */
+  --background: #2ecc71;
   --color: white;
   border: none;
 }
@@ -180,19 +212,4 @@ ion-label p {
 .botones-decision ion-button[color="danger"]:hover {
   --background: #e74c3c;
   --color: white;
-}
-ion-list,
-ion-item {
-  background: transparent !important;
-  --background: transparent !important;
-  --inner-padding-end: 0;
-  --inner-padding-start: 0;
-  --padding-start: 0;
-  --padding-end: 0;
-  --min-height: 0;
-  --inner-border-width: 0;
-  --highlight-color-focused: transparent;
-  --ripple-color: transparent;
-  box-shadow: none !important;
-  border: none !important;
 }

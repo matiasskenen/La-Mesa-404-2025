@@ -45,7 +45,6 @@ import {
     IonButton,
     IonInput,
     IonItem,
-    IonText,
     IonIcon,
     IonHeader,
     IonToolbar,
@@ -240,7 +239,6 @@ export class RegisterPage implements OnInit {
     }
   }
 
-<<<<<<< HEAD
   mostrarModalAlerta(
     mostrar: boolean,
     titulo: string = '',
@@ -251,20 +249,7 @@ export class RegisterPage implements OnInit {
       this.tituloAlerta = titulo;
     }
     this.modalAlerta = mostrar;
-=======
- mostrarModalAlerta(mostrar: boolean, titulo?: string, mensaje?: string) {
-  this.modalAlerta = mostrar;
-  this.tituloAlerta = titulo || '';
-  this.mensajeAlerta = mensaje || '';
-  
-  // Detectar si es un error o éxito según el título
-  if (titulo?.toLowerCase().includes('error')) {
-    this.tipoAlerta = 'error';
-  } else {
-    this.tipoAlerta = 'exito';
->>>>>>> 18de80f809abaa8df2827e8ccb6d6b6240804e54
   }
-}
 
   async escanearQR() {
     try {
