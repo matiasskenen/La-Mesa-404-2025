@@ -25,8 +25,12 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 import { addIcons } from 'ionicons';
-import { arrowBackCircleOutline, cameraOutline, qrCodeOutline, trashOutline } from 'ionicons/icons';
-
+import {
+  arrowBackCircleOutline,
+  cameraOutline,
+  qrCodeOutline,
+  trashOutline,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-register',
@@ -74,10 +78,15 @@ export class RegisterPage implements OnInit {
       confirmar: ['', Validators.required],
     });
 
-    addIcons({ arrowBackCircleOutline, qrCodeOutline, trashOutline, cameraOutline});
+    addIcons({
+      arrowBackCircleOutline,
+      qrCodeOutline,
+      trashOutline,
+      cameraOutline,
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   volverAtras() {
     window.history.back();
@@ -144,7 +153,6 @@ export class RegisterPage implements OnInit {
     this.imagenSeleccionada = null;
     this.imagenPreviewUrl = null;
   }
-
 
   async guardarCliente() {
     const c = this.formCliente.value;
@@ -231,7 +239,11 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  mostrarModalAlerta(mostrar: boolean, titulo: string = '', mensaje: string = '') {
+  mostrarModalAlerta(
+    mostrar: boolean,
+    titulo: string = '',
+    mensaje: string = ''
+  ) {
     if (mostrar) {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
@@ -239,47 +251,60 @@ export class RegisterPage implements OnInit {
     this.modalAlerta = mostrar;
   }
 
-async escanearQR() {
-  try {
-    const { barcodes } = await BarcodeScanner.scan();
-    const claveQR = barcodes[0]?.rawValue;
+  async escanearQR() {
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      const claveQR = barcodes[0]?.rawValue;
 
-    if (!claveQR) {
-      this.mostrarModalAlerta(true, 'Error', 'No se detectó un código QR válido.');
-      return;
-    }
-
-    // Intentar extraer DNI de ambos formatos
-    let dni: string | null = null;
-
-    // Formato 1: buscar el 5º campo (separado por @) (DNI NUEVO)
-    const campos = claveQR.split('@');
-    if (campos.length > 4 && /^\d{7,8}$/.test(campos[4])) {
-      dni = campos[4];
-    }
-
-    // Si no se encontró, intentar Formato 2: buscar primer número de 7 u 8 cifras entre @ (DNI VIEJO)
-    if (!dni) {
-      const matchFormato2 = claveQR.match(/@(\d{7,8})\s+@/);
-      if (matchFormato2) {
-        dni = matchFormato2[1];
+      if (!claveQR) {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se detectó un código QR válido.'
+        );
+        return;
       }
+
+      // Intentar extraer DNI de ambos formatos
+      let dni: string | null = null;
+
+      // Formato 1: buscar el 5º campo (separado por @) (DNI NUEVO)
+      const campos = claveQR.split('@');
+      if (campos.length > 4 && /^\d{7,8}$/.test(campos[4])) {
+        dni = campos[4];
+      }
+
+      // Si no se encontró, intentar Formato 2: buscar primer número de 7 u 8 cifras entre @ (DNI VIEJO)
+      if (!dni) {
+        const matchFormato2 = claveQR.match(/@(\d{7,8})\s+@/);
+        if (matchFormato2) {
+          dni = matchFormato2[1];
+        }
+      }
+
+      if (dni) {
+        // Setear el dni en el input
+        this.formCliente.get('dni')?.setValue(dni);
+
+        this.mostrarModalAlerta(
+          true,
+          'Éxito',
+          `QR correcto, DNI ${dni} cargado.`
+        );
+      } else {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se pudo extraer un DNI válido del QR.'
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al escanear el QR.'
+      );
     }
-
-    if (dni) {
-      // Setear el dni en el input
-      this.formCliente.get('dni')?.setValue(dni);
-
-      this.mostrarModalAlerta(true, 'Éxito', `QR correcto, DNI ${dni} cargado.`);
-    } else {
-      this.mostrarModalAlerta(true, 'Error', 'No se pudo extraer un DNI válido del QR.');
-    }
-
-  } catch (err) {
-    console.error(err);
-    this.mostrarModalAlerta(true, 'Error', 'Hubo un problema al escanear el QR.');
   }
-}
-
-
 }

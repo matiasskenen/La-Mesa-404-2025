@@ -1,12 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
 import { RouterLink } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
 import { homeOutline } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
+
 @Component({
   selector: 'app-mozo',
   templateUrl: './mozo.page.html',
@@ -20,12 +21,12 @@ import { RealtimeChannel } from '@supabase/supabase-js';
     RouterLink,
   ],
 })
-export class MozoPage implements OnInit {
+export class MozoPage implements OnInit, OnDestroy {
   auth = inject(AuthService);
   supabase = this.auth.sb.supabase;
-  canalPedidos: RealtimeChannel | null = null; // canal tiempo real
+  canalPedidos: RealtimeChannel | null = null;
   pedidos: any[] = [];
-  mostrarPedidos: boolean = false; // 🔁 Mostrar u ocultar pedidos
+  mostrarPedidos: boolean = false;
 
   constructor() {
     addIcons({ homeOutline });
@@ -33,27 +34,11 @@ export class MozoPage implements OnInit {
 
   ngOnInit() {
     this.obtenerPedidosPendientes();
-    this.escucharPedidosEnTiempoReal(); // 👈 activá escucha
+    this.escucharPedidosEnTiempoReal();
   }
 
-  escucharPedidosEnTiempoReal() {
-    this.canalPedidos = this.supabase
-      .channel('pedidos-pendientes-canal')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'pedidos_pendientes',
-        },
-        (payload) => {
-          const nuevo = payload.new;
-          if (nuevo['estado'] === 'pendiente_confirmacion') {
-            this.pedidos.unshift(nuevo);
-          }
-        }
-      )
-      .subscribe();
+  ngOnDestroy() {
+    this.canalPedidos?.unsubscribe();
   }
 
   async obtenerPedidosPendientes() {
@@ -62,7 +47,7 @@ export class MozoPage implements OnInit {
       .select('*')
       .eq('estado', 'pendiente_confirmacion');
 
-    if (!error) {
+    if (!error && data) {
       this.pedidos = data;
     }
   }
@@ -85,11 +70,27 @@ export class MozoPage implements OnInit {
     this.obtenerPedidosPendientes();
   }
 
-  volverAtras() {
-    this.auth.cerrarSesion();
+  escucharPedidosEnTiempoReal() {
+    this.canalPedidos = this.supabase
+      .channel('pedidos-pendientes-canal')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'pedidos_pendientes',
+        },
+        (payload) => {
+          const nuevo = payload.new;
+          if (nuevo['estado'] === 'pendiente_confirmacion') {
+            this.pedidos.unshift(nuevo);
+          }
+        }
+      )
+      .subscribe();
   }
 
-  ngOnDestroy() {
-    this.canalPedidos?.unsubscribe();
+  volverAtras() {
+    this.auth.cerrarSesion();
   }
 }
