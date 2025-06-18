@@ -33,7 +33,8 @@ export class MesaPage implements OnInit, OnDestroy {
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
 
-  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' = 'ninguno';
+  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado' =
+    'ninguno';
 
   qrEscaneado: string = '';
   numeroQRextraido: string = '';
@@ -79,17 +80,18 @@ export class MesaPage implements OnInit, OnDestroy {
       .limit(1)
       .maybeSingle();
 
-    if (data?.estado === 'pendiente_confirmacion') {
-      this.estadoPedido = 'pendiente';
+    if (data?.estado === 'entregado') {
+      this.estadoPedido = 'entregado';
     } else if (data?.estado === 'confirmado') {
       this.estadoPedido = 'confirmado';
+    } else if (data?.estado === 'pendiente_confirmacion') {
+      this.estadoPedido = 'pendiente';
     } else if (data) {
       this.estadoPedido = 'pendiente';
     } else {
       this.estadoPedido = 'ninguno';
     }
   }
-
   escucharEstadoPedido() {
     const email = this.auth.usuarioActual?.email;
     if (!email) return;
@@ -106,6 +108,7 @@ export class MesaPage implements OnInit, OnDestroy {
         },
         (payload) => {
           const nuevoEstado = payload.new['estado'];
+
           if (nuevoEstado === 'confirmado') {
             this.estadoPedido = 'confirmado';
             this.mostrarModalAlerta(
@@ -119,6 +122,13 @@ export class MesaPage implements OnInit, OnDestroy {
               true,
               'Pedido pendiente',
               'Tu pedido está esperando confirmación del mozo.'
+            );
+          } else if (nuevoEstado === 'entregado') {
+            this.estadoPedido = 'entregado';
+            this.mostrarModalAlerta(
+              true,
+              'Pedido entregado',
+              'Tu pedido fue entregado. Podés pagar la cuenta.'
             );
           }
         }

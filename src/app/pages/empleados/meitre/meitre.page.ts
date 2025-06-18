@@ -29,6 +29,7 @@ import {
   IonCard,
   IonCardContent,
   ActionSheetController,
+  AlertController,
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -79,7 +80,11 @@ export class MeitrePage implements OnInit, OnDestroy {
   mesasDisponibles: string[] = ['1', '2', '3', '4'];
   canalEspera: RealtimeChannel | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private alertCtrl: AlertController
+  ) {
     addIcons({ homeOutline });
     this.configurarStatusBar();
     this.formCliente = this.fb.group({
@@ -124,29 +129,62 @@ export class MeitrePage implements OnInit, OnDestroy {
 
   async confirmarIngreso(email: string, aceptar: boolean) {
     if (aceptar) {
-      const { data: maxData } = await this.supabase
-        .from('fila')
-        .select('numero')
-        .order('numero', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      const alert = await this.alertCtrl.create({
+        header: `Asignar mesa`,
+        subHeader: `Cliente: ${email}`,
+        inputs: [
+          {
+            name: 'mesa',
+            type: 'text',
+            cssClass: 'alert-mesa-personalizada',
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+          },
+          {
+            text: 'Asignar',
+            handler: async (data) => {
+              const numeroMesa = data.mesa?.trim();
+              if (!numeroMesa) return;
 
-      const siguienteNumero = (maxData?.numero || 0) + 1;
+              const { data: maxData } = await this.supabase
+                .from('fila')
+                .select('numero')
+                .order('numero', { ascending: false })
+                .limit(1)
+                .maybeSingle();
 
-      const mesa = prompt(`Asignar número de mesa a ${email}:`);
-      if (!mesa) return;
+              const siguienteNumero = (maxData?.numero || 0) + 1;
 
+              await this.supabase.from('fila').insert({
+                email,
+                numero: siguienteNumero,
+                mesa: numeroMesa,
+              });
+
+              await this.supabase
+                .from('espera_local')
+                .update({ estado: 'aceptado' })
+                .eq('email', email);
+
+              this.cargarListaEspera();
+            },
+          },
+        ],
+      });
+
+      await alert.present();
+    } else {
       await this.supabase
-        .from('fila')
-        .insert({ email, numero: siguienteNumero, mesa });
+        .from('espera_local')
+        .update({ estado: 'rechazado' })
+        .eq('email', email);
+
+      this.cargarListaEspera();
     }
-
-    await this.supabase
-      .from('espera_local')
-      .update({ estado: aceptar ? 'aceptado' : 'rechazado' })
-      .eq('email', email);
-
-    this.cargarListaEspera();
   }
 
   escucharEsperaEnTiempoReal() {

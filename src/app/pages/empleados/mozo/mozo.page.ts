@@ -49,13 +49,25 @@ export class MozoPage implements OnInit, OnDestroy {
 
     if (!error && data) {
       for (const pedido of data) {
+        // Agrega el resumen por sector (ej: Cocinero: 20min, Bartender: Listo para entregar)
         pedido.resumen_sector = await this.generarResumenPorSector(
           pedido.mesa_id
         );
+
+        // Agrega el detalle individual de cada producto del pedido
+        pedido.detalle = await this.obtenerDetallePedido(pedido.mesa_id);
       }
 
       this.pedidos = data;
     }
+  }
+
+  async obtenerDetallePedido(mesa: number) {
+    const { data } = await this.supabase
+      .from('detalle_pedido_cliente')
+      .select('producto_nombre, sector, estado, tiempo_estimado_min')
+      .eq('mesa', mesa);
+    return data || [];
   }
 
   async generarResumenPorSector(mesa: number) {

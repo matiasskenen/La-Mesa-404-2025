@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -31,10 +30,12 @@ import {
   IonButtons,
   IonSelect,
   IonSelectOption,
+  IonCard,
+  IonCardContent,
 } from '@ionic/angular/standalone';
-import { homeOutline } from 'ionicons/icons';
 
-import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constructor
+import { homeOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-administrador',
@@ -42,16 +43,15 @@ import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constru
   styleUrls: ['./administrador.page.scss'],
   standalone: true,
   imports: [
-    IonIcon,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     IonContent,
     IonButton,
     IonItem,
-    IonLabel,
     IonList,
     IonText,
+    IonIcon,
     IonTextarea,
     IonModal,
     IonHeader,
@@ -61,6 +61,8 @@ import { addIcons } from 'ionicons'; //Funcion para agregar iconos en el constru
     IonInput,
     IonSelect,
     IonSelectOption,
+    IonCard,
+    IonCardContent,
   ],
 })
 export class AdministradorPage implements OnInit {
@@ -83,7 +85,7 @@ export class AdministradorPage implements OnInit {
     private fb: FormBuilder,
     private location: Location
   ) {
-    addIcons({ homeOutline }); //nombre de los iconos en el constructor
+    addIcons({ homeOutline });
 
     this.formDuenio = this.fb.group({
       nombre: ['', Validators.required],

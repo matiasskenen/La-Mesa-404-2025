@@ -122,26 +122,46 @@ ion-header ion-toolbar {
 ====================== */
 ion-card {
   background: #d34343;
-  border: 5px solid white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   margin-bottom: 1rem;
   max-width: 320px;
+  border: none;
+  box-shadow: none;
 }
 
 ion-card-content {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  align-items: center;
+  gap: 0.5rem;
+  align-items: stretch;
   padding: 1rem;
 }
 
 ion-card-content h2 {
   color: white;
-  font-size: 1.2rem;
-  text-align: center;
-  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+  text-align: left;
+  margin: 0;
+}
+
+/* ======================
+   SCROLL SOLO DENTRO DE CARDS
+====================== */
+.scroll-card {
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  padding-right: 4px;
+}
+
+.scroll-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-card::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
 }
 
 /* ======================
@@ -160,13 +180,17 @@ ion-item {
   border: none !important;
   box-shadow: none !important;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
 }
-
 ion-item ion-label {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
   color: white;
   font-size: 0.95rem;
-  white-space: normal;
   text-align: left;
+  width: 100%;
 }
 
 ion-icon[slot="end"] {
@@ -188,25 +212,22 @@ ion-icon[slot="end"] {
 .botones-decision ion-button {
   flex: 1;
   max-width: 140px;
-  height: 48px;
+  height: 42px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 0.5px;
-  border-radius: 12px;
-  --box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .botones-decision ion-button[color="success"] {
   --background: #2ecc71;
   --color: white;
-  border: none;
 }
 
 .botones-decision ion-button[color="danger"] {
   --background: transparent;
   --color: #e74c3c;
   border: 2px solid #e74c3c;
-  transition: background-color 0.3s ease;
 }
 
 .botones-decision ion-button[color="danger"]:hover {

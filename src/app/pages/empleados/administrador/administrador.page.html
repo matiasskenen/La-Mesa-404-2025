@@ -193,28 +193,23 @@
       <p class="texto-blanco">No hay clientes pendientes de aprobación.</p>
     </div>
     <ion-list *ngIf="clientesPendientes.length > 0">
-      <ion-item *ngFor="let cliente of clientesPendientes">
-        <ion-label>
+      <ion-card *ngFor="let cliente of clientesPendientes" class="card-cliente">
+        <ion-card-content>
           <h3>{{ cliente.nombre }} {{ cliente.apellido }}</h3>
           <p>{{ cliente.email }}</p>
           <p>DNI: {{ cliente.dni }}</p>
           <p>CUIL: {{ cliente.cuil }}</p>
-        </ion-label>
-        <ion-button
-          slot="end"
-          color="success"
-          (click)="aprobarCliente(cliente)"
-        >
-          Aprobar
-        </ion-button>
-        <ion-button
-          slot="end"
-          color="danger"
-          (click)="abrirModalRechazo(cliente)"
-        >
-          Rechazar
-        </ion-button>
-      </ion-item>
+
+          <div class="botones-aprobacion">
+            <ion-button color="success" (click)="aprobarCliente(cliente)">
+              Aprobar
+            </ion-button>
+            <ion-button color="danger" (click)="abrirModalRechazo(cliente)">
+              Rechazar
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
     </ion-list>
     <ion-button class="boton-volver" (click)="formActivo = null">
       VOLVER
@@ -233,7 +228,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <p>
+        <p class="ion-text-center">
           ¿Estás seguro de que querés rechazar al cliente
           <strong
             >{{ clienteSeleccionado?.nombre }} {{ clienteSeleccionado?.apellido

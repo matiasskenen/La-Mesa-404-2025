@@ -117,3 +117,37 @@ ion-header ion-toolbar {
   color: white;
   font-size: 84px;
 }
+
+.card-cliente {
+  width: 90%;
+  max-width: 320px;
+  margin: 10px auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-cliente h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.card-cliente p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.botones-aprobacion {
+  justify-content: space-between;
+  margin-top: 10px;
+}
+ion-list {
+  background: transparent !important;
+  --background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ion-text-center {
+  color: white !important;
+}

@@ -25,8 +25,6 @@ export class RedireccionGuard implements CanActivate {
       .eq('id', userId)
       .single();
 
-      
-
     switch (usuario?.rol) {
       case 'cliente':
         this.router.navigateByUrl('/clientes');
@@ -42,10 +40,10 @@ export class RedireccionGuard implements CanActivate {
         this.router.navigateByUrl('/mozo');
         break;
       case 'supervisor':
-        this.router.navigateByUrl('/supervisor-home');
+        this.router.navigateByUrl('/administrador');
         break;
       case 'bartender':
-        this.router.navigateByUrl('/bartender-home');
+        this.router.navigateByUrl('/bartender');
         break;
       case 'meitre':
         this.router.navigateByUrl('/meitre');

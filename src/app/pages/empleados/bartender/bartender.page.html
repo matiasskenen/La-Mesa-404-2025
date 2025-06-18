@@ -1,33 +1,15 @@
-<ion-content [fullscreen]="true" class="fondo">
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary" class="toolbar-center">
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon name="home-outline" class="icono-home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
-  <div class="header-bar">
-    <img src="assets/icons/barman.png" class="avatar" />
-    <span class="titulo">BARMAN</span>
-    <ion-button fill="clear" class="logout-btn">
-      <ion-icon name="power" slot="icon-only"></ion-icon>
-    </ion-button>
+<ion-content fullscreen="true" class="fondo ion-padding">
+  <div class="formulario">
+    <ion-text class="texto-blanco"> </ion-text>
   </div>
-
-  <div class="botones-container">
-    <ion-button expand="block" class="boton-opcion" color="light">
-      <img src="assets/icons/alta_producto.png" />
-      ALTA DE PRODUCTO
-    </ion-button>
-
-    <ion-button expand="block" class="boton-opcion" color="light">
-      <img src="assets/icons/ver_pedidos.png" />
-      VER PEDIDOS PENDIENTES
-    </ion-button>
-
-    <ion-button expand="block" class="boton-opcion" color="light">
-      <img src="assets/icons/relevamiento.png" />
-      RELEVAMIENTO LUGAR DE TRABAJO
-    </ion-button>
-
-    <ion-button expand="block" class="boton-opcion" color="light">
-      <img src="assets/icons/encuestas.png" />
-      VER ENCUESTAS DE OTROS EMPLEADOS
-    </ion-button>
-  </div>
-
 </ion-content>
