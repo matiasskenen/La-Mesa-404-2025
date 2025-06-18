@@ -38,4 +38,20 @@
       <h2>{{ mensajeEstado }}</h2>
     </ion-text>
   </div>
+
+ <!-- alerta-->
+  <div class="alerta-overlay" *ngIf="modalAlerta">
+      <div class="alerta-flotante">
+        <h2>{{ tituloAlerta }}</h2>
+        <p>{{ mensajeAlerta }}</p>
+        <ion-button
+          size="small"
+          expand="block"
+          class="boton-cerrar-alerta"
+          (click)="mostrarModalAlerta(false)"
+        >
+          Aceptar
+        </ion-button>
+      </div>
+    </div>
 </ion-content>

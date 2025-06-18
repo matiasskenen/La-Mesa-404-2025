@@ -30,6 +30,10 @@ export class ClientesPage {
   estadoCliente: 'ninguno' | 'esperando' | 'aceptado' = 'ninguno';
   mensajeEstado: string = '';
 
+  modalAlerta: boolean = false;
+  tituloAlerta: string = '';
+  mensajeAlerta: string = '';
+
   //notificaciones-----------
   ns = inject(NotificationsService);
 
@@ -54,35 +58,41 @@ export class ClientesPage {
       const claveQR = barcodes[0]?.rawValue;
 
       if (!claveQR) {
-        this.mostrarAlerta('Error', 'No se detectó un código QR válido.');
+        this.mostrarModalAlerta(true, 'Error', 'No se detectó un código QR válido.')
         return;
       }
 
-      const { data: userData } = await this.auth.sb.supabase.auth.getUser();
-      const email = userData?.user?.email || 'anonimo';
+      // si el codigo es correcto
+      if(claveQR.toString() === 'ingreso-mesa404-01'){
 
-      const { error } = await this.auth.sb.supabase
-        .from('espera_local')
-        .insert({
-          email,
-          clave: claveQR,
-          estado: 'pendiente',
-        });
-
-      if (error) {
-        this.mostrarAlerta(
-          'Error',
-          'No se pudo registrar en la lista de espera.'
-        );
-      } else {
-        await Haptics.vibrate();
-        this.estadoCliente = 'esperando';
-        this.mensajeEstado =
-          'Estás en lista de espera. Un maître te asignará una mesa.';
+        const { data: userData } = await this.auth.sb.supabase.auth.getUser();
+        const email = userData?.user?.email || 'anonimo';
+  
+        const { error } = await this.auth.sb.supabase
+          .from('espera_local')
+          .insert({
+            email,
+            clave: claveQR,
+            estado: 'pendiente',
+          });
+  
+        if (error) {
+          this.mostrarModalAlerta(true, 'Error', 'No se pudo registrar en la lista de espera.')
+        } else {
+          await Haptics.vibrate();
+          this.estadoCliente = 'esperando';
+          this.mensajeEstado =
+            'Estás en lista de espera. Un maítre te asignará una mesa.';
+        }
       }
+      else{
+        this.mostrarModalAlerta(true, 'Error', 'Este QR no corresponde al ingreso del local.')
+      }
+
     } catch (err) {
       console.error(err);
-      this.mostrarAlerta('Error', 'Hubo un problema al escanear el QR.');
+
+      this.mostrarModalAlerta(true, 'Error', 'Hubo un problema al escanear el QR.')
     } finally {
       this.procesando = false;
     }
@@ -184,5 +194,17 @@ export class ClientesPage {
     }).catch(error =>{
       console.log("No se envió la notificacion por error: " + JSON.stringify(error));
     })
+  }
+
+ mostrarModalAlerta(
+    mostrar: boolean,
+    titulo: string = '',
+    mensaje: string = ''
+  ) {
+    if (mostrar) {
+      this.mensajeAlerta = mensaje;
+      this.tituloAlerta = titulo;
+    }
+    this.modalAlerta = mostrar;
   }
 }
