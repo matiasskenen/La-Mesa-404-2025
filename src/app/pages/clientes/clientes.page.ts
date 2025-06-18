@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, AlertController } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Haptics } from '@capacitor/haptics';
 import { RealtimeChannel } from '@supabase/supabase-js';
-import { homeOutline, qrCodeOutline, restaurantOutline } from 'ionicons/icons';
+import { homeOutline, newspaperOutline, qrCodeOutline, restaurantOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { INotification } from 'src/app/interfaces/notification.model';
@@ -16,7 +16,7 @@ import { INotification } from 'src/app/interfaces/notification.model';
   templateUrl: './clientes.page.html',
   styleUrls: ['./clientes.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule],
+  imports: [CommonModule, IonicModule, RouterLink],
 })
 export class ClientesPage {
   auth = inject(AuthService);
@@ -40,7 +40,7 @@ export class ClientesPage {
   }
   //-------------------------
   constructor(private routerParametro: Router) {
-    addIcons({ qrCodeOutline, restaurantOutline, homeOutline });
+    addIcons({ qrCodeOutline, restaurantOutline, homeOutline, newspaperOutline});
   }
 
   ngOnInit() {

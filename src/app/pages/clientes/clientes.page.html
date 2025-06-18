@@ -20,9 +20,14 @@
       [disabled]="procesando"
     >
       <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar al
-      local' }}
+      {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar al local' }}
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
+    </ion-button>
+
+    <!-- Boton encuestas -->
+    <ion-button expand="block"class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
+      <ion-icon name="newspaper-outline" slot="start"></ion-icon>
+      Ver encuestas de otros clientes
     </ion-button>
   </div>
 

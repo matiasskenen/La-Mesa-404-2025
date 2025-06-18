@@ -76,5 +76,9 @@ export const routes: Routes = [
     path: 'chat',
     loadComponent: () => import('./pages/chat/chat.page').then( m => m.ChatPage)
   },
+  {
+    path: 'resultados-encuestas',
+    loadComponent: () => import('./pages/resultados-encuestas/resultados-encuestas.page').then( m => m.ResultadosEncuestasPage)
+  },
 
 ];

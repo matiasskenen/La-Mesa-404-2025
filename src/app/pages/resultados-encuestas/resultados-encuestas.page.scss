@@ -1,0 +1,39 @@
+ion-content {
+    --background: none;
+  background-color: #000000; /* Color de fondo */
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-y: auto !important;
+}
+
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19; // color de fondo
+  --color: black; // color del ícono (texto)
+  border-radius: 20%; // opcional si lo querés circular
+  width: 58px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  color: white;
+  font-size: 100px;
+}
