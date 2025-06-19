@@ -12,7 +12,6 @@ ion-content::part(scroll) {
 /* ======================
    CONTENEDORES
 ====================== */
-.formulario,
 .menu-container {
   display: flex;
   flex-direction: column;
@@ -33,17 +32,18 @@ ion-list {
   background: transparent !important;
 }
 
-.formulario {
-  background-color: transparent !important;
-}
+
 
 /* ======================
    TEXTOS
 ====================== */
 .texto-blanco {
-  color: white;
-  text-align: center;
-  font-size: 1rem;
+  font-size: 1.5rem; 
+  font-weight:bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ======================
@@ -62,6 +62,7 @@ ion-header ion-toolbar {
   display: flex;
 }
 
+
 .boton-home {
   --background: #d22f19;
   --color: white;
@@ -69,8 +70,6 @@ ion-header ion-toolbar {
   width: 48px;
   height: 48px;
   padding: 0;
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -96,26 +95,7 @@ ion-header ion-toolbar {
   margin-bottom: 0.5rem;
 }
 
-.boton-volver {
-  --background: white;
-  --color: black;
-  font-weight: bold;
-  font-size: 0.88rem;
-  text-transform: uppercase;
-  border-radius: 10px;
-  margin-top: 0.3rem;
-  width: 100%;
-  max-width: 200px;
-  height: 40px;
-  box-shadow: 0 0 0 2px white;
-  transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
-}
 
-.boton-volver:hover {
-  --background: #ffffff;
-  --color: #19647e;
-  box-shadow: 0 0 0 2px #19647e;
-}
 
 /* ======================
    CARDS DE PEDIDOS
@@ -138,7 +118,7 @@ ion-card-content {
 }
 
 ion-card-content h2 {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 1.05rem;
   font-weight: bold;
   text-align: left;
@@ -187,7 +167,7 @@ ion-item ion-label {
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
-  color: white;
+  color: black;
   font-size: 0.95rem;
   text-align: left;
   width: 100%;
@@ -205,7 +185,6 @@ ion-icon[slot="end"] {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1rem;
   width: 100%;
 }
 
@@ -233,4 +212,75 @@ ion-icon[slot="end"] {
 .botones-decision ion-button[color="danger"]:hover {
   --background: #e74c3c;
   --color: white;
+}
+
+/* ======================
+   Agregado tomi
+====================== */
+ .contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .custom-card {
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    margin: 8px;
+    background-color: red;
+  }
+
+  .contenido-listado {
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+  }
+
+  .mesa-demora {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-mesa,
+.titulo-demora {
+  font-size: 1.2rem; // mismo tamaño que ion-card-title
+  font-weight: bolder;
+  color: black;
+}
+
+ion-card-header{
+  padding: 0px;
+}
+
+//Colores dinamicos para la CARD del pedido
+.pendiente_confirmacion {
+  background: #ffee8c; // amarillo
+}
+
+.confirmado {
+  background: #2ecc71; // verde
+}
+
+.entregado {
+  background: #3498db; // por si querés un azul
+}
+
+.pendiente {
+  background-color: #ffee8c; // amarillo
+}
+
+.listo {
+  background-color: #1b7f45; // verde
+}
+
+.texto-parte-pedido{
+font-size: 1.5rem; 
+  font-weight:bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
 }

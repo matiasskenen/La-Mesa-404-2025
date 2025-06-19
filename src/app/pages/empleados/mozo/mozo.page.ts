@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
-import { homeOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 @Component({
@@ -28,8 +28,10 @@ export class MozoPage implements OnInit, OnDestroy {
   pedidos: any[] = [];
   mostrarPedidos: boolean = false;
 
+
+
   constructor() {
-    addIcons({ homeOutline });
+    addIcons({ homeOutline,arrowBackCircleOutline});
   }
 
   ngOnInit() {
@@ -65,7 +67,7 @@ export class MozoPage implements OnInit, OnDestroy {
   async obtenerDetallePedido(mesa: number) {
     const { data } = await this.supabase
       .from('detalle_pedido_cliente')
-      .select('producto_nombre, sector, estado, tiempo_estimado_min')
+      .select('producto_nombre, sector, estado, tiempo_estimado_min, cantidad')
       .eq('mesa', mesa);
     return data || [];
   }

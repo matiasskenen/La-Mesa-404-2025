@@ -11,6 +11,7 @@ import {
   checkboxOutline,
   checkmarkSharp,
   homeOutline,
+  newspaperOutline,
   qrCodeOutline,
 } from 'ionicons/icons';
 
@@ -33,14 +34,15 @@ export class MesaPage implements OnInit, OnDestroy {
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
 
-  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado' =
+  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado' | 'pendiente_elaboracion' | 'elaborado' =
     'ninguno';
 
   qrEscaneado: string = '';
   numeroQRextraido: string = '';
+  hizoEncuesta:boolean = false;
 
   constructor(private route: ActivatedRoute) {
-    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline, checkboxOutline });
+    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline, checkboxOutline, newspaperOutline});
   }
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class MesaPage implements OnInit, OnDestroy {
     });
 
     this.escucharEstadoPedido();
+    this.verificarEncuesta();
   }
 
   async ionViewWillEnter() {
@@ -86,6 +89,10 @@ export class MesaPage implements OnInit, OnDestroy {
       this.estadoPedido = 'confirmado';
     } else if (data?.estado === 'pendiente_confirmacion') {
       this.estadoPedido = 'pendiente';
+    } else if(data?.estado === 'pendiente_elaboracion'){
+      this.estadoPedido = 'pendiente_elaboracion';
+    } else if(data?.estado === 'elaborado'){
+      this.estadoPedido = 'elaborado';
     } else if (data) {
       this.estadoPedido = 'pendiente';
     } else {
@@ -93,7 +100,8 @@ export class MesaPage implements OnInit, OnDestroy {
     }
   }
   escucharEstadoPedido() {
-    const email = this.auth.usuarioActual?.email;
+    // const email = this.auth.usuarioActual?.email;
+     const email = 'cliente@resto.com';
     if (!email) return;
 
     this.canalPedido = this.auth.sb.supabase
@@ -101,14 +109,19 @@ export class MesaPage implements OnInit, OnDestroy {
       .on(
         'postgres_changes',
         {
-          event: 'UPDATE',
+          event: '*', //Solo escuchas cambios de tipo update
           schema: 'public',
           table: 'pedidos_pendientes',
           filter: `cliente_id=eq.${email}`,
         },
         (payload) => {
-          const nuevoEstado = payload.new['estado'];
+          console.log('Evento recibido:', payload);
+          let nuevoEstado: string | null = null;
 
+          if (payload.new && 'estado' in payload.new) {
+            nuevoEstado = payload.new?.['estado'];
+          }
+          
           if (nuevoEstado === 'confirmado') {
             this.estadoPedido = 'confirmado';
             this.mostrarModalAlerta(
@@ -131,6 +144,8 @@ export class MesaPage implements OnInit, OnDestroy {
               'Tu pedido fue entregado. Podés pagar la cuenta.'
             );
           }
+
+      
         }
       )
       .subscribe();
@@ -280,7 +295,7 @@ export class MesaPage implements OnInit, OnDestroy {
   }
 
   simularCambioEstadoPedido(
-    nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado'
+    nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado'
   ) {
     this.estadoPedido = nuevoEstado;
 
@@ -296,7 +311,14 @@ export class MesaPage implements OnInit, OnDestroy {
         'Pedido pendiente',
         'Tu pedido está esperando confirmación.'
       );
-    } else {
+    }else if (nuevoEstado === 'entregado') {
+      this.mostrarModalAlerta(
+        true,
+        'Pedido entregado',
+        'Tu pedido fue entregado.'
+      );
+    }  
+    else {
       this.mostrarModalAlerta(false);
     }
   }
@@ -403,6 +425,32 @@ export class MesaPage implements OnInit, OnDestroy {
         'Error',
         'Este QR no corresponde a tu mesa.'
       );
+    }
+  }
+
+  get mostrarBotonEncuesta(): boolean {
+  return this.estadoPedido !== 'ninguno' && this.estadoPedido !== 'entregado';
+}
+
+async verificarEncuesta() {
+    // const email = this.auth.usuarioActual?.email;
+    const email = "cliente@resto.com";
+    if (!email) return;
+
+    const { data, error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .select('hizo_la_encuesta')
+      .eq('cliente_id', email)
+      .eq('mesa_id', this.mesaAsignada.toString())
+      .limit(1)
+      .maybeSingle();
+    console.log("data desde verificarEncuesta: ", data)
+    if (data?.hizo_la_encuesta === true) {
+      this.hizoEncuesta = true;
+      return;
+    }else{
+      this.hizoEncuesta = false;
+      return;
     }
   }
 }

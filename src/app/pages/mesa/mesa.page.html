@@ -3,11 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="primary" class="toolbar-center">
-          <ion-button
-            class="boton-home"
-            (click)="volverAtras()"
-            [disabled]="modalAlerta"
-          >
+          <ion-button class="boton-home" (click)="volverAtras()" [disabled]="modalAlerta">
             <ion-icon name="home-outline" class="icono-home"></ion-icon>
           </ion-button>
         </ion-buttons>
@@ -16,15 +12,9 @@
 
     <div class="scanner-container" *ngIf="!mesaVerificada">
       <ion-icon name="checkbox-outline" class="icono-qr"></ion-icon>
-      <ion-button
-        expand="block"
-        class="boton-escanear"
-        (click)="escanearQR()"
-        [disabled]="procesando || modalAlerta"
-      >
+      <ion-button expand="block" class="boton-escanear" (click)="escanearQR()" [disabled]="procesando || modalAlerta">
         <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-        {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su
-        mesa' }}
+        {{ procesando ? 'Procesando...' : 'Escanear código QR para ingresar a su mesa' }}
         <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
       </ion-button>
     </div>
@@ -34,54 +24,52 @@
         <p>{{ mesaAsignada }}</p>
       </div>
 
-      <ion-img
-        src="assets/mesa.png"
-        class="imagen-mesa"
-        alt="Mesa confirmada"
-      ></ion-img>
+      <ion-img src="assets/mesa.png" class="imagen-mesa" alt="Mesa confirmada"></ion-img>
 
-      <ion-button
-        expand="block"
-        class="boton-opcion"
-        *ngIf="estadoPedido === 'ninguno'"
-        routerLink="/menu"
-        (click)="iniciarPedido()"
-        [disabled]="estadoPedido !== 'ninguno'"
-      >
+      <!-- Podes hacer el pedido si el estado del pedido es ninguno -->
+      <ion-button expand="block" class="boton-opcion" *ngIf="estadoPedido === 'ninguno'" routerLink="/menu"
+        (click)="iniciarPedido()">
         Realizar pedido
       </ion-button>
-
-      <ion-button
-        expand="block"
-        class="boton-opcion"
-        (click)="escanearEstadoDelPedido()"
-        *ngIf="estadoPedido !== 'ninguno'"
-        [disabled]="modalAlerta"
-      >
+      <!-- Podes ver el estado del pedido si hay pedido y no fue entregado -->
+      <ion-button expand="block" class="boton-opcion" (click)="mostrarModalAlerta(true, 'IMPLEMENTAR', 'Aca hay que implementar ver estado del pedido')"
+        *ngIf="estadoPedido !== 'ninguno' && estadoPedido !== 'entregado'">
         Ver estado del pedido
       </ion-button>
 
-      <ion-button
-        expand="block"
-        class="boton-opcion"
-        [routerLink]="['/chat']"
-        [queryParams]="{ mesa: mesaAsignada }"
-        [disabled]="modalAlerta"
-      >
+      <!-- El chat aparece cuando tenes mesa asignada (punto 6)-->
+      <ion-button expand="block" class="boton-opcion" [routerLink]="['/chat']" [queryParams]="{ mesa: mesaAsignada }">
         Consulta al mozo
+      </ion-button>
+
+  
+
+      @if(this.hizoEncuesta){
+        <!-- Boton resultados encuestas -->
+       <ion-button expand="block"class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
+         <ion-icon name="newspaper-outline" slot="start"></ion-icon>
+         Ver encuestas de otros clientes
+       </ion-button>
+      }@else {
+         <!-- Boton  Realizar encuesta-->
+      <ion-button expand="block" class="boton-opcion" routerLink="/encuesta">
+        Realizar encuesta
+      </ion-button>
+      }
+
+
+      <!-- Solo si estadoPedido es 'entregado' -->
+      <ion-button expand="block" class="boton-opcion" (click)="mostrarModalAlerta(true, 'IMPLEMENTAR PAGO', 'Aca hay que implementar pago.')"
+        *ngIf="estadoPedido === 'entregado'">
+        Pagar
       </ion-button>
     </div>
 
     <div class="alerta-overlay" *ngIf="modalAlerta">
       <div class="alerta-flotante">
         <h2>{{ tituloAlerta }}</h2>
-        <pre>{{ mensajeAlerta }}</pre>
-        <ion-button
-          size="small"
-          expand="block"
-          class="boton-cerrar-alerta"
-          (click)="mostrarModalAlerta(false)"
-        >
+        <p>{{ mensajeAlerta }}</p>
+        <ion-button size="small" expand="block" class="boton-cerrar-alerta" (click)="mostrarModalAlerta(false)">
           Aceptar
         </ion-button>
       </div>
@@ -90,47 +78,25 @@
 </ion-content>
 
 <div class="botones-test">
-  <ion-button
-    fill="outline"
-    size="small"
-    color="success"
-    (click)="simularQR(true)"
-  >
+  <ion-button fill="outline" size="small" color="success" (click)="simularQR(true)">
     Simular QR correcto
   </ion-button>
-  <ion-button
-    fill="outline"
-    size="small"
-    color="danger"
-    (click)="simularQR(false)"
-  >
+  <ion-button fill="outline" size="small" color="danger" (click)="simularQR(false)">
     Simular QR incorrecto
   </ion-button>
 </div>
 
 <div class="botones-test">
-  <ion-button
-    fill="outline"
-    size="small"
-    color="warning"
-    (click)="simularCambioEstadoPedido('pendiente')"
-  >
+  <ion-button fill="outline" size="small" color="warning" (click)="simularCambioEstadoPedido('pendiente')">
     Simular pedido pendiente
   </ion-button>
-  <ion-button
-    fill="outline"
-    size="small"
-    color="tertiary"
-    (click)="simularCambioEstadoPedido('confirmado')"
-  >
-    Simular pedido confirmado
+  <ion-button fill="outline" size="small" color="tertiary" (click)="simularCambioEstadoPedido('confirmado')">
+    Simular pedido confirmado (TOMI NUEVO)
   </ion-button>
-  <ion-button
-    fill="outline"
-    size="small"
-    color="medium"
-    (click)="simularCambioEstadoPedido('ninguno')"
-  >
+  <ion-button fill="outline" size="small" color="medium" (click)="simularCambioEstadoPedido('entregado')">
+    Simular pedido entregado
+  </ion-button>
+  <ion-button fill="outline" size="small" color="medium" (click)="simularCambioEstadoPedido('ninguno')">
     Reset estado de pedido
   </ion-button>
 </div>

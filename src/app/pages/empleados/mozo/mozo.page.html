@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary" class="toolbar-center">
-      <ion-button class="boton-home" (click)="volverAtras()">
-        <ion-icon name="home-outline" class="icono-home"></ion-icon>
-      </ion-button>
+      @if(!mostrarPedidos){
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
+        </ion-button>
+      }@else {
+        <ion-button (click)="mostrarPedidos = false">
+      <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
+    </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -29,38 +35,24 @@
     </ion-button>
   </div>
 
-  <div *ngIf="mostrarPedidos" class="formulario">
-    <ion-button
-      expand="block"
-      fill="solid"
-      class="boton-volver"
-      (click)="mostrarPedidos = false"
-    >
-      ⬅ Volver al menú
-    </ion-button>
-
-    <ion-list *ngIf="pedidos.length > 0">
-      <ion-card *ngFor="let pedido of pedidos">
+  <div *ngIf="mostrarPedidos">
+    <div *ngIf="pedidos.length > 0" class="contenedor-flex">
+      <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
         <ion-card-content>
           <div class="scroll-card">
-            <h2 class="texto-blanco">Mesa número: {{ pedido.mesa_id }}</h2>
-            <h2 class="texto-blanco">
-              Tiempo estimado: {{ pedido.tiempo_estimado }} min
-            </h2>
-            <p class="texto-blanco">
-              Estado:
-              <span *ngIf="pedido.estado === 'entregado'">entregado ✅</span>
-              <span *ngIf="pedido.estado === 'confirmado'">confirmado</span>
-              <span *ngIf="pedido.estado === 'pendiente_confirmacion'">
-                pendiente_confirmacion
-              </span>
-            </p>
+            <ion-card-header>
+          <div class="mesa-demora">
+            <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
+            <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
+          </div>
+        </ion-card-header>
+
 
             <!-- Productos antes de confirmar -->
             <ion-list *ngIf="pedido.estado === 'pendiente_confirmacion'">
               <ion-item *ngFor="let item of pedido.productos">
                 <ion-label class="texto-blanco">
-                  {{ item.nombre }} - Cantidad: {{ item.cantidad }}
+                  {{ item.nombre }} x {{ item.cantidad }}
                 </ion-label>
               </ion-item>
             </ion-list>
@@ -70,10 +62,8 @@
               *ngIf="pedido.estado === 'confirmado' && pedido.detalle && pedido.detalle.length"
             >
               <ion-item *ngFor="let item of pedido.detalle">
-                <ion-label class="texto-blanco">
-                  {{ item.producto_nombre }} ({{ item.sector }}): {{ item.estado
-                  === 'listo' ? 'Listo' : 'Pendiente' }} - {{
-                  item.tiempo_estimado_min }} min
+                <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
+                  {{ item.producto_nombre }} x {{ item.cantidad}}
                 </ion-label>
               </ion-item>
             </ion-list>
@@ -81,9 +71,8 @@
             <!-- Botones: Confirmar / Rechazar -->
             <div
               class="botones-decision"
-              *ngIf="pedido.estado === 'pendiente_confirmacion'"
-            >
-              <ion-button color="success" (click)="confirmarPedido(pedido.id)">
+              *ngIf="pedido.estado === 'pendiente_confirmacion'">
+              <ion-button color="success" (click)="confirmarPedido(pedido.id)"> 
                 Confirmar
               </ion-button>
               <ion-button color="danger" (click)="rechazarPedido(pedido.id)">
@@ -106,7 +95,7 @@
           </div>
         </ion-card-content>
       </ion-card>
-    </ion-list>
+    </div>
 
     <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
       <p>No hay pedidos pendientes.</p>

@@ -35,7 +35,7 @@ register();
 export class MenuPage implements OnInit {
   db = inject(DatabaseService);
   auth = inject(AuthService);
-
+  routerLink = inject(Router);
   productos: any[] = [];
   pedido: any[] = [];
   importeTotal: number = 0;
@@ -102,15 +102,16 @@ export class MenuPage implements OnInit {
   }
 
   recalcularTotales() {
-    this.importeTotal = this.pedido.reduce(
-      (sum, p) => sum + p.precio * p.cantidad,
-      0
-    );
-    this.demora = this.pedido.reduce(
-      (sum, p) => sum + p.tiempo * p.cantidad,
-      0
-    );
-  }
+  this.importeTotal = this.pedido.reduce(
+    (sum, p) => sum + p.precio * p.cantidad,
+    0
+  );
+  //siempre la demora va a ser igual a la demora mayor
+  this.demora = this.pedido.reduce(
+    (max, p) => Math.max(max, p.tiempo),
+    0
+  );
+}
 
   async terminarPedido() {
     if (this.pedido.length === 0) {
@@ -167,7 +168,13 @@ export class MenuPage implements OnInit {
       this.modalAlerta = true;
     } else {
       this.modalAlerta = false;
-      window.history.back(); // 🔁 Vuelve atrás
+      // window.history.back(); // 🔁 Vuelve atrás (mati)
+      const mesa = this.mesaID;
+      setTimeout(() => {
+      this.router.navigate(['/mesa'], {
+              queryParams: { mesa },
+            });
+    }, 1000);
     }
   }
 
