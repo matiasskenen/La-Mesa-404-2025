@@ -433,8 +433,8 @@ export class MesaPage implements OnInit, OnDestroy {
 }
 
 async verificarEncuesta() {
-    // const email = this.auth.usuarioActual?.email;
-    const email = "cliente@resto.com";
+    const email = this.auth.usuarioActual?.email;
+    // const email = "cliente@resto.com"; solo de prueba
     if (!email) return;
 
     const { data, error } = await this.auth.sb.supabase

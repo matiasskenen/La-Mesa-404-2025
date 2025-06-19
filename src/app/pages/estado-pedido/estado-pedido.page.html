@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon
+            name="arrow-back-circle-outline"
+            class="icono-home"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="pedidos.length > 0" class="contenedor-flex">
+      <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
+        <ion-card-content>
+          <div class="scroll-card">
+            <ion-card-header>
+          <div class="mesa-demora">
+            <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
+            <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
+          </div>
+        </ion-card-header>
+
+
+            <!-- Productos antes de confirmar -->
+            <ion-list *ngIf="pedido.estado === 'pendiente_confirmacion'">
+              <ion-item *ngFor="let item of pedido.productos">
+                <ion-label class="texto-blanco">
+                  {{ item.nombre }} x {{ item.cantidad }}
+                </ion-label>
+              </ion-item>
+            </ion-list>
+
+            <!-- Detalle luego de confirmar -->
+            <ion-list
+              *ngIf="pedido.estado === 'confirmado' && pedido.detalle && pedido.detalle.length"
+            >
+              <ion-item *ngFor="let item of pedido.detalle">
+                <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
+                  {{ item.producto_nombre }} x {{ item.cantidad}}
+                </ion-label>
+              </ion-item>
+            </ion-list>
+
+
+            
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
+      <p>No hay pedidos pendientes.</p>
+    </ion-text>
+</ion-content>

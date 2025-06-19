@@ -31,8 +31,9 @@
         (click)="iniciarPedido()">
         Realizar pedido
       </ion-button>
+
       <!-- Podes ver el estado del pedido si hay pedido y no fue entregado -->
-      <ion-button expand="block" class="boton-opcion" (click)="mostrarModalAlerta(true, 'IMPLEMENTAR', 'Aca hay que implementar ver estado del pedido')"
+      <ion-button expand="block" class="boton-opcion" [routerLink]="['/estado-pedido']" [queryParams]="{ mesa: mesaAsignada }"
         *ngIf="estadoPedido !== 'ninguno' && estadoPedido !== 'entregado'">
         Ver estado del pedido
       </ion-button>

@@ -80,5 +80,13 @@ export const routes: Routes = [
     path: 'resultados-encuestas',
     loadComponent: () => import('./pages/resultados-encuestas/resultados-encuestas.page').then( m => m.ResultadosEncuestasPage)
   },
+  {
+    path: 'encuesta',
+    loadComponent: () => import('./pages/encuesta/encuesta.page').then( m => m.EncuestaPage)
+  },
+  {
+    path: 'estado-pedido',
+    loadComponent: () => import('./pages/estado-pedido/estado-pedido.page').then( m => m.EstadoPedidoPage)
+  },
 
 ];
