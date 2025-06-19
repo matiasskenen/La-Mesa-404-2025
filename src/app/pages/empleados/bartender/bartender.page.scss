@@ -12,8 +12,7 @@ ion-content::part(scroll) {
 /* ======================
    CONTENEDORES
 ====================== */
-.formulario,
-.menu-container {
+.formulario {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,9 +28,6 @@ ion-content::part(scroll) {
   overflow: hidden;
 }
 
-ion-list {
-  background: transparent !important;
-}
 
 .formulario {
   background-color: transparent !important;
@@ -79,9 +75,23 @@ ion-header ion-toolbar {
   color: white;
 }
 
-/* ======================
-   BOTONES PRINCIPALES
-====================== */
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
 .boton-opcion {
   width: 100%;
   max-width: 280px;
@@ -96,77 +106,81 @@ ion-header ion-toolbar {
   margin-bottom: 0.5rem;
 }
 
-.boton-volver {
-  --background: white;
-  --color: black;
-  font-weight: bold;
-  font-size: 0.88rem;
-  text-transform: uppercase;
-  border-radius: 10px;
-  margin-top: 0.3rem;
-  width: 100%;
-  max-width: 200px;
-  height: 40px;
-  box-shadow: 0 0 0 2px white;
-  transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.boton-volver:hover {
-  --background: #ffffff;
-  --color: #19647e;
-  box-shadow: 0 0 0 2px #19647e;
-}
-
 /* ======================
-   CARDS DE PEDIDOS
+   Agregado tomi
 ====================== */
-ion-card {
-  background: #d34343;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  max-width: 320px;
-  border: none;
-  box-shadow: none;
-}
+ .contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
-ion-card-content {
+  .custom-card {
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    margin: 8px;
+    background-color: red;
+  }
+
+  .contenido-listado {
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+  }
+
+  .mesa-demora {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: stretch;
-  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
-ion-card-content h2 {
-  color: white;
-  font-size: 1.05rem;
-  font-weight: bold;
-  text-align: left;
-  margin: 0;
+.titulo-mesa,
+.titulo-demora {
+  font-size: 1.2rem; // mismo tamaño que ion-card-title
+  font-weight: bolder;
+  color: black;
 }
 
-/* ======================
-   SCROLL SOLO DENTRO DE CARDS
-====================== */
-.scroll-card {
-  max-height: 300px;
-  overflow-y: auto;
-  width: 100%;
-  padding-right: 4px;
+ion-card-header{
+  padding: 0px;
 }
 
-.scroll-card::-webkit-scrollbar {
-  width: 6px;
+//Colores dinamicos para la CARD del pedido
+.pendiente_confirmacion {
+  background: #ffee8c; // amarillo
 }
 
-.scroll-card::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 4px;
+.confirmado {
+  background: #2ecc71; // verde
 }
 
-/* ======================
-   LISTA DE PRODUCTOS
-====================== */
+.entregado {
+  background: #3498db; // por si querés un azul
+}
+
+.pendiente {
+  background-color: #ffee8c; // amarillo
+}
+
+.listo {
+  background-color: #1b7f45; // verde
+}
+
+.texto-parte-pedido{
+font-size: 1.5rem; 
+  font-weight:bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
+}
+
+ion-list {
+  background: transparent !important;
+}
+
 ion-item {
   --background: transparent !important;
   --inner-padding-start: 12px;
@@ -187,50 +201,9 @@ ion-item ion-label {
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
-  color: white;
+  color: black;
   font-size: 0.95rem;
   text-align: left;
   width: 100%;
 }
 
-ion-icon[slot="end"] {
-  font-size: 1.2rem;
-  color: white;
-}
-
-/* ======================
-   BOTONES ACEPTAR / RECHAZAR
-====================== */
-.botones-decision {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  width: 100%;
-}
-
-.botones-decision ion-button {
-  flex: 1;
-  max-width: 140px;
-  height: 42px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  border-radius: 10px;
-}
-
-.botones-decision ion-button[color="success"] {
-  --background: #2ecc71;
-  --color: white;
-}
-
-.botones-decision ion-button[color="danger"] {
-  --background: transparent;
-  --color: #e74c3c;
-  border: 2px solid #e74c3c;
-}
-
-.botones-decision ion-button[color="danger"]:hover {
-  --background: #e74c3c;
-  --color: white;
-}

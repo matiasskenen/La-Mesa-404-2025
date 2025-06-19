@@ -1,0 +1,209 @@
+/* ======================
+   FONDO GENERAL
+====================== */
+ion-content::part(scroll) {
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-y: auto !important;
+}
+
+/* ======================
+   CONTENEDORES
+====================== */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+.formulario {
+  background-color: transparent !important;
+}
+
+/* ======================
+   TEXTOS
+====================== */
+.texto-blanco {
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* ======================
+   CABECERA Y ÍCONO HOME
+====================== */
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19;
+  --color: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  font-size: 28px;
+  color: white;
+}
+
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+.boton-opcion {
+  width: 100%;
+  max-width: 280px;
+  height: 42px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  --background: #d22f19;
+  --border-radius: 10px;
+  --color: white;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+/* ======================
+   Agregado tomi
+====================== */
+ .contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .custom-card {
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    margin: 8px;
+    background-color: red;
+  }
+
+  .contenido-listado {
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+  }
+
+  .mesa-demora {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-mesa,
+.titulo-demora {
+  font-size: 1.2rem; // mismo tamaño que ion-card-title
+  font-weight: bolder;
+  color: black;
+}
+
+ion-card-header{
+  padding: 0px;
+}
+
+//Colores dinamicos para la CARD del pedido
+.pendiente_confirmacion {
+  background: #ffee8c; // amarillo
+}
+
+.confirmado {
+  background: #2ecc71; // verde
+}
+
+.entregado {
+  background: #3498db; // por si querés un azul
+}
+
+.pendiente {
+  background-color: #ffee8c; // amarillo
+}
+
+.listo {
+  background-color: #1b7f45; // verde
+}
+
+.texto-parte-pedido{
+font-size: 1.5rem; 
+  font-weight:bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
+}
+
+ion-list {
+  background: transparent !important;
+}
+
+ion-item {
+  --background: transparent !important;
+  --inner-padding-start: 12px;
+  --inner-padding-end: 12px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --min-height: 40px;
+  --inner-border-width: 0;
+  --highlight-color-focused: transparent;
+  --ripple-color: transparent;
+  border: none !important;
+  box-shadow: none !important;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+}
+ion-item ion-label {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  color: black;
+  font-size: 0.95rem;
+  text-align: left;
+  width: 100%;
+}
+
