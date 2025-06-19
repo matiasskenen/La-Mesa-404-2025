@@ -53,7 +53,7 @@
        </ion-button>
       }@else {
          <!-- Boton  Realizar encuesta-->
-      <ion-button expand="block" class="boton-opcion" routerLink="/encuesta">
+      <ion-button expand="block" class="boton-opcion" [routerLink]="['/encuesta']" [queryParams]="{ mesa: mesaAsignada }">
         Realizar encuesta
       </ion-button>
       }
