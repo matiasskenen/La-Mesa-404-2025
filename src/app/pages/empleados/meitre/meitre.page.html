@@ -23,52 +23,29 @@
         <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input
-          formControlName="apellido"
-          placeholder="Apellido"
-        ></ion-input>
+        <ion-input formControlName="apellido" placeholder="Apellido"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input
-          formControlName="dni"
-          placeholder="DNI"
-          type="number"
-        ></ion-input>
+        <ion-input formControlName="dni" placeholder="DNI" type="number"></ion-input>
       </ion-item>
       <ion-item>
         <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input
-          formControlName="email"
-          placeholder="Email"
-          type="email"
-        ></ion-input>
+        <ion-input formControlName="email" placeholder="Email" type="email"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input
-          formControlName="password"
-          placeholder="Contraseña"
-          type="password"
-        ></ion-input>
+        <ion-input formControlName="password" placeholder="Contraseña" type="password"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input
-          formControlName="confirmar"
-          placeholder="Confirmar contraseña"
-          type="password"
-        ></ion-input>
+        <ion-input formControlName="confirmar" placeholder="Confirmar contraseña" type="password"></ion-input>
       </ion-item>
 
       <div class="ion-margin-top">
-        <ion-button expand="block" (click)="seleccionarFuenteImagen()"
-          >Subir Imagen</ion-button
-        >
-        <ion-img
-          *ngIf="imagenPreviewUrl"
-          [src]="imagenPreviewUrl"
-          class="ion-margin-top"
-        ></ion-img>
+        <ion-button expand="block" (click)="seleccionarFuenteImagen()">
+          Subir Imagen
+        </ion-button>
+        <ion-img *ngIf="imagenPreviewUrl" [src]="imagenPreviewUrl" class="ion-margin-top"></ion-img>
       </div>
 
       <ion-button
@@ -93,29 +70,17 @@
 
   <!-- MENÚ PRINCIPAL -->
   <div *ngIf="!formClienteActivo && !mostrarListaEspera" class="menu-container">
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      (click)="activarFormularioAlta()"
-    >
+    <ion-button expand="block" class="boton-opcion" (click)="activarFormularioAlta()">
       ALTA DE CLIENTE
     </ion-button>
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      (click)="cargarListaEspera()"
-    >
+    <ion-button expand="block" class="boton-opcion" (click)="cargarListaEspera()">
       LISTA DE ESPERA
     </ion-button>
   </div>
 
   <!-- LISTA DE ESPERA -->
   <div *ngIf="mostrarListaEspera" class="formulario">
-    <ion-button
-      expand="block"
-      class="boton-opcion"
-      (click)="mostrarListaEspera = false"
-    >
+    <ion-button expand="block" class="boton-opcion" (click)="mostrarListaEspera = false">
       ⬅ Volver al menú
     </ion-button>
 
@@ -127,16 +92,10 @@
             <p class="texto-blanco">Clave QR: {{ cliente.clave }}</p>
           </ion-label>
           <div class="botones-simples">
-            <ion-button
-              color="success"
-              (click)="confirmarIngreso(cliente.email, true)"
-            >
+            <ion-button color="success" (click)="confirmarIngreso(cliente.email, true)">
               Aceptar
             </ion-button>
-            <ion-button
-              color="danger"
-              (click)="confirmarIngreso(cliente.email, false)"
-            >
+            <ion-button color="danger" (click)="confirmarIngreso(cliente.email, false)">
               Rechazar
             </ion-button>
           </div>
@@ -148,4 +107,35 @@
       <p>No hay clientes en espera.</p>
     </ion-text>
   </div>
+
+  <!-- MODAL SELECCIÓN DE MESA -->
+  <ion-modal [isOpen]="modalMesasAbierto" (didDismiss)="cerrarModalMesas()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Seleccionar Mesa</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalMesas()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <div class="grilla-mesas">
+          <div
+            class="mesa-cuadro"
+            *ngFor="let mesa of mesasDisponiblesInfo"
+            [ngClass]="{
+              'disponible': mesa.estado === 'disponible',
+              'ocupada': mesa.estado === 'ocupada',
+              'limpieza': mesa.estado === 'limpieza'
+            }"
+            (click)="asignarMesaSeleccionada(mesa.numero)"
+          >
+            {{ mesa.numero }}
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

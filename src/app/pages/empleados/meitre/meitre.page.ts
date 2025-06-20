@@ -30,6 +30,7 @@ import {
   IonCardContent,
   ActionSheetController,
   AlertController,
+  IonModal
 } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
@@ -42,6 +43,7 @@ import { homeOutline } from 'ionicons/icons';
   styleUrls: ['./meitre.page.scss'],
   standalone: true,
   imports: [
+    IonTitle,
     IonIcon,
     CommonModule,
     FormsModule,
@@ -59,6 +61,7 @@ import { homeOutline } from 'ionicons/icons';
     IonCard,
     IonCardContent,
     IonImg,
+    IonModal
   ],
 })
 export class MeitrePage implements OnInit, OnDestroy {
@@ -129,62 +132,76 @@ export class MeitrePage implements OnInit, OnDestroy {
 
   async confirmarIngreso(email: string, aceptar: boolean) {
     if (aceptar) {
-      const alert = await this.alertCtrl.create({
-        header: `Asignar mesa`,
-        subHeader: `Cliente: ${email}`,
-        inputs: [
-          {
-            name: 'mesa',
-            type: 'text',
-            cssClass: 'alert-mesa-personalizada',
-          },
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-          },
-          {
-            text: 'Asignar',
-            handler: async (data) => {
-              const numeroMesa = data.mesa?.trim();
-              if (!numeroMesa) return;
-
-              const { data: maxData } = await this.supabase
-                .from('fila')
-                .select('numero')
-                .order('numero', { ascending: false })
-                .limit(1)
-                .maybeSingle();
-
-              const siguienteNumero = (maxData?.numero || 0) + 1;
-
-              await this.supabase.from('fila').insert({
-                email,
-                numero: siguienteNumero,
-                mesa: numeroMesa,
-              });
-
-              await this.supabase
-                .from('espera_local')
-                .update({ estado: 'aceptado' })
-                .eq('email', email);
-
-              this.cargarListaEspera();
-            },
-          },
-        ],
-      });
-
-      await alert.present();
+      // Abre el modal con las mesas disponibles
+      this.abrirModalMesas(email);
     } else {
-      await this.supabase
+      const { error } = await this.supabase
         .from('espera_local')
         .update({ estado: 'rechazado' })
         .eq('email', email);
 
-      this.cargarListaEspera();
+      if (error) {
+        this.mensajeError = '❌ Error al rechazar cliente: ' + error.message;
+      } else {
+        this.mensajeOk = 'Cliente rechazado correctamente.';
+        this.cargarListaEspera();
+      }
     }
+  }
+
+  modalMesasAbierto = false;
+  mesasDisponiblesInfo: { numero: string; estado: string }[] = [];
+  emailClienteSeleccionado = '';
+
+  async abrirModalMesas(email: string) {
+    this.emailClienteSeleccionado = email;
+    this.modalMesasAbierto = true;
+
+    const { data, error } = await this.supabase.from('mesas').select('*');
+    if (!error && data) {
+      this.mesasDisponiblesInfo = data;
+    }
+  }
+
+  cerrarModalMesas() {
+    this.modalMesasAbierto = false;
+    this.emailClienteSeleccionado = '';
+    this.mesasDisponiblesInfo = [];
+  }
+
+  async asignarMesaSeleccionada(numeroMesa: string) {
+    if (!this.emailClienteSeleccionado) return;
+
+    const { data: maxData } = await this.supabase
+      .from('fila')
+      .select('numero')
+      .order('numero', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const siguienteNumero = (maxData?.numero || 0) + 1;
+
+    // Insertar fila
+    await this.supabase.from('fila').insert({
+      email: this.emailClienteSeleccionado,
+      numero: siguienteNumero,
+      mesa: numeroMesa,
+    });
+
+    // Marcar como aceptado
+    await this.supabase
+      .from('espera_local')
+      .update({ estado: 'aceptado' })
+      .eq('email', this.emailClienteSeleccionado);
+
+    // Marcar la mesa como ocupada
+    await this.supabase
+      .from('mesas')
+      .update({ estado: 'ocupada' })
+      .eq('numero', numeroMesa);
+
+    this.cerrarModalMesas();
+    this.cargarListaEspera(); // refresca lista
   }
 
   escucharEsperaEnTiempoReal() {

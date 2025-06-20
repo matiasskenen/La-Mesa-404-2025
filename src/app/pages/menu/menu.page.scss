@@ -159,3 +159,62 @@ ion-header ion-toolbar {
   color: white;
   font-size: 100px;
 }
+
+@media screen and (orientation: landscape) {
+  .formulario,
+  .menu-container {
+    max-width: 600px; // más ancho en horizontal
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 1rem 2rem;
+    gap: 1rem;
+  }
+
+  ion-item {
+    flex: 1 1 45%;
+    margin: 4px 0;
+  }
+
+  .boton-opcion,
+  .boton-cancelar,
+  form ion-button {
+    max-width: 280px;
+    width: 45%;
+  }
+
+  ion-img {
+    max-width: 240px;
+    max-height: 240px;
+    border-radius: 12px;
+  }
+
+  .grilla-mesas {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 16px;
+  }
+
+  .mesa-cuadro {
+    font-size: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .botones-decision {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .contenido-listado {
+    position: absolute;
+    left: 420px;
+    max-width: 300px;
+    height: 300px;
+  }
+
+  .contenedor-flex{
+    max-width: 400px;
+    height: 100px;
+  }
+}
+

@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true" class="fondo">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="arrow-back-circle-outline" class="icono-home"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="vidas-container">
+    <ion-text color="light">
+      <h3>Vidas: {{ vidas }}</h3>
+    </ion-text>
+  </div>
+
+  <div class="raspador-grilla">
+    <div class="caja" *ngFor="let caja of cajas; let i = index">
+      <img src="/assets/logo_splash.png" class="premio-img" />
+      <canvas #scratchCanvas class="scratch-canvas"></canvas>
+    </div>
+  </div>
+
+  <ion-text *ngIf="resultadoMensaje">
+    <h2>{{ resultadoMensaje }}</h2>
+  </ion-text>
+
+  <ion-button expand="block" *ngIf="resultadoMensaje && vidas > 0" (click)="reintentarJuego()">
+    Reintentar
+  </ion-button>
+
+</ion-content>

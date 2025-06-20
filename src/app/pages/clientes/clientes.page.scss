@@ -27,7 +27,7 @@ ion-content.pagina-cliente::part(scroll) {
   }
 
   .boton-escanear {
-    margin-top: 50px;
+    margin-top: 5px;
     --background: #d22f19;
     --color: white;
     --border-radius: 12px;
@@ -37,6 +37,8 @@ ion-content.pagina-cliente::part(scroll) {
     font-size: 1rem;
     letter-spacing: 0.5px;
   }
+
+  
 
   .estado-cliente {
     display: flex;

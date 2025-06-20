@@ -289,3 +289,50 @@ ion-list {
 .alert-mesa-personalizada .alert-button.sc-ion-alert-md:hover {
   color: #ffffff;
 }
+
+.grilla-mesas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 12px;
+  justify-items: center;
+  margin-top: 1rem;
+}
+
+.mesa-cuadro {
+  background-color: gray;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100px;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mesa-cuadro:hover {
+  transform: scale(1.05);
+}
+
+/* Colores por estado */
+.disponible {
+  background-color: #2dd36f; // Verde
+}
+
+.ocupada {
+  background-color: #eb445a; // Rojo
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.limpieza {
+  background-color: #ffc409; // Amarillo
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+
+

@@ -44,7 +44,6 @@ export class MesaPage implements OnInit, OnDestroy {
     | 'terminado'
     | 'elaborado' = 'ninguno';
 
-
   pedidoIniciadoLocalmente: boolean = false;
 
   qrEscaneado: string = '';
@@ -84,6 +83,40 @@ export class MesaPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.canalPedido?.unsubscribe();
     this.log('Canal de pedido cerrado');
+  }
+
+  async liberarMesaAlPagar() {
+    if (!this.mesaAsignada) {
+      this.log('liberarMesaAlPagar(): mesa no asignada');
+      return;
+    }
+
+    // Cambiar el estado de la mesa a disponible
+    const { error } = await this.auth.sb.supabase
+      .from('mesas')
+      .update({ estado: 'disponible' })
+      .eq('numero', this.mesaAsignada);
+
+    if (error) {
+      this.log('❌ Error al liberar mesa: ' + error.message);
+      this.mostrarModalAlerta(true, 'Error', 'No se pudo liberar la mesa.');
+      return;
+    }
+
+    this.log(`✅ Mesa ${this.mesaAsignada} marcada como disponible`);
+    this.mostrarModalAlerta(true, 'Mesa liberada', 'Gracias por tu visita.');
+
+    // Si querés: marcar el pedido como cerrado
+    await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .update({ estado: 'cerrado' })
+      .eq('cliente_id', this.auth.usuarioActual?.email)
+      .eq('mesa_id', this.mesaAsignada);
+
+    // Si querés: redirigir al inicio
+    setTimeout(() => {
+      this.auth.cerrarSesion();
+    }, 3000);
   }
 
   iniciarPedido() {
@@ -319,7 +352,7 @@ export class MesaPage implements OnInit, OnDestroy {
 
       if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
         this.log('QR válido para ver estado. Navegando a /estado-pedido...');
-        this.estadoPedido = "terminado";
+        this.estadoPedido = 'terminado';
       } else {
         this.mostrarModalAlerta(
           true,
