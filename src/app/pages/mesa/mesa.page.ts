@@ -90,6 +90,9 @@ export class MesaPage implements OnInit, OnDestroy {
       }
     });
   }
+
+ 
+
   async EscanearPago() {
     this.log('Iniciando flujo de verEstadoPedidoEscaneandoQR()');
 
@@ -111,7 +114,7 @@ export class MesaPage implements OnInit, OnDestroy {
       const numeroQR = match ? match[1] : null;
 
       if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
-        this.marcaApagar();
+        await this.marcaApagar();
         this.navCtrl.navigateForward(['/estado-pedido'], {
           queryParams: { mesa: this.mesaAsignada },
         });
@@ -191,7 +194,6 @@ export class MesaPage implements OnInit, OnDestroy {
       return;
     }
 
-    this.marcarPagoPendienteConfirmacion();
     this.enviarNoti(
       'Pagar cuenta',
       `La mesa ${this.mesaAsignada}, Quiere pagar`,
@@ -252,6 +254,7 @@ export class MesaPage implements OnInit, OnDestroy {
       this.estadoPedido = 'elaborado';
     } else if (data?.estado === 'pago_pendiente_confirmacion') {
       this.estadoPedido = 'pago_pendiente_confirmacion';
+      this.liberarMesaAlPagar();
     } else if (data?.estado === 'pagado') {
       this.volverAtras();
       this.estadoPedido = 'pagado';
@@ -268,31 +271,7 @@ export class MesaPage implements OnInit, OnDestroy {
     this.log('verificarPedido(): Estado final seteado: ' + this.estadoPedido);
   }
 
-  async marcarPagoPendienteConfirmacion() {
-    const { error } = await this.auth.sb.supabase
-      .from('pedidos_pendientes')
-      .update({ estado: 'pago_pendiente_confirmacion' })
-      .eq('mesa_id', this.mesaAsignada);
 
-    if (error) {
-      this.log('Error al actualizar estado de la mesa: ' + error.message);
-      this.mostrarModalAlerta(
-        true,
-        'Error',
-        'No se pudo cambiar el estado de la mesa.'
-      );
-      return;
-    }
-
-    this.log(
-      `✅ Mesa ${this.mesaAsignada} marcada como pago pendiente de confirmación`
-    );
-    this.mostrarModalAlerta(
-      true,
-      'Pago pendiente',
-      'Se notificó que estás esperando la confirmación del pago.'
-    );
-  }
 
   escucharEstadoPedido() {
     // const email = this.auth.usuarioActual?.email;
