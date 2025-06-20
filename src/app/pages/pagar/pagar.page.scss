@@ -1,0 +1,153 @@
+ion-content::part(scroll) {
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-y: auto !important;
+}
+
+.formulario,
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  gap: 0.5rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+ion-item {
+  --background: #ffffff;
+  --border-radius: 10px;
+  --min-height: 36px;
+  padding: 1px 8px;
+  font-size: 0.88rem;
+  box-shadow: none !important;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
+.formulario ion-item:first-of-type {
+  margin-top: 0 !important;
+}
+
+ion-input,
+ion-select,
+ion-textarea {
+  font-size: 0.88rem;
+  padding: 2px 0;
+}
+
+.boton-opcion {
+  width: 100%;
+  max-width: 280px;
+  height: 42px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  --background: #d22f19;
+  --border-radius: 10px;
+  --color: white;
+  letter-spacing: 0.5px;
+}
+
+.boton-opcion-warning {
+  --background: #fdd835;
+  --color: black;
+}
+
+.boton-volver {
+  --background: white;
+  --color: black;
+  font-weight: bold;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  border-radius: 10px;
+  margin-top: 0.3rem;
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  box-shadow: 0 0 0 2px white;
+  transition: background-color 0.3s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boton-volver:hover {
+  --background: #ffffff;
+  --color: #19647e;
+  box-shadow: 0 0 0 2px #19647e;
+}
+
+.texto-blanco {
+  color: white;
+}
+
+ion-header ion-toolbar {
+  --background: #d22f19;
+  --color: black;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-center {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.boton-home {
+  --background: #d22f19; // color de fondo
+  --color: black; // color del ícono (texto)
+  border-radius: 20%; // opcional si lo querés circular
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-home {
+  color: white;
+  font-size: 84px;
+}
+
+.card-cliente {
+  width: 90%;
+  max-width: 320px;
+  margin: 10px auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-cliente h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.card-cliente p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.botones-aprobacion {
+  justify-content: space-between;
+  margin-top: 10px;
+}
+ion-list {
+  background: transparent !important;
+  --background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ion-text-center {
+  color: white !important;
+}

@@ -10,6 +10,7 @@
       </ion-toolbar>
     </ion-header>
 
+    <!-- QR no verificado -->
     <div class="scanner-container" *ngIf="!mesaVerificada">
       <ion-icon name="checkbox-outline" class="icono-qr"></ion-icon>
       <ion-button expand="block" class="boton-escanear" (click)="escanearQR()" [disabled]="procesando || modalAlerta">
@@ -19,6 +20,7 @@
       </ion-button>
     </div>
 
+    <!-- QR verificado -->
     <div class="scanner-container" *ngIf="mesaVerificada">
       <div class="mesa-numero">
         <p>{{ mesaAsignada }}</p>
@@ -26,46 +28,87 @@
 
       <ion-img src="assets/mesa.png" class="imagen-mesa" alt="Mesa confirmada"></ion-img>
 
-      <!-- Podes hacer el pedido si el estado del pedido es ninguno -->
-      <ion-button expand="block" class="boton-opcion" *ngIf="estadoPedido === 'ninguno'" routerLink="/menu"
-        (click)="iniciarPedido()">
+      <!-- ESTADO: NINGUNO -->
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        *ngIf="estadoPedido === 'ninguno' && !pedidoIniciadoLocalmente"
+        (click)="iniciarPedido()"
+      >
         Realizar pedido
       </ion-button>
 
-      <!-- Podes ver el estado del pedido si hay pedido y no fue entregado -->
-      <ion-button expand="block" class="boton-opcion" [routerLink]="['/estado-pedido']" [queryParams]="{ mesa: mesaAsignada }"
-        *ngIf="estadoPedido !== 'ninguno' && estadoPedido !== 'entregado'">
+      <ion-button
+        expand="block"
+        disabled
+        class="boton-opcion"
+        [routerLink]="['/estado-pedido']"
+        [queryParams]="{ mesa: mesaAsignada }"
+        *ngIf="pedidoIniciadoLocalmente == true && estadoPedido == 'ninguno'"
+      >
+        Pedido Pendiente a confirmar
+      </ion-button>
+
+      <!-- ESTADO: CONFIRMADO -->
+
+      <ion-button
+      expand="block"
+      class="boton-opcion"
+      (click)="verEstadoPedidoEscaneandoQR()"
+      *ngIf="estadoPedido == 'confirmado'"
+      >
         Ver estado del pedido
       </ion-button>
 
-      <!-- El chat aparece cuando tenes mesa asignada (punto 6)-->
-      <ion-button expand="block" class="boton-opcion" [routerLink]="['/chat']" [queryParams]="{ mesa: mesaAsignada }">
+      <!-- ESTADO: Teminado -->
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        (click)="verEstadoPedidoEscaneandoQR()"
+        *ngIf="estadoPedido == 'entregado'"
+      >
+        Juegos
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        [routerLink]="['/pagar']"
+        *ngIf="estadoPedido === 'entregado'"
+      >
+        Pagar
+      </ion-button>
+
+      <!-- CONSULTA AL MOZO (siempre que tenga mesa) -->
+      <ion-button
+        expand="block"
+        class="boton-opcion"
+        [routerLink]="['/chat']"
+        [queryParams]="{ mesa: mesaAsignada }"
+      >
         Consulta al mozo
       </ion-button>
 
-  
-
+      <!-- ENCUESTA -->
       @if(this.hizoEncuesta){
-        <!-- Boton resultados encuestas -->
-       <ion-button expand="block"class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
-         <ion-icon name="newspaper-outline" slot="start"></ion-icon>
-         Ver encuestas de otros clientes
-       </ion-button>
+        <ion-button expand="block" class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
+          <ion-icon name="newspaper-outline" slot="start"></ion-icon>
+          Ver encuestas de otros clientes
+        </ion-button>
       }@else {
-         <!-- Boton  Realizar encuesta-->
-      <ion-button expand="block" class="boton-opcion" [routerLink]="['/encuesta']" [queryParams]="{ mesa: mesaAsignada }">
-        Realizar encuesta
-      </ion-button>
+        <ion-button
+          expand="block"
+          class="boton-opcion"
+          [routerLink]="['/encuesta']"
+          [queryParams]="{ mesa: mesaAsignada }"
+          *ngIf="estadoPedido == 'entregado'"
+        >
+          Realizar encuesta
+        </ion-button>
       }
-
-
-      <!-- Solo si estadoPedido es 'entregado' -->
-      <ion-button expand="block" class="boton-opcion" (click)="mostrarModalAlerta(true, 'IMPLEMENTAR PAGO', 'Aca hay que implementar pago.')"
-        *ngIf="estadoPedido === 'entregado'">
-        Pagar
-      </ion-button>
     </div>
 
+    <!-- MODAL ALERTA -->
     <div class="alerta-overlay" *ngIf="modalAlerta">
       <div class="alerta-flotante">
         <h2>{{ tituloAlerta }}</h2>
@@ -101,3 +144,5 @@
     Reset estado de pedido
   </ion-button>
 </div>
+
+

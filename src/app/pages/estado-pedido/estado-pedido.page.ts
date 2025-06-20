@@ -8,13 +8,14 @@ import { IonicModule } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { arrowBackCircleOutline } from 'ionicons/icons';
 import { ActivatedRoute } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-estado-pedido',
   templateUrl: './estado-pedido.page.html',
   styleUrls: ['./estado-pedido.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class EstadoPedidoPage implements OnInit {
   auth = inject(AuthService);
@@ -23,8 +24,8 @@ export class EstadoPedidoPage implements OnInit {
   pedidos: any[] = [];
   mostrarPedidos: boolean = false;
   mesaRecibida: string = '';
-  constructor(private route: ActivatedRoute) { 
-     addIcons({arrowBackCircleOutline});
+  constructor(private route: ActivatedRoute) {
+    addIcons({ arrowBackCircleOutline });
   }
 
   ngOnInit() {
@@ -35,7 +36,25 @@ export class EstadoPedidoPage implements OnInit {
     this.obtenerPedidosPendientes();
   }
 
-   async obtenerPedidosPendientes() {
+  simularPedidoFalso() {
+    const pedidoFalso = {
+      mesa_id: '99',
+      demora_total: 15,
+      estado: 'entregado',
+      productos: [
+        { nombre: 'Pizza', cantidad: 2 },
+        { nombre: 'Agua', cantidad: 1 },
+      ],
+      detalle: [
+        { producto_nombre: 'Pizza', cantidad: 2, estado: 'listo' },
+        { producto_nombre: 'Agua', cantidad: 1, estado: 'listo' },
+      ],
+    };
+
+    this.pedidos.push(pedidoFalso);
+  }
+
+  async obtenerPedidosPendientes() {
     const email = this.auth.usuarioActual?.email;
     // const email = "cliente@resto.com"; solo de prueba
     const { data, error } = await this.supabase
@@ -43,17 +62,25 @@ export class EstadoPedidoPage implements OnInit {
       .select('*')
       .eq('cliente_id', email)
       .eq('mesa_id', this.mesaRecibida.toString())
-      .in('estado', ['pendiente_confirmacion', 'confirmado']);
+      .in('estado', ['pendiente_confirmacion', 'confirmado', 'entregado']);
 
     if (!error && data) {
       for (const pedido of data) {
-        
-      // Agrega el detalle individual de cada producto del pedido
+        // Agrega el detalle individual de cada producto del pedido
         pedido.detalle = await this.obtenerDetallePedido(pedido.mesa_id);
       }
 
       this.pedidos = data;
     }
+  }
+
+  confirmarPedido(pedido: any) {
+    console.log('Pedido confirmado:', pedido);
+    window.history.back();
+  }
+
+  rechazarPedido(pedido: any) {
+    console.log('Pedido rechazado:', pedido);
   }
 
   async obtenerDetallePedido(mesa: number) {
@@ -67,5 +94,4 @@ export class EstadoPedidoPage implements OnInit {
   volverAtras() {
     window.history.back();
   }
-
 }

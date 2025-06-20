@@ -6,6 +6,7 @@ import { AlertController, IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { addIcons } from 'ionicons';
+import { NavController } from '@ionic/angular';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import {
   checkboxOutline,
@@ -34,45 +35,69 @@ export class MesaPage implements OnInit, OnDestroy {
   tituloAlerta: string = '';
   mensajeAlerta: string = '';
 
-  estadoPedido: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado' | 'pendiente_elaboracion' | 'elaborado' =
-    'ninguno';
+  estadoPedido:
+    | 'ninguno'
+    | 'pendiente'
+    | 'confirmado'
+    | 'entregado'
+    | 'pendiente_elaboracion'
+    | 'terminado'
+    | 'elaborado' = 'ninguno';
+
+
+  pedidoIniciadoLocalmente: boolean = false;
 
   qrEscaneado: string = '';
   numeroQRextraido: string = '';
-  hizoEncuesta:boolean = false;
+  hizoEncuesta: boolean = false;
+  logs: string[] = [];
 
-  constructor(private route: ActivatedRoute) {
-    addIcons({ qrCodeOutline, checkmarkSharp, homeOutline, checkboxOutline, newspaperOutline});
+  constructor(private route: ActivatedRoute, private navCtrl: NavController) {
+    addIcons({
+      qrCodeOutline,
+      checkmarkSharp,
+      homeOutline,
+      checkboxOutline,
+      newspaperOutline,
+    });
+  }
+
+  log(mensaje: string) {
+    const ahora = new Date().toLocaleTimeString();
+    this.logs.unshift(`[${ahora}] ${mensaje}`);
+    if (this.logs.length > 100) this.logs.pop();
+    console.log(mensaje);
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.mesaAsignada = params['mesa'];
+      this.log('Mesa asignada: ' + this.mesaAsignada);
+      if (this.mesaAsignada) {
+        this.verificarPedido();
+        this.verificarEncuesta();
+        this.escucharEstadoPedido();
+      }
     });
-
-    this.escucharEstadoPedido();
-    this.verificarEncuesta();
-  }
-
-  async ionViewWillEnter() {
-    const estadoGuardado = localStorage.getItem('estadoPedido');
-    if (estadoGuardado) {
-      this.estadoPedido = estadoGuardado as
-        | 'pendiente'
-        | 'confirmado'
-        | 'ninguno';
-    }
-
-    await this.verificarPedido();
   }
 
   ngOnDestroy() {
     this.canalPedido?.unsubscribe();
+    this.log('Canal de pedido cerrado');
   }
 
+  iniciarPedido() {
+    this.estadoPedido = 'pendiente';
+    this.pedidoIniciadoLocalmente = true;
+    this.log('iniciarPedido(): Estado cambiado a pendiente');
+    this.navCtrl.navigateForward('/menu');
+  }
   async verificarPedido() {
     const email = this.auth.usuarioActual?.email;
-    if (!email) return;
+    if (!email || !this.mesaAsignada) {
+      this.log('verificarPedido(): Faltan datos para consulta');
+      return;
+    }
 
     const { data, error } = await this.auth.sb.supabase
       .from('pedidos_pendientes')
@@ -83,25 +108,37 @@ export class MesaPage implements OnInit, OnDestroy {
       .limit(1)
       .maybeSingle();
 
+    // pedidoIniciadoLocalmente is now a class property, not a local variable.
+
     if (data?.estado === 'entregado') {
       this.estadoPedido = 'entregado';
+      this.navCtrl.navigateForward(['/estado-pedido'], {
+        queryParams: { mesa: this.mesaAsignada },
+      });
     } else if (data?.estado === 'confirmado') {
       this.estadoPedido = 'confirmado';
     } else if (data?.estado === 'pendiente_confirmacion') {
       this.estadoPedido = 'pendiente';
-    } else if(data?.estado === 'pendiente_elaboracion'){
+    } else if (data?.estado === 'pendiente_elaboracion') {
       this.estadoPedido = 'pendiente_elaboracion';
-    } else if(data?.estado === 'elaborado'){
+    } else if (data?.estado === 'elaborado') {
       this.estadoPedido = 'elaborado';
     } else if (data) {
       this.estadoPedido = 'pendiente';
     } else {
-      this.estadoPedido = 'ninguno';
+      this.log(
+        'verificarPedido(): sin datos válidos, se mantiene estado actual: ' +
+          this.estadoPedido
+      );
+      return; // no cambiar estado si no hay datos
     }
+
+    this.log('verificarPedido(): Estado final seteado: ' + this.estadoPedido);
   }
+
   escucharEstadoPedido() {
     // const email = this.auth.usuarioActual?.email;
-     const email = 'cliente@resto.com';
+    const email = 'cliente@resto.com';
     if (!email) return;
 
     this.canalPedido = this.auth.sb.supabase
@@ -121,7 +158,7 @@ export class MesaPage implements OnInit, OnDestroy {
           if (payload.new && 'estado' in payload.new) {
             nuevoEstado = payload.new?.['estado'];
           }
-          
+
           if (nuevoEstado === 'confirmado') {
             this.estadoPedido = 'confirmado';
             this.mostrarModalAlerta(
@@ -130,12 +167,12 @@ export class MesaPage implements OnInit, OnDestroy {
               'Tu pedido fue aceptado por el mozo.'
             );
           } else if (nuevoEstado === 'pendiente_confirmacion') {
-            this.estadoPedido = 'pendiente';
             this.mostrarModalAlerta(
               true,
               'Pedido pendiente',
               'Tu pedido está esperando confirmación del mozo.'
             );
+            this.estadoPedido = 'pendiente';
           } else if (nuevoEstado === 'entregado') {
             this.estadoPedido = 'entregado';
             this.mostrarModalAlerta(
@@ -143,12 +180,17 @@ export class MesaPage implements OnInit, OnDestroy {
               'Pedido entregado',
               'Tu pedido fue entregado. Podés pagar la cuenta.'
             );
+            this.navCtrl.navigateForward(['/estado-pedido'], {
+              queryParams: { mesa: this.mesaAsignada },
+            });
           }
-
-      
         }
       )
       .subscribe();
+  }
+
+  volverAtras() {
+    this.auth.cerrarSesion();
   }
 
   async escanearQR() {
@@ -174,7 +216,6 @@ export class MesaPage implements OnInit, OnDestroy {
 
       if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
         this.mesaVerificada = true;
-        await this.verificarPedido();
 
         let titulo = 'Mesa verificada';
         let mensaje = 'Bienvenido nuevamente.';
@@ -185,6 +226,10 @@ export class MesaPage implements OnInit, OnDestroy {
         } else if (this.estadoPedido === 'pendiente') {
           titulo = 'Pedido en espera';
           mensaje = 'Tu pedido está esperando confirmación del mozo.';
+        } else if (this.estadoPedido === 'entregado') {
+          titulo = 'Pedido entregado';
+
+          mensaje = 'Tu pedido ha sido entregado.';
         } else {
           mensaje = 'Podés comenzar tu pedido desde el menú.';
         }
@@ -209,77 +254,104 @@ export class MesaPage implements OnInit, OnDestroy {
     }
   }
 
-  async verEstadoDelPedido() {
-    const email = this.auth.usuarioActual?.email;
-    if (!email) return;
+  async verEstadoPedidoEscaneandoQR() {
+    this.log('Iniciando flujo de verEstadoPedidoEscaneandoQR()');
 
-    const { data: pedido, error } = await this.auth.sb.supabase
+    this.procesando = true;
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      const claveQR = barcodes[0]?.rawValue;
+
+      if (!claveQR) {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se detectó un código QR válido.'
+        );
+        return;
+      }
+
+      const match = claveQR.match(/(?:-)?qr(\d+)/i);
+      const numeroQR = match ? match[1] : null;
+
+      if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
+        this.log('QR válido para ver estado. Navegando a /estado-pedido...');
+        this.navCtrl.navigateForward(['/estado-pedido'], {
+          queryParams: { mesa: this.mesaAsignada },
+        });
+      } else {
+        this.mostrarModalAlerta(
+          true,
+          'QR inválido',
+          'Este código QR no corresponde a tu mesa.'
+        );
+      }
+    } catch (err) {
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al escanear el QR.'
+      );
+    } finally {
+      this.procesando = false;
+    }
+  }
+
+  async verTerminarPedido() {
+    this.log('Iniciando flujo de verEstadoPedidoEscaneandoQR()');
+
+    this.procesando = true;
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      const claveQR = barcodes[0]?.rawValue;
+
+      if (!claveQR) {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se detectó un código QR válido.'
+        );
+        return;
+      }
+
+      const match = claveQR.match(/(?:-)?qr(\d+)/i);
+      const numeroQR = match ? match[1] : null;
+
+      if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
+        this.log('QR válido para ver estado. Navegando a /estado-pedido...');
+        this.estadoPedido = "terminado";
+      } else {
+        this.mostrarModalAlerta(
+          true,
+          'QR inválido',
+          'Este código QR no corresponde a tu mesa.'
+        );
+      }
+    } catch (err) {
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al escanear el QR.'
+      );
+    } finally {
+      this.procesando = false;
+    }
+  }
+
+  async verificarEncuesta() {
+    const email = this.auth.usuarioActual?.email;
+    if (!email || !this.mesaAsignada) return;
+
+    const { data } = await this.auth.sb.supabase
       .from('pedidos_pendientes')
-      .select('id')
+      .select('hizo_la_encuesta')
       .eq('cliente_id', email)
-      .eq('mesa_id', this.mesaAsignada)
-      .order('created_at', { ascending: false })
+      .eq('mesa_id', this.mesaAsignada.toString())
       .limit(1)
       .maybeSingle();
 
-    if (!pedido || error) {
-      this.mostrarModalAlerta(
-        true,
-        'Sin pedido',
-        'No hay pedidos activos para mostrar.'
-      );
-      return;
-    }
-
-    const { data: detalle, error: errorDetalle } = await this.auth.sb.supabase
-      .from('pedido_detalle_estado')
-      .select('sector, estado, tiempo_estimado_min')
-      .eq('pedido_id', pedido.id);
-
-    if (errorDetalle || !detalle || detalle.length === 0) {
-      this.mostrarModalAlerta(
-        true,
-        'Sin detalles',
-        'No hay información disponible del pedido.'
-      );
-      return;
-    }
-
-    const resumen: {
-      [key: string]: { listos: number; total: number; maxTiempo: number };
-    } = {};
-
-    for (const item of detalle) {
-      const sector = item.sector;
-      if (!resumen[sector]) {
-        resumen[sector] = { listos: 0, total: 0, maxTiempo: 0 };
-      }
-
-      resumen[sector].total++;
-      if (item.estado === 'listo') resumen[sector].listos++;
-      if (item.tiempo_estimado_min > resumen[sector].maxTiempo) {
-        resumen[sector].maxTiempo = item.tiempo_estimado_min;
-      }
-    }
-
-    let mensajeFinal = '';
-
-    for (const sector in resumen) {
-      const datos = resumen[sector];
-      const nombre = sector.charAt(0).toUpperCase() + sector.slice(1);
-      const mensaje =
-        datos.listos === datos.total
-          ? 'Listo para entregar'
-          : `${datos.maxTiempo} min`;
-
-      mensajeFinal += `${nombre}: ${mensaje}\n`;
-    }
-
-    this.mostrarModalAlerta(true, 'Estado del pedido', mensajeFinal.trim());
-  }
-
-  volverAtras() {
-    this.auth.cerrarSesion();
+    this.hizoEncuesta = data?.hizo_la_encuesta === true;
+    this.log('verificarEncuesta(): hizoEncuesta = ' + this.hizoEncuesta);
   }
 
   mostrarModalAlerta(
@@ -290,6 +362,7 @@ export class MesaPage implements OnInit, OnDestroy {
     if (mostrar) {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
+      this.log(`Modal mostrado: ${titulo} - ${mensaje}`);
     }
     this.modalAlerta = mostrar;
   }
@@ -298,117 +371,12 @@ export class MesaPage implements OnInit, OnDestroy {
     nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado'
   ) {
     this.estadoPedido = nuevoEstado;
-
-    if (nuevoEstado === 'confirmado') {
-      this.mostrarModalAlerta(
-        true,
-        'Pedido confirmado',
-        'Tu pedido fue aceptado por el mozo.'
-      );
-    } else if (nuevoEstado === 'pendiente') {
-      this.mostrarModalAlerta(
-        true,
-        'Pedido pendiente',
-        'Tu pedido está esperando confirmación.'
-      );
-    }else if (nuevoEstado === 'entregado') {
-      this.mostrarModalAlerta(
-        true,
-        'Pedido entregado',
-        'Tu pedido fue entregado.'
-      );
-    }  
-    else {
-      this.mostrarModalAlerta(false);
-    }
-  }
-
-  async escanearEstadoDelPedido() {
-    this.procesando = true;
-
-    try {
-      const { barcodes } = await BarcodeScanner.scan();
-      const claveQR = barcodes[0]?.rawValue;
-      if (!claveQR) {
-        this.mostrarModalAlerta(true, 'Error', 'QR inválido.');
-        return;
-      }
-
-      const match = claveQR.match(/(?:-)?qr(\d+)/i);
-      const numeroQR = match ? match[1] : null;
-
-      if (numeroQR?.toString() !== this.mesaAsignada?.toString()) {
-        this.mostrarModalAlerta(
-          true,
-          'Error',
-          'Este QR no corresponde a tu mesa.'
-        );
-        return;
-      }
-
-      this.consultarEstadoDespuesDeEscanear();
-    } catch (err) {
-      console.error(err);
-      this.mostrarModalAlerta(true, 'Error', 'Problema al escanear QR.');
-    } finally {
-      this.procesando = false;
-    }
-  }
-
-  iniciarPedido() {
-    this.estadoPedido = 'pendiente';
-    localStorage.setItem('estadoPedido', 'pendiente');
-  }
-
-  async consultarEstadoDespuesDeEscanear() {
-    const { data: detalle } = await this.auth.sb.supabase
-      .from('detalle_pedido_cliente')
-      .select('sector, estado, tiempo_estimado_min')
-      .eq('mesa', this.mesaAsignada);
-
-    if (!detalle || detalle.length === 0) {
-      this.mostrarModalAlerta(
-        true,
-        'Sin detalles',
-        'No hay productos asignados aún.'
-      );
-      return;
-    }
-
-    const resumen: {
-      [key: string]: { listos: number; total: number; maxTiempo: number };
-    } = {};
-
-    for (const item of detalle) {
-      const sector = item.sector || 'cocinero';
-      if (!resumen[sector]) {
-        resumen[sector] = { listos: 0, total: 0, maxTiempo: 0 };
-      }
-
-      resumen[sector].total++;
-      if (item.estado === 'listo') resumen[sector].listos++;
-
-      if (
-        typeof item.tiempo_estimado_min === 'number' &&
-        item.tiempo_estimado_min > resumen[sector].maxTiempo
-      ) {
-        resumen[sector].maxTiempo = item.tiempo_estimado_min;
-      }
-    }
-
-    let mensajeFinal = '';
-    for (const sector in resumen) {
-      const datos = resumen[sector];
-      const nombre = sector === 'cocinero' ? 'Cocinero' : 'Bartender';
-      const mensaje =
-        datos.listos === datos.total
-          ? 'Listo para entregar'
-          : `${datos.maxTiempo} min`;
-
-      mensajeFinal += `${nombre}: ${mensaje}\n`;
-    }
-
-    this.mostrarModalAlerta(true, 'Estado del pedido', mensajeFinal.trim());
+    this.log('simularCambioEstadoPedido(): nuevo estado → ' + nuevoEstado);
+    this.mostrarModalAlerta(
+      true,
+      'Estado simulado',
+      'Estado actual: ' + nuevoEstado
+    );
   }
 
   simularQR(correcto: boolean) {
@@ -418,39 +386,9 @@ export class MesaPage implements OnInit, OnDestroy {
 
     if (numeroQR === this.mesaAsignada) {
       this.mesaVerificada = true;
-      this.mostrarModalAlerta(true, 'Éxito', 'QR correcto, estás en tu mesa.');
+      this.log('simularQR(): QR correcto, mesa verificada');
     } else {
-      this.mostrarModalAlerta(
-        true,
-        'Error',
-        'Este QR no corresponde a tu mesa.'
-      );
-    }
-  }
-
-  get mostrarBotonEncuesta(): boolean {
-  return this.estadoPedido !== 'ninguno' && this.estadoPedido !== 'entregado';
-}
-
-async verificarEncuesta() {
-    const email = this.auth.usuarioActual?.email;
-    // const email = "cliente@resto.com"; solo de prueba
-    if (!email) return;
-
-    const { data, error } = await this.auth.sb.supabase
-      .from('pedidos_pendientes')
-      .select('hizo_la_encuesta')
-      .eq('cliente_id', email)
-      .eq('mesa_id', this.mesaAsignada.toString())
-      .limit(1)
-      .maybeSingle();
-    console.log("data desde verificarEncuesta: ", data)
-    if (data?.hizo_la_encuesta === true) {
-      this.hizoEncuesta = true;
-      return;
-    }else{
-      this.hizoEncuesta = false;
-      return;
+      this.log('simularQR(): QR incorrecto');
     }
   }
 }

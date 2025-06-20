@@ -1,9 +1,5 @@
 ion-content {
-  background-image: url("/assets/fondo.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  overflow-y: auto !important;
+
 
   .contenedor-flex {
     display: flex;
@@ -15,13 +11,28 @@ ion-content {
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
     margin: 8px;
-    background-color: red;
+    background-color: rgb(202, 59, 49);
   }
 
   .contenido-listado {
     flex: 1; // ocupa el espacio restante
     overflow-y: auto;
   }
+}
+
+.fondo-con-imagen {
+  background-image: url("/assets/fondo.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.visor-cantidad p {
+  margin: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
 }
 
 ion-card-content {
@@ -69,7 +80,7 @@ ion-card-content {
 
 .descripcion-producto {
   font-size: 1rem; // mismo tamaño que ion-card-title
-  color: white;
+  color: rgb(240, 240, 240);
 }
 
 .importe,
@@ -92,7 +103,8 @@ ion-card-content {
 }
 
 .alerta-flotante {
-  background: white;
+  background: rgb(35, 104, 206);
+  color: white;
   border-radius: 12px;
   padding: 1.2rem;
   width: 90%;
