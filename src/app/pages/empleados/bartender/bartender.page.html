@@ -3,19 +3,11 @@
     <ion-buttons slot="primary" class="toolbar-center">
       @if(!mostrarPedidosPendientes){
       <ion-button class="boton-home" (click)="volverAtras()">
-        <ion-icon
-          name="home-outline"
-          class="icono-home"
-          size="large"
-        ></ion-icon>
+        <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
       </ion-button>
       }@else {
       <ion-button (click)="mostrarPedidosPendientes = false">
-        <ion-icon
-          name="arrow-back-circle-outline"
-          class="icono-home"
-          size="large"
-        ></ion-icon>
+        <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
       </ion-button>
       }
     </ion-buttons>
@@ -24,12 +16,7 @@
 
 <ion-content fullscreen="true" class="fondo ion-padding">
   <div class="menu-container" *ngIf="!mostrarPedidosPendientes">
-    <ion-button
-      expand="block"
-      fill="solid"
-      class="boton-opcion"
-      (click)="mostrarPedidosPendientes = true"
-    >
+    <ion-button expand="block" fill="solid" class="boton-opcion" (click)="mostrarPedidosPendientes = true">
       Ver pedidos pendientes
     </ion-button>
   </div>
@@ -41,12 +28,8 @@
             <ion-card-header>
               <div class="mesa-demora">
                 <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
-                <ion-button
-                  color="success"
-                  (click)="prepararProducto(pedido.id)"
-                >
-                  Entregar</ion-button
-                >
+                <ion-button color="success" (click)="prepararProducto(pedido.id)">
+                  Entregar</ion-button>
               </div>
             </ion-card-header>
 

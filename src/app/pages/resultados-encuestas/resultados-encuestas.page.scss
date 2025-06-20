@@ -37,3 +37,59 @@ ion-header ion-toolbar {
   color: white;
   font-size: 100px;
 }
+
+.contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+    gap: 1rem;
+  }
+ .texto-pregunta{
+  font-size: 1.5rem; 
+  font-weight:bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
+  background-color: rgba(255, 255, 255, 0.08);//fondo del titulo
+}
+
+  .vidrio {
+  background: rgba(255, 255, 255, 0.01); 
+  backdrop-filter: blur(10px);         
+  border-radius: 15px;                 
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.custom-card {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.custom-card ion-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.grafico-container {
+  width: 100%;
+     /* cambias este valor para ajustar la altura */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grafico-container canvas {
+  width: 100% !important;  /* fuerza al canvas a usar todo el ancho */
+  height: 100% !important; /* fuerza al canvas a usar toda la altura */
+}

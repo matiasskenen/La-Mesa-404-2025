@@ -1,18 +1,68 @@
-
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary" class="toolbar-center">
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon name="arrow-back-circle-outline" class="icono-home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="primary" class="toolbar-center">
-        <ion-button class="boton-home" (click)="volverAtras()">
-          <ion-icon
-            name="arrow-back-circle-outline"
-            class="icono-home"
-          ></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
-<h1>implementar listado encuestas previas</h1>
-<h1>El boton para ir para atras funciona</h1>
+  <div class="contenedor-flex">
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-header>
+        <ion-label class="texto-pregunta"> Atención de los mozos</ion-label>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico-container">
+          <!-- Grafico Doughnut atencion-->
+          <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions">
+          </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-header>
+        <ion-label class="texto-pregunta">Calidad de la comida</ion-label>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico-container">
+          <!-- Grafico  de torta para calidad_comida-->
+          <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions">
+          </canvas>
+
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-header>
+        <ion-label class="texto-pregunta">Medio de pago usado</ion-label>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico-container">
+          <!-- Grafico de barras verticales para medio_de_pago -->
+          <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions">
+          </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-header>
+        <ion-label class="texto-pregunta">Higiene del local</ion-label>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="grafico-container">
+          <!-- Grafico de bubble para higiene_local-->
+          <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions">
+          </canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
 </ion-content>

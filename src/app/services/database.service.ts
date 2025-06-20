@@ -53,6 +53,7 @@ export class DatabaseService {
     })
   }
 
+  //Encuesta
   async guardarEncuesta(encuesta:any){
     const {data, error} = await this.sb.supabase.from('encuestas').insert([encuesta]);
     if (error) {
@@ -75,5 +76,14 @@ export class DatabaseService {
     console.log('Estado encuesta guardada correctamente:', data);
   }
 }
+
+async traerTodasLasEncuestas() {
+    const { data, error } = await this.sb.supabase.from("encuestas")
+      .select("*");
+    if (error) {
+      console.error('Error al solicitar mensajes', error.message);
+    }
+    return data as any[];
+  }
 
 }
