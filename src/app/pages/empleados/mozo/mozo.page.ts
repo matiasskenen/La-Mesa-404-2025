@@ -189,12 +189,12 @@ export class MozoPage implements OnInit, OnDestroy {
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: '*',
           schema: 'public',
           table: 'pedidos_pendientes',
         },
         (payload) => {
-          const nuevo = payload.new;
+          const nuevo = payload.new as { [key: string]: any };
           if (nuevo['estado'] === 'pendiente_confirmacion') {
             this.pedidos.unshift(nuevo);
           }
