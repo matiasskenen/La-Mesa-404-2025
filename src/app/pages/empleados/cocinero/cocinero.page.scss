@@ -207,3 +207,18 @@ ion-item ion-label {
   width: 100%;
 }
 
+@keyframes slideInFwdCenter {
+  0% {
+    transform: translateZ(-1400px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideInFwdCenter 1s ease-out 0s both;
+}
+

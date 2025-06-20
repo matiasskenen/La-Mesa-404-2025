@@ -34,12 +34,17 @@
     </ion-button>
   </div>
   <div *ngIf="mostrarPedidosPendientes">
+<<<<<<< HEAD
     <div *ngIf="pedidos.length > 0" class="contenedor-flex">
       <ion-card
         *ngFor="let pedido of pedidos"
         class="custom-card"
         [ngClass]="pedido.estado"
       >
+=======
+    <div *ngIf="pedidos.length > 0" class="contenedor-flex slide-in">
+      <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
+>>>>>>> a8a35e643ba498aa69841bd10ca7a44011b88d6a
         <ion-card-content>
           <div class="scroll-card">
             <ion-card-header>
