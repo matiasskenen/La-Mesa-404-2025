@@ -79,15 +79,6 @@
       PagarNuevo
     </ion-button>
 
-      <ion-button
-        expand="block"
-        class="boton-opcion"
-        *ngIf="estadoPedido === 'entregado'"
-        (click)="liberarMesaAlPagar()"
-      >
-        Pagar
-      </ion-button>
-
       <!-- CONSULTA AL MOZO (siempre que tenga mesa) -->
       <ion-button
         expand="block"
@@ -130,28 +121,5 @@
   </div>
 </ion-content>
 
-<div class="botones-test">
-  <ion-button fill="outline" size="small" color="success" (click)="simularQR(true)">
-    Simular QR correcto
-  </ion-button>
-  <ion-button fill="outline" size="small" color="danger" (click)="simularQR(false)">
-    Simular QR incorrecto
-  </ion-button>
-</div>
-
-<div class="botones-test">
-  <ion-button fill="outline" size="small" color="warning" (click)="simularCambioEstadoPedido('pendiente')">
-    Simular pedido pendiente
-  </ion-button>
-  <ion-button fill="outline" size="small" color="tertiary" (click)="simularCambioEstadoPedido('confirmado')">
-    Simular pedido confirmado (TOMI NUEVO)
-  </ion-button>
-  <ion-button fill="outline" size="small" color="medium" (click)="simularCambioEstadoPedido('entregado')">
-    Simular pedido entregado
-  </ion-button>
-  <ion-button fill="outline" size="small" color="medium" (click)="simularCambioEstadoPedido('ninguno')">
-    Reset estado de pedido
-  </ion-button>
-</div>
 
 

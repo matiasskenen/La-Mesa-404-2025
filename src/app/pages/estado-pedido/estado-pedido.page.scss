@@ -38,113 +38,59 @@ ion-header ion-toolbar {
   font-size: 100px;
 }
 
-/* ======================
-   Agregado tomi
-====================== */
- .contenedor-flex {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-  }
+.custom-card {
+  background-color: #4b6584; // Color propuesto (gris azulado)
+  border-radius: 16px;
+  margin: 12px;
+  padding: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  color: white;
+}
 
-  .custom-card {
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-    margin: 8px;
-    background-color: red;
-  }
+ion-card-header {
+  padding: 8px 0;
+}
 
-  .contenido-listado {
-    flex: 1; // ocupa el espacio restante
-    overflow-y: auto;
-  }
-
-  .mesa-demora {
+.mesa-demora {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 .titulo-mesa,
 .titulo-demora {
-  font-size: 1.2rem; // mismo tamaño que ion-card-title
-  font-weight: bolder;
-  color: black;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-ion-card-header{
-  padding: 0px;
-}
-
-//Colores dinamicos para la CARD del pedido
-.pendiente_confirmacion {
-  background: #ffee8c; // amarillo
-}
-
-.confirmado {
-  background: #2ecc71; // verde
-}
-
-.entregado {
-  background: #98a39d; // por si querés un azul 
-}
-
-.pendiente {
-  background-color: #ffee8c; // amarillo
-}
-
-.listo {
-  background-color: #2ff028; // verde
-}
-
-.texto-parte-pedido{
-font-size: 1.5rem; 
-  font-weight:bold;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 16px;
-  padding: 0.4rem;
+.titulo-precio {
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 ion-list {
   background: transparent !important;
+  margin-top: 10px;
 }
 
 ion-item {
-  --background: transparent !important;
-  --inner-padding-start: 12px;
-  --inner-padding-end: 12px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --min-height: 40px;
-  --inner-border-width: 0;
-  --highlight-color-focused: transparent;
-  --ripple-color: transparent;
-  border: none !important;
-  box-shadow: none !important;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-}
-ion-item ion-label {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-  color: black;
-  font-size: 0.95rem;
-  text-align: left;
-  width: 100%;
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 36px;
+  border: none;
+  box-shadow: none;
 }
 
-.texto-blanco {
-  font-size: 1.5rem; 
-  font-weight:bold;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.texto-parte-pedido {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 6px;
 }

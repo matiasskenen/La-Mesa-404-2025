@@ -168,6 +168,7 @@ export class MozoPage implements OnInit, OnDestroy {
       sector: item.sector || this.inferirSector(item.nombre),
       estado: 'pendiente',
       tiempo_estimado_min: item.tiempo || 0,
+      precio_unitario: item.precio,
     }));
 
     const { error: insertError } = await this.supabase
@@ -224,6 +225,12 @@ export class MozoPage implements OnInit, OnDestroy {
         (payload) => {
           const nuevo = payload.new as { [key: string]: any };
           if (nuevo['estado'] === 'pendiente_confirmacion') {
+            this.pedidos.unshift(nuevo);
+          }
+          if (nuevo['estado'] === 'pago_pendiente_confirmacion') {
+            this.pedidos.unshift(nuevo);
+          }
+          if (nuevo['estado'] === 'confirmado') {
             this.pedidos.unshift(nuevo);
           }
         }

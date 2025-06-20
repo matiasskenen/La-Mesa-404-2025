@@ -13,28 +13,30 @@
       *ngFor="let pedido of pedidos"
       class="custom-card"
       [ngClass]="pedido.estado"
-    > 
-
-    
+    >
       <ion-card-content>
         <div class="scroll-card">
+          <!-- Header: Mesa, demora e importe -->
           <ion-card-header>
             <div class="mesa-demora">
               <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
               <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
+              <span class="titulo-precio">
+                ${{ pedido.importe_total + montoPropina }}
+              </span>
             </div>
           </ion-card-header>
 
-          <!-- Mostrar siempre los productos con estilo unificado -->
+          <!-- Lista de productos detallados -->
           <ion-list *ngIf="pedido.detalle?.length">
             <ion-item *ngFor="let item of pedido.detalle">
               <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
-                {{ item.producto_nombre }} x {{ item.cantidad }}
+                {{ item.producto_nombre }} x {{ item.cantidad }} - ${{ item.precio_unitario }}
               </ion-label>
             </ion-item>
           </ion-list>
 
-          <!-- Fallback si no hay detalle, usa productos simples -->
+          <!-- Fallback si no hay detalle, mostrar productos simples -->
           <ion-list *ngIf="!pedido.detalle?.length && pedido.productos?.length">
             <ion-item *ngFor="let item of pedido.productos">
               <ion-label class="texto-parte-pedido">
@@ -43,43 +45,56 @@
             </ion-item>
           </ion-list>
 
-          <!-- Botones solo si el estado es entregado -->
+          <!-- Botones para estado 'entregado' -->
           <ion-row *ngIf="pedido.estado === 'entregado'" class="botones-acciones">
             <ion-col>
               <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
-                Confirmar recepción
+                Confirmar Pedido
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button expand="block" color="danger" (click)="rechazarPedido(pedido)" [routerLink]="['/chat']" >
-                Rechazar pedido
+              <ion-button
+                expand="block"
+                color="danger"
+                (click)="rechazarPedido(pedido)"
+                [routerLink]="['/chat']"
+                [queryParams]="{ mesa: pedido.mesa_id }"
+              >
+                Rechazar
               </ion-button>
             </ion-col>
           </ion-row>
 
-          <!-- Botones solo si el estado es entregado -->
+          <!-- Botones para estado 'pedido_listo_pagar' -->
           <ion-row *ngIf="pedido.estado === 'pedido_listo_pagar'" class="botones-acciones">
             <ion-col>
-              <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
-                Confirmar recepción
+              <ion-button expand="block" color="success" (click)="marcarPagoPendienteConfirmacion()">
+                Confirmar
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button expand="block" color="danger" (click)="rechazarPedido(pedido)" [routerLink]="['/chat']" >
-                Rechazar pedido
+              <ion-button
+                expand="block"
+                color="danger"
+                (click)="rechazarPedido(pedido)"
+                [routerLink]="['/chat']"
+                [queryParams]="{ mesa: pedido.mesa_id }"
+              >
+                Rechazar
               </ion-button>
             </ion-col>
-            <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
-              Propinas
-            </ion-button>
+            <ion-col size="12">
+              <ion-button expand="block" color="warning" (click)="escanearQRPropina()">
+                Propinas
+              </ion-button>
+            </ion-col>
           </ion-row>
-
-
         </div>
       </ion-card-content>
     </ion-card>
   </div>
 
+  <!-- Mensaje cuando no hay pedidos -->
   <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
     <p>No hay pedidos pendientes.</p>
   </ion-text>
