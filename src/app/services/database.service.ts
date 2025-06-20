@@ -53,5 +53,27 @@ export class DatabaseService {
     })
   }
 
+  async guardarEncuesta(encuesta:any){
+    const {data, error} = await this.sb.supabase.from('encuestas').insert([encuesta]);
+    if (error) {
+    console.error('Error al guardar encuesta:', error);
+    return false;
+  } else {
+    console.log('Encuesta guardada correctamente:', data);
+    return true;
+  }
+  }
+
+  async cambiarEstadoEncuensta(id_cliente:string, id_mesa:string){
+    const {data, error} = await this.sb.supabase.from('pedidos_pendientes')
+                                                .update({ hizo_la_encuesta: true })
+                                                .eq('cliente_id', id_cliente)
+                                                .eq('mesa_id', id_mesa)
+    if (error) {
+    console.error('Error al cambiar estado encuesta:', error);
+  } else {
+    console.log('Estado encuesta guardada correctamente:', data);
+  }
+}
 
 }

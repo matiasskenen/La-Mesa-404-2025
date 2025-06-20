@@ -37,3 +37,145 @@ ion-header ion-toolbar {
   color: white;
   font-size: 100px;
 }
+
+.contenedor-flex {
+    display: flex;
+    flex-direction: column;
+    flex: 1; // ocupa el espacio restante
+    overflow-y: auto;
+    gap: 1rem;
+  }
+
+
+  .vidrio {
+  background: rgba(255, 255, 255, 0.01); 
+  backdrop-filter: blur(10px);         
+  border-radius: 15px;                 
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+  .custom-card {
+    // box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    // border-radius: 16px;
+    margin: 6px;
+    // background-color: #d22f19;
+  }
+
+  .texto-pregunta{
+  font-size: 1.5rem; 
+  font-weight:bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
+  background-color: rgba(255, 255, 255, 0.08);//fondo del titulo
+}
+
+.titulo-pregunta{
+  margin-bottom: 8px;
+}
+
+ion-range {
+  --bar-background: #a5ffa2;
+  --bar-background-active: #19647E;
+  --bar-height: 8px;
+  --bar-border-radius: 8px;
+  --knob-background: #d22f19; //pelotita
+  --knob-size: 40px;
+  --pin-background: #19647E;
+  --pin-color: #ffffff; //color de la letra del globito
+}
+
+ion-picker {
+  --highlight-background: #19647E;
+  --highlight-border-radius: 50px;
+
+  --fade-background-rgb: none;
+}
+
+ion-picker-column-option {
+  text-transform: uppercase;
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: white;
+  font-weight: bolder;
+  background-clip: text;
+
+}
+
+ion-card-header{
+  padding: 16px 16px 0px 16px;
+}
+
+.contenedor-botones{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem ;
+}
+
+.boton-sombra{
+  background-color: rgba(255, 255, 255, 0.08);//fondo del titulo
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+.boton-enviar{
+  --background: #d22f19;
+  --color: white;
+}
+
+.boton-padding{
+  padding: 0.5rem;
+}
+
+.boton-activo {
+  --background: rgba(255, 255, 255, 0.3);
+  border: 2px solid white;
+}
+ion-radio {
+  --border-radius: 4px;
+  --inner-border-radius: 4px;
+  --color: #ddd;
+  --color-checked: #d22f19;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 1.2rem;
+  
+}
+
+ion-radio.ios::part(container) {
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid #ddd;
+  border-radius: 4px;
+}
+
+.radio-checked.ios::part(container) {
+  border-color: #6815ec;
+}
+
+.contenedor-radios {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 1rem ;
+}
+
+.radio-expandido {
+  flex: 1;
+  text-align: center;
+  color: rgb(233, 231, 231);
+}
+
+
+
+

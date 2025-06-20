@@ -1,18 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary" class="toolbar-center">
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon name="arrow-back-circle-outline" class="icono-home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="primary" class="toolbar-center">
-        <ion-button class="boton-home" (click)="volverAtras()">
-          <ion-icon
-            name="arrow-back-circle-outline"
-            class="icono-home"
-          ></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
-<h1>implementar ENCUESTA</h1>
-<h1>El boton para ir para atras funciona</h1>
+  <div class="contenedor-flex">
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-content>
+        <ion-card-header>
+          <ion-label class="texto-pregunta"> Atención de los mozos</ion-label>
+        </ion-card-header>
+        <ion-range  [(ngModel)]="atencion" aria-label="Range with ticks" [ticks]="true" [snaps]="true" [min]="1" [max]="10"
+          [pin]="true"></ion-range>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-content>
+        <ion-card-header>
+          <ion-label class="texto-pregunta"> Calidad de la comida</ion-label>
+        </ion-card-header>
+        <ion-radio-group [(ngModel)]="calidad_comida">
+  <div class="contenedor-radios">
+    <ion-radio value="mala" labelPlacement="stacked" class="radio-expandido">Mala</ion-radio>
+    <ion-radio value="buena" labelPlacement="stacked" class="radio-expandido">Buena</ion-radio>
+    <ion-radio value="excelente" labelPlacement="stacked" class="radio-expandido">Excelente</ion-radio>
+  </div>
+</ion-radio-group>
+          
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-content>
+        <ion-card-header>
+          <ion-label class="texto-pregunta titulo-pregunta"> Medio de pago usado</ion-label>
+        </ion-card-header>
+        <div class="contenedor-botones">
+  <ion-button shape="round" color="none" class="boton-sombra"
+              [class.boton-activo]="medio_de_pago === 'efectivo'" 
+              (click)="medio_de_pago = 'efectivo'">
+    <ion-icon name="cash-outline" size="large" color="dark"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" color="none" class="boton-sombra"
+              [class.boton-activo]="medio_de_pago === 'tarjeta'" 
+              (click)="medio_de_pago = 'tarjeta'">
+    <ion-icon name="card-outline" size="large" color="dark"></ion-icon>
+  </ion-button>
+  <ion-button shape="round" color="none" class="boton-sombra"
+              [class.boton-activo]="medio_de_pago === 'cripto'" 
+              (click)="medio_de_pago = 'cripto'">
+    <ion-icon name="logo-bitcoin" size="large" color="dark"></ion-icon>
+  </ion-button>
+</div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="custom-card vidrio">
+      <ion-card-content>
+        <ion-card-header>
+          <ion-label class="texto-pregunta titulo-pregunta"> Higiene del local</ion-label>
+        </ion-card-header>
+        <ion-segment [(ngModel)]="higiene_local" color="dark">
+  <ion-segment-button value="sucio">
+    <ion-label>Sucio</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="normal">
+    <ion-label>Normal</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="limpio">
+    <ion-label>Limpio</ion-label>
+  </ion-segment-button>
+</ion-segment>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="custom-card boton-padding vidrio">
+      <ion-button expand="block" shape="round" class="boton-sombra boton-enviar" (click)="enviarEncuesta()">
+          Enviar encuesta
+        </ion-button>
+    </ion-card>
+  </div>
 </ion-content>
