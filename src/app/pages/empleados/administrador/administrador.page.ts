@@ -36,6 +36,8 @@ import {
 
 import { homeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-administrador',
@@ -66,6 +68,14 @@ import { addIcons } from 'ionicons';
   ],
 })
 export class AdministradorPage implements OnInit {
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
+
   formActivo: 'duenio' | 'empleado' | 'altaClientes' | null = null;
   auth = inject(AuthService);
 
@@ -147,6 +157,32 @@ export class AdministradorPage implements OnInit {
     } else {
       this.mensajeError = 'Error al aprobar cliente: ' + error.message;
     }
+    this.enviarNoti(
+      'Cliente Nuevo',
+      'Tienes un nuevo cliente por aprobar',
+      '/chat'
+    );
+  }
+
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
   }
 
   abrirModalRechazo(cliente: any) {

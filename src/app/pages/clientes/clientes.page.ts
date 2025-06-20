@@ -19,6 +19,7 @@ import { INotification } from 'src/app/interfaces/notification.model';
   imports: [CommonModule, IonicModule, RouterLink],
 })
 export class ClientesPage {
+
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
   router = inject(Router);
@@ -65,6 +66,11 @@ export class ClientesPage {
       // si el codigo es correcto
       if(claveQR.toString() === 'ingreso-mesa404-01'){
 
+        this.enviarNoti(
+          'Nuevo Cliente en espera',
+          'Tienes un nuevo cliente por Asignar',
+          '/meitre'
+        );
         const { data: userData } = await this.auth.sb.supabase.auth.getUser();
         const email = userData?.user?.email || 'anonimo';
   

@@ -62,7 +62,12 @@ export class EstadoPedidoPage implements OnInit {
       .select('*')
       .eq('cliente_id', email)
       .eq('mesa_id', this.mesaRecibida.toString())
-      .in('estado', ['pendiente_confirmacion', 'confirmado', 'entregado']);
+      .in('estado', [
+        'pendiente_confirmacion',
+        'confirmado',
+        'entregado',
+        'pedido_listo_pagar',
+      ]);
 
     if (!error && data) {
       for (const pedido of data) {

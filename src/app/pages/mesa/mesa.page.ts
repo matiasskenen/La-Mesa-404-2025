@@ -15,6 +15,8 @@ import {
   newspaperOutline,
   qrCodeOutline,
 } from 'ionicons/icons';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-mesa',
@@ -24,6 +26,13 @@ import {
   imports: [CommonModule, FormsModule, IonicModule, RouterLink],
 })
 export class MesaPage implements OnInit, OnDestroy {
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
   canalPedido: RealtimeChannel | null = null;
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
@@ -81,6 +90,95 @@ export class MesaPage implements OnInit, OnDestroy {
       }
     });
   }
+  async EscanearPago() {
+    this.log('Iniciando flujo de verEstadoPedidoEscaneandoQR()');
+
+    this.procesando = true;
+    try {
+      const { barcodes } = await BarcodeScanner.scan();
+      const claveQR = barcodes[0]?.rawValue;
+
+      if (!claveQR) {
+        this.mostrarModalAlerta(
+          true,
+          'Error',
+          'No se detectó un código QR válido.'
+        );
+        return;
+      }
+
+      const match = claveQR.match(/(?:-)?qr(\d+)/i);
+      const numeroQR = match ? match[1] : null;
+
+      if (numeroQR?.toString() === this.mesaAsignada?.toString()) {
+        this.marcaApagar();
+        this.navCtrl.navigateForward(['/estado-pedido'], {
+          queryParams: { mesa: this.mesaAsignada },
+        });
+      } else {
+        this.mostrarModalAlerta(
+          true,
+          'QR inválido',
+          'Este código QR no corresponde a tu mesa.'
+        );
+      }
+    } catch (err) {
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'Hubo un problema al escanear el QR.'
+      );
+    } finally {
+      this.procesando = false;
+    }
+  }
+
+  async marcaApagar() {
+    const { error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .update({ estado: 'pedido_listo_pagar' })
+      .eq('mesa_id', this.mesaAsignada);
+
+    if (error) {
+      this.log('Error al actualizar estado de la mesa: ' + error.message);
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'No se pudo cambiar el estado de la mesa.'
+      );
+      return;
+    }
+
+    this.log(
+      `✅ Mesa ${this.mesaAsignada} marcada como pago pendiente de confirmación`
+    );
+    this.mostrarModalAlerta(
+      true,
+      'Pago pendiente',
+      'Se notificó que estás esperando la confirmación del pago.'
+    );
+  }
+
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
+  }
 
   ngOnDestroy() {
     this.canalPedido?.unsubscribe();
@@ -94,6 +192,11 @@ export class MesaPage implements OnInit, OnDestroy {
     }
 
     this.marcarPagoPendienteConfirmacion();
+    this.enviarNoti(
+      'Pagar cuenta',
+      `La mesa ${this.mesaAsignada}, Quiere pagar`,
+      '/chat'
+    );
     // Cambiar el estado de la mesa a disponible
     const { error } = await this.auth.sb.supabase
       .from('mesas')
@@ -152,7 +255,6 @@ export class MesaPage implements OnInit, OnDestroy {
     } else if (data?.estado === 'pagado') {
       this.volverAtras();
       this.estadoPedido = 'pagado';
-      
     } else if (data) {
       this.estadoPedido = 'pendiente';
     } else {
@@ -247,9 +349,7 @@ export class MesaPage implements OnInit, OnDestroy {
               'Gracias por tu visita.'
             );
             this.volverAtras();
-
           }
-          
         }
       )
       .subscribe();

@@ -43,7 +43,7 @@
                 <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
                 <ion-button
                   color="success"
-                  (click)="prepararProducto(pedido.id)"
+                  (click)="prepararProducto(pedido.id, pedido.mesa)"
                 >
                   Entregar</ion-button
                 >

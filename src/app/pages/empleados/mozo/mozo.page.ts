@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
 import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-mozo',
@@ -22,6 +24,14 @@ import { RealtimeChannel } from '@supabase/supabase-js';
   ],
 })
 export class MozoPage implements OnInit, OnDestroy {
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
+
   auth = inject(AuthService);
   supabase = this.auth.sb.supabase;
   canalPedidos: RealtimeChannel | null = null;
@@ -35,6 +45,26 @@ export class MozoPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.obtenerPedidosPendientes();
     this.escucharPedidosEnTiempoReal();
+  }
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
   }
 
   ngOnDestroy() {
@@ -66,8 +96,6 @@ export class MozoPage implements OnInit, OnDestroy {
     }
   }
 
-  
-
   async obtenerDetallePedido(mesa: number) {
     const { data } = await this.supabase
       .from('detalle_pedido_cliente')
@@ -75,8 +103,6 @@ export class MozoPage implements OnInit, OnDestroy {
       .eq('mesa', mesa);
     return data || [];
   }
-
-  
 
   async generarResumenPorSector(mesa: number) {
     const { data: detalle } = await this.supabase
@@ -156,6 +182,8 @@ export class MozoPage implements OnInit, OnDestroy {
 
       this.obtenerPedidosPendientes();
     }
+
+    this.enviarNoti('Pedido Pendiente', 'Hay un nuevo pedido por armar', '/chat');
   }
 
   async entregarPedido(mesaID: number) {

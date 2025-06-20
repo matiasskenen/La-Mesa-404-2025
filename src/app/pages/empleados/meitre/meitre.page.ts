@@ -36,6 +36,8 @@ import {
 import { addIcons } from 'ionicons';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { homeOutline } from 'ionicons/icons';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-meitre',
@@ -61,10 +63,18 @@ import { homeOutline } from 'ionicons/icons';
     IonCard,
     IonCardContent,
     IonImg,
-    IonModal
+    IonModal,
   ],
 })
 export class MeitrePage implements OnInit, OnDestroy {
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
+
   formClienteActivo = false;
   mostrarListaEspera = false;
   mensajeError = '';
@@ -101,6 +111,27 @@ export class MeitrePage implements OnInit, OnDestroy {
     });
   }
 
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
+  }
+
   async configurarStatusBar() {
     try {
       await StatusBar.setOverlaysWebView({ overlay: false });
@@ -134,6 +165,7 @@ export class MeitrePage implements OnInit, OnDestroy {
     if (aceptar) {
       // Abre el modal con las mesas disponibles
       this.abrirModalMesas(email);
+
     } else {
       const { error } = await this.supabase
         .from('espera_local')
@@ -172,6 +204,8 @@ export class MeitrePage implements OnInit, OnDestroy {
   async asignarMesaSeleccionada(numeroMesa: string) {
     if (!this.emailClienteSeleccionado) return;
 
+    
+
     const { data: maxData } = await this.supabase
       .from('fila')
       .select('numero')
@@ -202,6 +236,13 @@ export class MeitrePage implements OnInit, OnDestroy {
 
     this.cerrarModalMesas();
     this.cargarListaEspera(); // refresca lista
+
+    this.enviarNoti(
+      `Mesa Asignada ${numeroMesa}`,
+      `El meitre te asigno la mesa ${numeroMesa}`,
+      '/chat'
+    );
+
   }
 
   escucharEsperaEnTiempoReal() {

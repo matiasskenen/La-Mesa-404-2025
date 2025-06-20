@@ -56,6 +56,25 @@
               </ion-button>
             </ion-col>
           </ion-row>
+
+          <!-- Botones solo si el estado es entregado -->
+          <ion-row *ngIf="pedido.estado === 'pedido_listo_pagar'" class="botones-acciones">
+            <ion-col>
+              <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
+                Confirmar recepción
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button expand="block" color="danger" (click)="rechazarPedido(pedido)" [routerLink]="['/chat']" >
+                Rechazar pedido
+              </ion-button>
+            </ion-col>
+            <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
+              Propinas
+            </ion-button>
+          </ion-row>
+
+
         </div>
       </ion-card-content>
     </ion-card>

@@ -28,7 +28,7 @@
             <ion-card-header>
               <div class="mesa-demora">
                 <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
-                <ion-button color="success" (click)="prepararProducto(pedido.id)">
+                <ion-button color="success" (click)="prepararProducto(pedido.id, pedido.mesa)">
                   Entregar</ion-button>
               </div>
             </ion-card-header>

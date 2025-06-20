@@ -71,6 +71,15 @@
       </ion-button>
 
       <ion-button
+      expand="block"
+      class="boton-opcion"
+      *ngIf="estadoPedido === 'entregado'"
+      (click)="EscanearPago()"
+    >
+      PagarNuevo
+    </ion-button>
+
+      <ion-button
         expand="block"
         class="boton-opcion"
         *ngIf="estadoPedido === 'entregado'"
