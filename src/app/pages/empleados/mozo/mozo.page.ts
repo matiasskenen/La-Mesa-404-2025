@@ -28,10 +28,8 @@ export class MozoPage implements OnInit, OnDestroy {
   pedidos: any[] = [];
   mostrarPedidos: boolean = false;
 
-
-
   constructor() {
-    addIcons({ homeOutline,arrowBackCircleOutline});
+    addIcons({ homeOutline, arrowBackCircleOutline });
   }
 
   ngOnInit() {
@@ -47,7 +45,11 @@ export class MozoPage implements OnInit, OnDestroy {
     const { data, error } = await this.supabase
       .from('pedidos_pendientes')
       .select('*')
-      .in('estado', ['pendiente_confirmacion', 'confirmado']);
+      .in('estado', [
+        'pendiente_confirmacion',
+        'confirmado',
+        'pago_pendiente_confirmacion',
+      ]);
 
     if (!error && data) {
       for (const pedido of data) {
@@ -64,6 +66,8 @@ export class MozoPage implements OnInit, OnDestroy {
     }
   }
 
+  
+
   async obtenerDetallePedido(mesa: number) {
     const { data } = await this.supabase
       .from('detalle_pedido_cliente')
@@ -71,6 +75,8 @@ export class MozoPage implements OnInit, OnDestroy {
       .eq('mesa', mesa);
     return data || [];
   }
+
+  
 
   async generarResumenPorSector(mesa: number) {
     const { data: detalle } = await this.supabase
@@ -105,6 +111,17 @@ export class MozoPage implements OnInit, OnDestroy {
       mensaje:
         s.listos === s.total ? 'Listo para entregar' : `${s.maxTiempo} min`,
     }));
+  }
+
+  async confirmarPago(mesaID: string) {
+    const { error } = await this.supabase
+      .from('pedidos_pendientes')
+      .update({ estado: 'pagado' })
+      .eq('mesa_id', mesaID);
+
+    if (!error) {
+      this.obtenerPedidosPendientes();
+    }
   }
 
   async confirmarPedido(pedidoID: string) {

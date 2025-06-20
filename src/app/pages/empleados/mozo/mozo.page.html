@@ -43,7 +43,8 @@
             <ion-card-header>
           <div class="mesa-demora">
             <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
-            <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
+            <span class="titulo-demora" *ngIf = "pedido.estado !== 'pago_pendiente_confirmacion'">Demora: {{ pedido.demora_total }} min</span>
+            <span class="titulo-demora" *ngIf = "pedido.estado == 'pago_pendiente_confirmacion'">Importe: ${{ pedido.importe_total }}</span>
           </div>
         </ion-card-header>
 
@@ -92,6 +93,19 @@
                 Entregar el pedido
               </ion-button>
             </div>
+
+            <div
+            class="botones-decision"
+            *ngIf="pedido.estado === 'pago_pendiente_confirmacion'"
+          >
+            <ion-button
+              color="primary"
+              (click)="confirmarPago(pedido.mesa_id)"
+            >
+              Confirmar el Pago
+            </ion-button>
+          </div>
+          
           </div>
         </ion-card-content>
       </ion-card>

@@ -37,11 +37,13 @@ export class MesaPage implements OnInit, OnDestroy {
 
   estadoPedido:
     | 'ninguno'
+    | 'pagado'
     | 'pendiente'
     | 'confirmado'
     | 'entregado'
     | 'pendiente_elaboracion'
     | 'terminado'
+    | 'pago_pendiente_confirmacion'
     | 'elaborado' = 'ninguno';
 
   pedidoIniciadoLocalmente: boolean = false;
@@ -91,6 +93,7 @@ export class MesaPage implements OnInit, OnDestroy {
       return;
     }
 
+    this.marcarPagoPendienteConfirmacion();
     // Cambiar el estado de la mesa a disponible
     const { error } = await this.auth.sb.supabase
       .from('mesas')
@@ -105,18 +108,6 @@ export class MesaPage implements OnInit, OnDestroy {
 
     this.log(`✅ Mesa ${this.mesaAsignada} marcada como disponible`);
     this.mostrarModalAlerta(true, 'Mesa liberada', 'Gracias por tu visita.');
-
-    // Si querés: marcar el pedido como cerrado
-    await this.auth.sb.supabase
-      .from('pedidos_pendientes')
-      .update({ estado: 'cerrado' })
-      .eq('cliente_id', this.auth.usuarioActual?.email)
-      .eq('mesa_id', this.mesaAsignada);
-
-    // Si querés: redirigir al inicio
-    setTimeout(() => {
-      this.auth.cerrarSesion();
-    }, 3000);
   }
 
   iniciarPedido() {
@@ -156,6 +147,12 @@ export class MesaPage implements OnInit, OnDestroy {
       this.estadoPedido = 'pendiente_elaboracion';
     } else if (data?.estado === 'elaborado') {
       this.estadoPedido = 'elaborado';
+    } else if (data?.estado === 'pago_pendiente_confirmacion') {
+      this.estadoPedido = 'pago_pendiente_confirmacion';
+    } else if (data?.estado === 'pagado') {
+      this.volverAtras();
+      this.estadoPedido = 'pagado';
+      
     } else if (data) {
       this.estadoPedido = 'pendiente';
     } else {
@@ -167,6 +164,32 @@ export class MesaPage implements OnInit, OnDestroy {
     }
 
     this.log('verificarPedido(): Estado final seteado: ' + this.estadoPedido);
+  }
+
+  async marcarPagoPendienteConfirmacion() {
+    const { error } = await this.auth.sb.supabase
+      .from('pedidos_pendientes')
+      .update({ estado: 'pago_pendiente_confirmacion' })
+      .eq('mesa_id', this.mesaAsignada);
+
+    if (error) {
+      this.log('Error al actualizar estado de la mesa: ' + error.message);
+      this.mostrarModalAlerta(
+        true,
+        'Error',
+        'No se pudo cambiar el estado de la mesa.'
+      );
+      return;
+    }
+
+    this.log(
+      `✅ Mesa ${this.mesaAsignada} marcada como pago pendiente de confirmación`
+    );
+    this.mostrarModalAlerta(
+      true,
+      'Pago pendiente',
+      'Se notificó que estás esperando la confirmación del pago.'
+    );
   }
 
   escucharEstadoPedido() {
@@ -216,7 +239,17 @@ export class MesaPage implements OnInit, OnDestroy {
             this.navCtrl.navigateForward(['/estado-pedido'], {
               queryParams: { mesa: this.mesaAsignada },
             });
+          } else if (nuevoEstado === 'pagado') {
+            this.estadoPedido = 'pagado';
+            this.mostrarModalAlerta(
+              true,
+              'Pedido entregado',
+              'Gracias por tu visita.'
+            );
+            this.volverAtras();
+
           }
+          
         }
       )
       .subscribe();

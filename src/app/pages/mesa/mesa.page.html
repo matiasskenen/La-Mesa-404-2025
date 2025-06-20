@@ -73,7 +73,6 @@
       <ion-button
         expand="block"
         class="boton-opcion"
-        [routerLink]="['/pagar']"
         *ngIf="estadoPedido === 'entregado'"
         (click)="liberarMesaAlPagar()"
       >
