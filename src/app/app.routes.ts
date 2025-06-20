@@ -68,7 +68,8 @@ export const routes: Routes = [
     path: 'menu',
     loadComponent: () =>
       import('./pages/menu/menu.page').then((m) => m.MenuPage),
-  },  {
+  },
+  {
     path: 'mesa',
     loadComponent: () => import('./pages/mesa/mesa.page').then( m => m.MesaPage)
   },
@@ -87,6 +88,10 @@ export const routes: Routes = [
   {
     path: 'estado-pedido',
     loadComponent: () => import('./pages/estado-pedido/estado-pedido.page').then( m => m.EstadoPedidoPage)
+  },
+  {
+    path: 'pagar',
+    loadComponent: () => import('./pages/pagar/pagar.page').then( m => m.PagarPage)
   },
 
 ];

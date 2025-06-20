@@ -2,13 +2,21 @@
   <ion-toolbar>
     <ion-buttons slot="primary" class="toolbar-center">
       @if(!mostrarPedidosPendientes){
-        <ion-button class="boton-home" (click)="volverAtras()">
-          <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
-        </ion-button>
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon
+          name="home-outline"
+          class="icono-home"
+          size="large"
+        ></ion-icon>
+      </ion-button>
       }@else {
-        <ion-button (click)="mostrarPedidosPendientes = false">
-      <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
-    </ion-button>
+      <ion-button (click)="mostrarPedidosPendientes = false">
+        <ion-icon
+          name="arrow-back-circle-outline"
+          class="icono-home"
+          size="large"
+        ></ion-icon>
+      </ion-button>
       }
     </ion-buttons>
   </ion-toolbar>
@@ -27,15 +35,24 @@
   </div>
   <div *ngIf="mostrarPedidosPendientes">
     <div *ngIf="pedidos.length > 0" class="contenedor-flex">
-      <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
+      <ion-card
+        *ngFor="let pedido of pedidos"
+        class="custom-card"
+        [ngClass]="pedido.estado"
+      >
         <ion-card-content>
           <div class="scroll-card">
             <ion-card-header>
-          <div class="mesa-demora">
-            <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
-            <ion-button color="success" (click)="prepararProducto(pedido.id)"> preparar</ion-button>
-          </div>
-        </ion-card-header>
+              <div class="mesa-demora">
+                <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
+                <ion-button
+                  color="success"
+                  (click)="prepararProducto(pedido.id)"
+                >
+                  Entregar</ion-button
+                >
+              </div>
+            </ion-card-header>
 
             <ion-list>
               <ion-item>
@@ -44,7 +61,6 @@
                 </ion-label>
               </ion-item>
             </ion-list>
-
           </div>
         </ion-card-content>
       </ion-card>

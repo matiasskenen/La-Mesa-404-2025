@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true" class="fondo">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="primary" class="toolbar-center">
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="arrow-back-circle-outline" class="icono-home"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="formulario">
+    <ion-button class="boton-opcion" (click)="pagarConTarjeta()">
+      Pagar con tarjeta
+    </ion-button>
+
+    <ion-button class="boton-opcion" (click)="pagarEnEfectivo()">
+      Pagar en efectivo
+    </ion-button>
+  </div>
+</ion-content>

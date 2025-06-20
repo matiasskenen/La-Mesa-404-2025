@@ -102,16 +102,13 @@ export class MenuPage implements OnInit {
   }
 
   recalcularTotales() {
-  this.importeTotal = this.pedido.reduce(
-    (sum, p) => sum + p.precio * p.cantidad,
-    0
-  );
-  //siempre la demora va a ser igual a la demora mayor
-  this.demora = this.pedido.reduce(
-    (max, p) => Math.max(max, p.tiempo),
-    0
-  );
-}
+    this.importeTotal = this.pedido.reduce(
+      (sum, p) => sum + p.precio * p.cantidad,
+      0
+    );
+    //siempre la demora va a ser igual a la demora mayor
+    this.demora = this.pedido.reduce((max, p) => Math.max(max, p.tiempo), 0);
+  }
 
   async terminarPedido() {
     if (this.pedido.length === 0) {
@@ -171,10 +168,10 @@ export class MenuPage implements OnInit {
       // window.history.back(); // 🔁 Vuelve atrás (mati)
       const mesa = this.mesaID;
       setTimeout(() => {
-      this.router.navigate(['/mesa'], {
-              queryParams: { mesa },
-            });
-    }, 1000);
+        this.router.navigate(['/mesa'], {
+          queryParams: { mesa },
+        });
+      }, 1000);
     }
   }
 
