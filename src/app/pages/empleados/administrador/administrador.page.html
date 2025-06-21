@@ -17,8 +17,11 @@
     <p class="ion-padding">{{ mensajeOk }}</p>
   </ion-text>
 
+
+
   <!-- Menú principal -->
   <div class="menu-container" *ngIf="formActivo === null">
+
     <ion-button
       expand="block"
       class="boton-opcion"
@@ -39,13 +42,6 @@
       (click)="formActivo = 'altaClientes'"
     >
       APROBAR NUEVOS CLIENTES
-    </ion-button>
-    <ion-button
-      expand="block"
-      class="boton-opcion boton-opcion-warning"
-      (click)="migrarUsuariosATablaAuth()"
-    >
-      MIGRAR USUARIOS A AUTH 🔁
     </ion-button>
   </div>
 

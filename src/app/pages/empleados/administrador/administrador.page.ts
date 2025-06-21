@@ -144,19 +144,33 @@ export class AdministradorPage implements OnInit {
     }
   }
 
+  notif() {
+    this.enviarNoti(
+      'Cliente Nuevo',
+      'Tienes un nuevo cliente por aprobar',
+      '/chat'
+    );
+  }
+
   async aprobarCliente(cliente: any) {
     const { error } = await this.auth.sb.supabase
       .from('usuarios')
       .update({ aprobado: true })
       .eq('id', cliente.id);
 
-    if (!error) {
-      await this.enviarCorreoCliente(cliente.email, cliente.nombre, true);
-      this.mensajeOk = 'Cliente aprobado correctamente.';
-      this.cargarClientesPendientes();
-    } else {
+    if (error) {
       this.mensajeError = 'Error al aprobar cliente: ' + error.message;
+      return;
     }
+
+    const correoExitoso = await this.enviarCorreoCliente(
+      cliente.email,
+      cliente.nombre,
+      true
+    );
+
+    this.cargarClientesPendientes();
+
     this.enviarNoti(
       'Cliente Nuevo',
       'Tienes un nuevo cliente por aprobar',
@@ -313,12 +327,12 @@ export class AdministradorPage implements OnInit {
     }
   }
 
-  enviarCorreoCliente(
+  async enviarCorreoCliente(
     emailDestino: string,
     nombre: string,
     aprobado: boolean,
     motivoTexto: string = ''
-  ) {
+  ): Promise<boolean> {
     const templateParams = {
       to_name: nombre,
       to_email: emailDestino,
@@ -328,12 +342,19 @@ export class AdministradorPage implements OnInit {
       logo_url: 'https://i.imgur.com/G6Zwxv1.png',
     };
 
-    emailjs.send(
-      'service_8xl5hfr',
-      'template_eqs9mhe',
-      templateParams,
-      'ugJXF6nqC7DtIYSSr'
-    );
+    try {
+      const response = await emailjs.send(
+        'service_8xl5hfr',
+        'template_eqs9mhe',
+        templateParams,
+        'ugJXF6nqC7DtIYSSr'
+      );
+      console.log('Correo enviado correctamente', response.status);
+      return true;
+    } catch (error) {
+      console.error('Error al enviar correo:', error);
+      return false;
+    }
   }
 
   async migrarUsuariosATablaAuth() {

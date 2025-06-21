@@ -51,7 +51,6 @@ export class LoginPage {
   auth = inject(AuthService);
   fb = inject(FormBuilder);
 
-
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -171,21 +170,15 @@ export class LoginPage {
     const email = 'anonimo@gmail.com';
     const password = '123456';
 
-    // Esperamos 2 segundos con el spinner visible
-    setTimeout(async () => {
-      const resultado = await this.auth.iniciarSesion(email, password);
+    const resultado = await this.auth.iniciarSesion(email, password);
 
-      if (!resultado.success) {
-        this.cargando = false;
-        this.mensajeError = '❌ Error al ingresar como anónimo.';
-        return;
-      }
+    if (!resultado.success) {
+      this.cargando = false;
+      this.mensajeError = '❌ Error al ingresar como anónimo.';
+      return;
+    }
 
-      // 🔁 Esperamos un poco más con el spinner para no mostrar el login otra vez
-      setTimeout(() => {
-        this.cargando = false;
-        this.router.navigateByUrl('/principal');
-      }, 500); // medio segundo más, opcional
-    }, 2000);
+    this.router.navigateByUrl('/principal');
+    this.cargando = false;
   }
 }
