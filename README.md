@@ -1,17 +1,16 @@
 # Trabajo Práctico Nº2 - PPS (La Comanda) - 2025
 
-### 📱 Aplicación para gestión de restaurante
+###  Aplicación para gestión de restaurante
 
 ---
 
-## 👥 Integrantes del grupo
+##  Integrantes del grupo
 
 1. **Skenen, Matias**  
 
 2. **Zampella, Tomas**  
 ---
-
-## 🛠️ Tecnologías
+## Tecnologías
 - Ionic + Angular
 - Supabase
 - Capacitor
@@ -73,10 +72,10 @@
 
 
 
-## 💼 Roles y tareas asignadas
+##  Roles y tareas asignadas
 ## LISTADO TOTAL DE TAREAS:
 
-## 💼 Roles y tareas asignadas
+## Roles y tareas asignadas
 
 ### LISTADO TOTAL DE TAREAS
 
