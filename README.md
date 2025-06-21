@@ -104,7 +104,7 @@
 | **Skenen y Tomás** | Funcionalidad del menú completo                                       | 16/06/2025       | 16/06/2025          | `main` |
 | **Zampella, Tomás**| Consulta mozo                                                         | 17/06/2025       | 17/06/2025          | `main` |
 | **Skenen, Matías** | Confirmación de pedido (mozo)                                         | 17/06/2025       | 17/06/2025          | `main` |
-| **Zampella, Tomás**| Confirmación de pedido (empleados)                                    | 17/06/2025       | 17/06/2025          | `main` |
+| **Skenen, Matías**| Confirmación de pedido (empleados)                                    | 17/06/2025       | 17/06/2025          | `main` |
 | **Zampella, Tomás**| Push de notificación                                                  | 18/06/2025       | 18/06/2025          | `main` |
 | **Skenen, Matías** | Estado del pedido                                                     | 18/06/2025       | 18/06/2025          | `main` |
 | **Skenen y Tomás** | Funcionalidad de pedido completo                                      | 18/06/2025       | 18/06/2025          | `main` |
