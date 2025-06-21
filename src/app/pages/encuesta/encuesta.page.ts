@@ -41,10 +41,10 @@ export class EncuestaPage implements OnInit {
 
   async enviarEncuesta() {
     const encuesta = {
-      // cliente_id: 'tomi@resto.com',
-      // mesa_id: '4',
-      cliente_id: this.auth.usuarioActual?.email || 'cliente@resto.com',
-      mesa_id: this.mesaRecibida,
+      cliente_id: 'neiner@resto.com',
+      mesa_id: '4',
+      // cliente_id: this.auth.usuarioActual?.email || 'cliente@resto.com',
+      // mesa_id: this.mesaRecibida,
       atencion: this.atencion,
       calidad_comida: this.calidad_comida,
       medio_de_pago: this.medio_de_pago,

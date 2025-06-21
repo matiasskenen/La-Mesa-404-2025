@@ -158,9 +158,9 @@ export class ResultadosEncuestasPage implements OnInit {
       type: 'bubble' as ChartType,
       data: {
         datasets: [
-          { label: 'Sucio',  data: [{ x: 1, y: 1, r: higMap['sucio'] * 5 }],  backgroundColor: '#e74c3c' },
-          { label: 'Normal', data: [{ x: 2, y: 1, r: higMap['normal'] * 5 }], backgroundColor: '#f1c40f' },
-          { label: 'Limpio', data: [{ x: 3, y: 1, r: higMap['limpio'] * 5 }], backgroundColor: '#2ecc71' }
+          { label: 'Sucio',  data: [{ x: 1, y: 1, r: higMap['sucio'] * 1 }],  backgroundColor: '#e74c3c' },
+          { label: 'Normal', data: [{ x: 2, y: 1, r: higMap['normal'] * 1 }], backgroundColor: '#f1c40f' },
+          { label: 'Limpio', data: [{ x: 3, y: 1, r: higMap['limpio'] * 1 }], backgroundColor: '#2ecc71' }
         ]
       },
       options: {
