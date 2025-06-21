@@ -212,6 +212,9 @@ export class AdministradorPage implements OnInit {
   }
 
   async confirmarRechazo() {
+    this.mensajeError = '';
+    this.mensajeOk = '';
+
     if (!this.motivoRechazo.trim()) {
       this.mensajeError = 'Debe indicar un motivo para el rechazo.';
       return;
@@ -224,20 +227,28 @@ export class AdministradorPage implements OnInit {
       .delete()
       .eq('id', cliente.id);
 
-    if (!error) {
-      await this.enviarCorreoCliente(
-        cliente.email,
-        cliente.nombre,
-        false,
-        this.motivoRechazo
-      );
-      this.clientesPendientes = this.clientesPendientes.filter(
-        (c) => c.id !== cliente.id
-      );
-      this.mensajeOk = 'Cliente rechazado correctamente.';
-    } else {
+    if (error) {
       this.mensajeError = 'Error al eliminar cliente: ' + error.message;
+      return;
     }
+
+    const correoExitoso = await this.enviarCorreoCliente(
+      cliente.email,
+      cliente.nombre,
+      false,
+      this.motivoRechazo
+    );
+
+    if (!correoExitoso) {
+      this.mensajeError =
+        'Cliente rechazado, pero no se pudo enviar el correo.';
+    } else {
+      this.mensajeOk = 'Cliente rechazado correctamente.';
+    }
+
+    this.clientesPendientes = this.clientesPendientes.filter(
+      (c) => c.id !== cliente.id
+    );
 
     this.cerrarModalRechazo();
   }
