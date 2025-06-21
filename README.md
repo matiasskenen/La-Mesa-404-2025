@@ -124,6 +124,9 @@
 
 ---
 
+![Animaciones (3)](https://github.com/user-attachments/assets/3e829ecf-923f-4d64-a582-594a5d661873)
+
+
 ![Animaciones (1)](https://github.com/user-attachments/assets/2d2830e2-6c58-4beb-a9df-4720267551e0)
 
 
