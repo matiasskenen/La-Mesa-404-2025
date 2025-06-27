@@ -38,7 +38,7 @@ ion-content.pagina-mesa::part(scroll) {
      Botones grandes
   ======================= */
   .boton-grande {
-    --background: #4a1313;
+    --background: #862525;
     --color: white;
     --border-radius: 16px;
     width: 100%;
@@ -142,43 +142,50 @@ ion-content.pagina-mesa::part(scroll) {
     width: 90%;
     max-width: 320px;
     padding: 1.5rem 1rem;
-    background-color: #f44336;
-    color: #ffffff;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     text-align: center;
     animation: aparecer 0.4s ease-out;
   }
-
-  .alerta-flotante h2 {
-    margin: 0 0 0.5rem;
-    font-size: 1.3rem;
-    font-weight: bold;
+  
+  /* Estilos para error */
+  .alerta-flotante.alerta-error {
+    background-color: #524b4b; /* rojo */
+    color: white;
   }
-
-  .alerta-flotante p {
-    margin: 0 0 1rem;
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-
-  .boton-cerrar-alerta {
-    --background: #ffffff;
-    --color: #f44336;
-    --border-radius: 10px;
-    font-weight: bold;
-    font-size: 0.95rem;
-  }
-
-  .mesa-verificada .alerta-flotante {
-    background-color: #2e7d32 !important;
+  
+  /* Estilos para éxito */
+  .alerta-flotante.alerta-exito {
+    background-color: #176e1a; /* verde */
     color: white;
   }
 
-  .mesa-verificada .boton-cerrar-alerta {
-    --background: #ffffff;
-    --color: #2e7d32;
-  }
+  /* BOTÓN de cierre en alerta de ÉXITO */
+.alerta-flotante.alerta-exito .boton-cerrar-alerta {
+  --background: #000000;
+  --color: #fdfdfd; /* verde */
+}
+
+/* BOTÓN de cierre en alerta de ERROR */
+.alerta-flotante.alerta-error .boton-cerrar-alerta {
+  --background: #000000;
+  --color: #fdfdfd; /* rojo */
+}
+
+.alerta-flotante h2 {
+  font-size: 1.6rem; /* Título más grande */
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.alerta-flotante p {
+  font-size: 1.2rem; /* Texto del mensaje */
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+
+  
 
   /* =======================
      Header y toolbar

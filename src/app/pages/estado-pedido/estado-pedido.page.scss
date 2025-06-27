@@ -1,6 +1,9 @@
+/* ======================
+   FONDO GENERAL
+====================== */
 ion-content {
-    --background: none;
-  background-color: #000000; /* Color de fondo */
+  --background: none;
+  background-color: #000000;
   background-image: url("/assets/fondo.png");
   background-size: cover;
   background-repeat: no-repeat;
@@ -8,6 +11,9 @@ ion-content {
   overflow-y: auto !important;
 }
 
+/* ======================
+   CABECERA Y BOTÓN HOME
+====================== */
 ion-header ion-toolbar {
   --background: #d22f19;
   --color: black;
@@ -22,9 +28,9 @@ ion-header ion-toolbar {
 }
 
 .boton-home {
-  --background: #d22f19; // color de fondo
-  --color: black; // color del ícono (texto)
-  border-radius: 20%; // opcional si lo querés circular
+  --background: #d22f19;
+  --color: black;
+  border-radius: 20%;
   width: 58px;
   height: 48px;
   padding: 0;
@@ -38,8 +44,11 @@ ion-header ion-toolbar {
   font-size: 100px;
 }
 
+/* ======================
+   TARJETAS DE PEDIDOS
+====================== */
 .custom-card {
-  background-color: #4b6584; // Color propuesto (gris azulado)
+  background-color: #4b6584;
   border-radius: 16px;
   margin: 12px;
   padding: 10px;
@@ -51,40 +60,52 @@ ion-card-header {
   padding: 8px 0;
 }
 
+/* Información de mesa, demora y total en dos renglones */
 .mesa-demora {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
+  flex-direction: column;
+  gap: 4px;
   color: #ffffff;
+  font-weight: bold;
 }
 
-.titulo-mesa,
-.titulo-demora {
-  font-size: 1rem;
+.fila-superior {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.fila-inferior {
+  text-align: left;
+  width: 100%;
+}
+
+/* Tamaños de texto */
+.titulo-mesa {
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
 .titulo-precio {
-  font-size: 0.9rem;
+  font-size: 1.8rem;
   font-weight: 600;
 }
 
-.pendiente
-{
+/* ======================
+   ESTADOS DE PEDIDO
+====================== */
+.pendiente {
   background-color: #ffee8c !important;
 }
 
-.listo
-{
-  background-color: #1b7f45 !important;
-
-}
-.entregado
-{
-  background-color: #1b7f45 !important;
+.listo,
+.entregado {
+  background-color: #25c342 !important;
 }
 
+/* ======================
+   LISTAS DE PRODUCTOS
+====================== */
 ion-list {
   background: transparent !important;
   margin-top: 10px;
@@ -99,10 +120,12 @@ ion-item {
   box-shadow: none;
 }
 
-
+/* ======================
+   TEXTO
+====================== */
 .texto-blanco {
-  font-size: 1.3rem; 
-  font-weight:bold;
+  font-size: 1.3rem;
+  font-weight: bold;
   color: black;
   display: flex;
   justify-content: center;
@@ -110,17 +133,9 @@ ion-item {
   border-radius: 15px;
 }
 
-.mesa-verificada .alerta-flotante {
-  background-color: #2e7d32 !important; /* Verde oscuro */
-  color: white;
-}
-
-/* ✅ Botón "Aceptar" blanco con texto verde */
-.mesa-verificada .boton-cerrar-alerta {
-  --background: #ffffff;
-  --color: #2e7d32;
-}
-
+/* ======================
+   ALERTAS
+====================== */
 .alerta-flotante {
   position: fixed;
   top: 50%;
@@ -158,5 +173,15 @@ ion-item {
   font-size: 0.95rem;
 }
 
+/* ======================
+   ALERTA VERIFICACIÓN MESA
+====================== */
+.mesa-verificada .alerta-flotante {
+  background-color: #2e7d32 !important;
+  color: white;
+}
 
-
+.mesa-verificada .boton-cerrar-alerta {
+  --background: #ffffff;
+  --color: #2e7d32;
+}

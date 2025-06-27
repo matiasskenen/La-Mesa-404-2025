@@ -1,6 +1,7 @@
+/* ==============================
+   ION-CONTENT GENERAL
+============================== */
 ion-content {
-
-
   .contenedor-flex {
     display: flex;
     flex-direction: column;
@@ -11,15 +12,18 @@ ion-content {
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
     margin: 8px;
-    background-color: rgb(202, 59, 49);
+    background-color: rgb(24, 64, 124);
   }
 
   .contenido-listado {
-    flex: 1; // ocupa el espacio restante
+    flex: 1;
     overflow-y: auto;
   }
 }
 
+/* ==============================
+   FONDOS Y TEMAS
+============================== */
 .fondo-con-imagen {
   background-image: url("/assets/fondo.png");
   background-size: cover;
@@ -27,6 +31,17 @@ ion-content {
   background-position: center;
 }
 
+.pagina-mesa {
+  --background: #19647e !important;
+}
+
+.mesa-verificada {
+  --background: #2ecc71 !important;
+}
+
+/* ==============================
+   TEXTOS Y TIPOGRAFÍA
+============================== */
 .visor-cantidad p {
   margin: 5px;
   font-size: 20px;
@@ -35,16 +50,39 @@ ion-content {
   text-align: center;
 }
 
-ion-card-content {
-  padding: 0px 16px 8px;
+.titulo-nombre,
+.titulo-precio {
+  font-size: 1.2rem;
+  font-weight: bolder;
+  color: white;
 }
 
+.descripcion-producto {
+  font-size: 1.2rem;
+  font-weight: bolder;
+  color: rgb(243, 243, 243);
+}
+
+.importe,
+.demora {
+  font-size: 2.4rem;         // más grande
+  font-weight: 900;          // más negrita
+  color: #ffffff;            // blanco puro para más contraste
+  text-align: center;        // centrado horizontal
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* ==============================
+   ESTRUCTURAS DE VISUALIZACIÓN
+============================== */
 .visor-info {
-  background-color: rgb(214, 86, 86);
+  background-color: #387ab5;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+  height: 125px;
 }
 
 .visor-footer-card {
@@ -59,35 +97,25 @@ ion-card-content {
   flex-direction: row;
 }
 
-.galeria-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .nombre-precio {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.titulo-nombre,
-.titulo-precio {
-  font-size: 1.2rem; // mismo tamaño que ion-card-title
-  font-weight: bolder;
-  color: white;
+ion-card-content {
+  padding: 0px 16px 8px;
 }
 
-.descripcion-producto {
-  font-size: 1rem; // mismo tamaño que ion-card-title
-  color: rgb(240, 240, 240);
+.galeria-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.importe,
-.demora {
-  color: white;
-}
-
+/* ==============================
+   ALERTAS Y MODALES
+============================== */
 .alerta-overlay {
   position: fixed;
   top: 0;
@@ -122,14 +150,9 @@ ion-card-content {
   --border-radius: 10px;
 }
 
-.pagina-mesa {
-  --background: #19647e !important;
-}
-
-.mesa-verificada {
-  --background: #2ecc71 !important; /* Verde éxito */
-}
-
+/* ==============================
+   HEADER Y TOOLBAR
+============================== */
 ion-header ion-toolbar {
   --background: #d22f19;
   --color: black;
@@ -143,10 +166,13 @@ ion-header ion-toolbar {
   display: flex;
 }
 
+/* ==============================
+   BOTÓN HOME
+============================== */
 .boton-home {
-  --background: #d22f19; // color de fondo
-  --color: black; // color del ícono (texto)
-  border-radius: 20%; // opcional si lo querés circular
+  --background: #d22f19;
+  --color: black;
+  border-radius: 20%;
   width: 58px;
   height: 48px;
   padding: 0;
@@ -160,10 +186,13 @@ ion-header ion-toolbar {
   font-size: 100px;
 }
 
+/* ==============================
+   MEDIA QUERY (LANDSCAPE)
+============================== */
 @media screen and (orientation: landscape) {
   .formulario,
   .menu-container {
-    max-width: 600px; // más ancho en horizontal
+    max-width: 600px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -212,9 +241,8 @@ ion-header ion-toolbar {
     height: 300px;
   }
 
-  .contenedor-flex{
+  .contenedor-flex {
     max-width: 400px;
     height: 100px;
   }
 }
-

@@ -301,13 +301,15 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido confirmado',
-              'Tu pedido fue aceptado por el mozo.'
+              'Tu pedido fue aceptado por el mozo.',
+              'exito'
             );
           } else if (nuevoEstado === 'pendiente_confirmacion') {
             this.mostrarModalAlerta(
               true,
               'Pedido pendiente',
-              'Tu pedido está esperando confirmación del mozo.'
+              'Tu pedido está esperando confirmación del mozo.',
+              'exito'
             );
             this.estadoPedido = 'pendiente';
           } else if (nuevoEstado === 'entregado') {
@@ -315,7 +317,8 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido entregado',
-              'Tu pedido fue entregado. Podés pagar la cuenta.'
+              'Tu pedido fue entregado. Podés pagar la cuenta.',
+              'exito'
             );
             this.navCtrl.navigateForward(['/estado-pedido'], {
               queryParams: { mesa: this.mesaAsignada },
@@ -325,7 +328,8 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido entregado',
-              'Gracias por tu visita.'
+              'Gracias por tu visita.',
+              'exito'
             );
             this.volverAtras();
           }

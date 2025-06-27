@@ -82,17 +82,16 @@ ion-header ion-toolbar {
    BOTONES PRINCIPALES
 ====================== */
 .boton-opcion {
-  width: 100%;
-  max-width: 280px;
-  height: 42px;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  --background: #d22f19;
-  --border-radius: 10px;
+  --background: #862525;
   --color: white;
+  --border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  height: 26vh;
+  font-size: 1.2rem;
+  font-weight: bold;
   letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
 
@@ -245,7 +244,7 @@ ion-icon[slot="end"] {
 .titulo-demora {
   font-size: 1.2rem; // mismo tamaño que ion-card-title
   font-weight: bolder;
-  color: black;
+  color: rgb(241, 241, 241);
 }
 
 ion-card-header{
@@ -258,7 +257,7 @@ ion-card-header{
 }
 
 .confirmado {
-  background: #2ecc71; // verde
+  background: #6e6e6e; // verde
 }
 
 .entregado {
