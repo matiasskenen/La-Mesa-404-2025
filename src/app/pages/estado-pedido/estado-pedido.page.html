@@ -7,13 +7,17 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
 <ion-content [fullscreen]="true">
   <div *ngIf="pedidos.length > 0" class="contenedor-flex">
     <ion-card
       *ngFor="let pedido of pedidos"
       class="custom-card"
-      [ngClass]="pedido.estado"
     >
+
+
+
       <ion-card-content>
         <div class="scroll-card">
           <!-- Header: Mesa, demora e importe -->
@@ -21,17 +25,17 @@
             <div class="mesa-demora">
               <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
               <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
-              <span class="titulo-precio">
-                ${{ pedido.importe_total + montoPropina }}
-              </span>
+              <span class="titulo-demora">Total: ${{ pedido.importe_total  + montoPropina}}</span>
+
             </div>
           </ion-card-header>
 
           <!-- Lista de productos detallados -->
           <ion-list *ngIf="pedido.detalle?.length">
+
             <ion-item *ngFor="let item of pedido.detalle">
-              <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
-                {{ item.producto_nombre }} x {{ item.cantidad }} - ${{ item.precio_unitario }}
+              <ion-label class="texto-blanco" [ngClass]="item.estado">
+                {{ item.producto_nombre }} - {{ item.cantidad }}u. ${{item.precio_unitario}}
               </ion-label>
             </ion-item>
           </ion-list>
@@ -40,7 +44,7 @@
           <ion-list *ngIf="!pedido.detalle?.length && pedido.productos?.length">
             <ion-item *ngFor="let item of pedido.productos">
               <ion-label class="texto-parte-pedido">
-                {{ item.nombre }} x {{ item.cantidad }}
+                {{ item.nombre }} - {{ item.cantidad }}
               </ion-label>
             </ion-item>
           </ion-list>
@@ -48,8 +52,8 @@
           <!-- Botones para estado 'entregado' -->
           <ion-row *ngIf="pedido.estado === 'entregado'" class="botones-acciones">
             <ion-col>
-              <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
-                Confirmar Pedido
+              <ion-button expand="block" color="r" (click)="confirmarPedido(pedido)">
+                Confirmar
               </ion-button>
             </ion-col>
             <ion-col>
@@ -98,4 +102,18 @@
   <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
     <p>No hay pedidos pendientes.</p>
   </ion-text>
+
+  <div class="alerta-overlay" *ngIf="modalAlerta">
+    <div class="alerta-flotante">
+      <h2>{{ tituloAlerta }}</h2>
+      <p>{{ mensajeAlerta }}</p>
+      <ion-button size="small" expand="block" class="boton-cerrar-alerta" (click)="mostrarModalAlerta(false)">
+        Aceptar
+      </ion-button>
+    </div>
+  </div>
+
+  
 </ion-content>
+
+

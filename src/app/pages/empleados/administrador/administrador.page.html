@@ -9,15 +9,6 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-text color="danger" *ngIf="mensajeError">
-    <p class="ion-padding">{{ mensajeError }}</p>
-  </ion-text>
-
-  <ion-text color="success" *ngIf="mensajeOk">
-    <p class="ion-padding">{{ mensajeOk }}</p>
-  </ion-text>
-
-
 
   <!-- Menú principal -->
   <div class="menu-container" *ngIf="formActivo === null">
@@ -212,37 +203,38 @@
     </ion-button>
   </div>
 
-  <!-- Modal Rechazo -->
-  <ion-modal [isOpen]="modalRechazoVisible" (didDismiss)="cerrarModalRechazo()">
+  <ion-modal [isOpen]="modalRechazoVisible" (didDismiss)="cerrarModalRechazo()" class="modal-transparente">
     <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Rechazar Cliente</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="cerrarModalRechazo()">Cerrar</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <p class="ion-text-center">
-          ¿Estás seguro de que querés rechazar al cliente
-          <strong
-            >{{ clienteSeleccionado?.nombre }} {{ clienteSeleccionado?.apellido
-            }}</strong
-          >?
-        </p>
-        <ion-item>
-          <ion-textarea
-            label="Motivo del rechazo"
-            label-placement="floating"
-            [(ngModel)]="motivoRechazo"
-            rows="4"
-          ></ion-textarea>
-        </ion-item>
-        <ion-button expand="block" color="danger" (click)="confirmarRechazo()">
-          Confirmar Rechazo
-        </ion-button>
-      </ion-content>
+      <div class="modal-rechazo-wrapper">
+        <div class="modal-rechazo-box">
+          <div class="modal-header">
+          </div>
+  
+          <p class="modal-mensaje">
+            ¿Estás seguro de que querés rechazar al cliente<br />
+            <strong>{{ clienteSeleccionado?.nombre }} {{ clienteSeleccionado?.apellido }}</strong>?
+          </p>
+  
+          <ion-item lines="none" class="modal-item">
+            <ion-textarea
+              [(ngModel)]="motivoRechazo"
+              placeholder="Motivo del rechazo"
+              auto-grow="true"
+              rows="4"
+              class="modal-textarea"
+            ></ion-textarea>
+          </ion-item>
+  
+          <ion-button expand="block" class="boton-rechazo-confirmar" (click)="confirmarRechazo()">
+            CONFIRMAR RECHAZO
+          </ion-button>
+  
+          <ion-button expand="block" class="boton-rechazo-volver" (click)="cerrarModalRechazo()">
+            VOLVER
+          </ion-button>
+        </div>
+      </div>
     </ng-template>
   </ion-modal>
+  
 </ion-content>

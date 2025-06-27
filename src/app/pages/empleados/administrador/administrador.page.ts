@@ -52,13 +52,11 @@ import { INotification } from 'src/app/interfaces/notification.model';
     IonButton,
     IonItem,
     IonList,
-    IonText,
     IonIcon,
     IonTextarea,
     IonModal,
     IonHeader,
     IonToolbar,
-    IonTitle,
     IonButtons,
     IonInput,
     IonSelect,
@@ -210,6 +208,31 @@ export class AdministradorPage implements OnInit {
     this.clienteSeleccionado = null;
     this.motivoRechazo = '';
   }
+  async simularClientePendiente() {
+    const timestamp = Date.now();
+    const email = `cliente_test_${timestamp}@mail.com`;
+  
+    const { error } = await this.auth.sb.supabase.from('usuarios').insert({
+      nombre: 'ClienteTest',
+      apellido: 'Simulado',
+      dni: '12345678',
+      cuil: '20123456789',
+      email,
+      password: 'clave1234',
+      rol: 'cliente',
+      tipo: 'cliente',
+      aprobado: false,
+      imagen_url: 'https://i.imgur.com/G6Zwxv1.png', // opcional: imagen dummy
+    });
+  
+    if (error) {
+      this.mensajeError = 'Error al insertar cliente simulado: ' + error.message;
+    } else {
+      this.mensajeOk = 'Cliente simulado agregado correctamente.';
+      this.cargarClientesPendientes(); // actualiza la vista
+    }
+  }
+  
 
   async confirmarRechazo() {
     this.mensajeError = '';

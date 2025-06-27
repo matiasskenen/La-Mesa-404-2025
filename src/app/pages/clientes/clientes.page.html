@@ -11,8 +11,6 @@
 
   <!-- Ícono QR + botón escanear -->
   <div class="scanner-container" *ngIf="estadoCliente === 'ninguno'">
-    <ion-icon name="qr-code-outline" class="icono-qr"></ion-icon>
-
     <ion-button
       expand="block"
       class="boton-escanear"
@@ -24,8 +22,7 @@
       <ion-spinner slot="end" *ngIf="procesando"></ion-spinner>
     </ion-button>
 
-    <!-- Boton encuestas -->
-    <ion-button expand="block"class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
+    <ion-button expand="block" class="boton-escanear" [disabled]="procesando" routerLink="/resultados-encuestas">
       <ion-icon name="newspaper-outline" slot="start"></ion-icon>
       Ver encuestas de otros clientes
     </ion-button>
@@ -39,19 +36,19 @@
     </ion-text>
   </div>
 
- <!-- alerta-->
+  <!-- Modal de alerta -->
   <div class="alerta-overlay" *ngIf="modalAlerta">
-      <div class="alerta-flotante">
-        <h2>{{ tituloAlerta }}</h2>
-        <p>{{ mensajeAlerta }}</p>
-        <ion-button
-          size="small"
-          expand="block"
-          class="boton-cerrar-alerta"
-          (click)="mostrarModalAlerta(false)"
-        >
-          Aceptar
-        </ion-button>
-      </div>
+    <div class="alerta-flotante" [ngClass]="tipoAlerta">
+      <h2>{{ tituloAlerta }}</h2>
+      <p>{{ mensajeAlerta }}</p>
+      <ion-button
+        size="small"
+        expand="block"
+        class="boton-cerrar-alerta"
+        (click)="mostrarModalAlerta(false)"
+      >
+        Aceptar
+      </ion-button>
     </div>
+  </div>
 </ion-content>

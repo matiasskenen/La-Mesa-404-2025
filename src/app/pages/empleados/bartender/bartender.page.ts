@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
-import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline, homeOutline, receiptOutline } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { INotification } from 'src/app/interfaces/notification.model';
@@ -30,7 +30,7 @@ export class BartenderPage implements OnInit {
   pedidos: any[] = [];
   mostrarPedidosPendientes: boolean = false;
   constructor() {
-    addIcons({ homeOutline, arrowBackCircleOutline });
+    addIcons({ homeOutline, arrowBackCircleOutline, receiptOutline});
   }
 
   ngOnInit() {

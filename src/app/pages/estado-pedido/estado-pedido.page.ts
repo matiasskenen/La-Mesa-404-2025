@@ -10,6 +10,8 @@ import { arrowBackCircleOutline } from 'ionicons/icons';
 import { ActivatedRoute } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-estado-pedido',
@@ -28,6 +30,13 @@ export class EstadoPedidoPage implements OnInit {
   constructor(private route: ActivatedRoute) {
     addIcons({ arrowBackCircleOutline });
   }
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -52,12 +61,31 @@ export class EstadoPedidoPage implements OnInit {
       return;
     }
 
-    this.mostrarModalAlerta(
-      true,
-      'Pago pendiente',
-      'Se notificó que estás esperando la confirmación del pago.'
-    );
+    this.enviarNoti('El cliente solicita pagar', 'Mesa 4 esta esperando la cuenta', '/chat');
+
+
     window.history.back();
+  }
+
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
   }
 
   simularPedidoFalso() {

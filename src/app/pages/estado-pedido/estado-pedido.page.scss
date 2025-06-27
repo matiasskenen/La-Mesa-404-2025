@@ -55,20 +55,34 @@ ion-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1rem;
   font-weight: bold;
   color: #ffffff;
 }
 
 .titulo-mesa,
 .titulo-demora {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
 .titulo-precio {
-  font-size: 1.4rem;
+  font-size: 0.9rem;
   font-weight: 600;
+}
+
+.pendiente
+{
+  background-color: #ffee8c !important;
+}
+
+.listo
+{
+  background-color: #1b7f45 !important;
+
+}
+.entregado
+{
+  background-color: #1b7f45 !important;
 }
 
 ion-list {
@@ -85,12 +99,64 @@ ion-item {
   box-shadow: none;
 }
 
-.texto-parte-pedido {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin-bottom: 6px;
+
+.texto-blanco {
+  font-size: 1.3rem; 
+  font-weight:bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
 }
+
+.mesa-verificada .alerta-flotante {
+  background-color: #2e7d32 !important; /* Verde oscuro */
+  color: white;
+}
+
+/* ✅ Botón "Aceptar" blanco con texto verde */
+.mesa-verificada .boton-cerrar-alerta {
+  --background: #ffffff;
+  --color: #2e7d32;
+}
+
+.alerta-flotante {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  width: 90%;
+  max-width: 320px;
+  padding: 1.5rem 1rem;
+  background-color: #f44336;
+  color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  animation: aparecer 0.4s ease-out;
+}
+
+.alerta-flotante h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.alerta-flotante p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.boton-cerrar-alerta {
+  --background: #ffffff;
+  --color: #f44336;
+  --border-radius: 10px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+
+

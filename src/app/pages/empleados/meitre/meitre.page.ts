@@ -245,6 +245,25 @@ export class MeitrePage implements OnInit, OnDestroy {
 
   }
 
+  async simularClienteEnEspera() {
+    const emailSimulado = `cliente_test_${Date.now()}@mail.com`;
+    const claveSimulada = 'ingreso-mesa404-01';
+  
+    const { error } = await this.supabase.from('espera_local').insert({
+      email: emailSimulado,
+      clave: claveSimulada,
+      estado: 'pendiente',
+    });
+  
+    if (error) {
+      this.mensajeError = '❌ Error al simular cliente: ' + error.message;
+    } else {
+      this.mensajeOk = '✅ Cliente de prueba en espera agregado.';
+      this.cargarListaEspera(); // Refresca si ya estás viendo la lista
+    }
+  }
+  
+
   escucharEsperaEnTiempoReal() {
     this.canalEspera = this.supabase
       .channel('canal-espera-local')

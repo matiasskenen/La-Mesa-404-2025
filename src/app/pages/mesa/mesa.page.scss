@@ -1,3 +1,6 @@
+/* =======================
+   Fondo general
+======================= */
 ion-content.pagina-mesa::part(scroll) {
   background-image: url("/assets/fondo.png");
   background-size: cover;
@@ -6,6 +9,9 @@ ion-content.pagina-mesa::part(scroll) {
   overflow-y: auto !important;
 }
 
+/* =======================
+   Página principal
+======================= */
 .pagina-mesa {
   display: flex;
   flex-direction: column;
@@ -13,25 +19,58 @@ ion-content.pagina-mesa::part(scroll) {
   justify-content: flex-start;
   height: 100%;
 
+  /* =======================
+     Contenedor escáner
+  ======================= */
   .scanner-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 360px;
-    padding: 1.2rem 1rem;
-    gap: 1.2rem;
-    height: calc(100vh - 56px); // centrado vertical completo (menos toolbar)
+    height: calc(100vh - 56px);
+    padding: 1.2rem;
+    gap: 2rem;
     text-align: center;
   }
 
-  .icono-qr {
-    font-size: 8rem;
-    color: white;
-    animation: pulse 1.4s ease-in-out infinite;
+  /* =======================
+     Botones grandes
+  ======================= */
+  .boton-grande {
+    --background: #4a1313;
+    --color: white;
+    --border-radius: 16px;
+    width: 100%;
+    height: 26vh;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
 
+  .boton-escanear,
+  .boton-opcion {
+    --background: #862525;
+    --color: white;
+    --border-radius: 16px;
+    width: 100%;
+    max-width: 600px;
+    height: 26vh;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .boton-opcion[color="warning"] {
+    --background: #fdd835;
+    --color: black;
+  }
+
+  /* =======================
+     Animaciones
+  ======================= */
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -47,36 +86,20 @@ ion-content.pagina-mesa::part(scroll) {
     }
   }
 
-  .boton-escanear {
-    --background: #d22f19;
-    --color: white;
-    --border-radius: 12px;
-    width: 100%;
-    max-width: 300px;
-    font-weight: bold;
-    font-size: 1rem;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
   }
 
-  .boton-opcion {
-    width: 100%;
-    max-width: 280px;
-    height: 42px;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    --background: #d22f19;
-    --color: white;
-    --border-radius: 10px;
-    letter-spacing: 0.5px;
-  }
-
-  .boton-opcion[color="warning"] {
-    --background: #fdd835;
-    --color: black;
-  }
-
+  /* =======================
+     Modal flotante
+  ======================= */
   .overlay {
     position: fixed;
     top: 0;
@@ -107,36 +130,9 @@ ion-content.pagina-mesa::part(scroll) {
     color: white;
   }
 
-  ion-header ion-toolbar {
-    --background: #d22f19;
-    --color: black;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .toolbar-center {
-    width: 100%;
-    justify-content: center;
-    display: flex;
-  }
-
-  .boton-home {
-    --background: #d22f19;
-    --color: white;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .icono-home {
-    font-size: 28px;
-    color: white;
-  }
-
+  /* =======================
+     Alerta flotante
+  ======================= */
   .alerta-flotante {
     position: fixed;
     top: 50%;
@@ -174,17 +170,52 @@ ion-content.pagina-mesa::part(scroll) {
     font-size: 0.95rem;
   }
 
-  @keyframes aparecer {
-    from {
-      opacity: 0;
-      transform: translate(-50%, -60%);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
+  .mesa-verificada .alerta-flotante {
+    background-color: #2e7d32 !important;
+    color: white;
   }
 
+  .mesa-verificada .boton-cerrar-alerta {
+    --background: #ffffff;
+    --color: #2e7d32;
+  }
+
+  /* =======================
+     Header y toolbar
+  ======================= */
+  ion-header ion-toolbar {
+    --background: #d22f19;
+    --color: black;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .toolbar-center {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+
+  .boton-home {
+    --background: #d22f19;
+    --color: white;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .icono-home {
+    font-size: 28px;
+    color: white;
+  }
+
+  /* =======================
+     Mesa
+  ======================= */
   .mesa-numero {
     text-align: center;
     color: white;
@@ -200,23 +231,13 @@ ion-content.pagina-mesa::part(scroll) {
     border-radius: 12px;
     margin-bottom: 1rem;
   }
+}
 
-  /* ✅ Cambiar fondo a verde si el QR fue verificado */
-  ion-content.pagina-mesa.mesa-verificada::part(scroll) {
-    background-color: #2e7d32 !important; /* Verde oscuro */
-    background-image: none !important;
-  }
 
-  /* ✅ Fondo alerta verde cuando QR es correcto */
-  .mesa-verificada .alerta-flotante {
-    background-color: #2e7d32 !important; /* Verde oscuro */
-    color: white;
-  }
-
-  /* ✅ Botón "Aceptar" blanco con texto verde */
-  .mesa-verificada .boton-cerrar-alerta {
-    --background: #ffffff;
-    --color: #2e7d32;
-  }
-
+.elicono{
+  font-size: 94px;
+  color: white;
+  opacity: 0.8;
+  position: absolute;
+  top: 150px;
 }

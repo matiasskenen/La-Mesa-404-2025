@@ -20,6 +20,9 @@ import { INotification } from 'src/app/interfaces/notification.model';
 })
 export class ClientesPage {
 
+  tipoAlerta: 'error' | 'exito' = 'error'; // valor por defecto
+
+
   auth = inject(AuthService);
   alertCtrl = inject(AlertController);
   router = inject(Router);
@@ -202,15 +205,21 @@ export class ClientesPage {
     })
   }
 
- mostrarModalAlerta(
+  mostrarModalAlerta(
     mostrar: boolean,
     titulo: string = '',
-    mensaje: string = ''
+    mensaje: string = '',
+    tipo: 'error' | 'exito' = 'error'  // 👈 nuevo parámetro
   ) {
     if (mostrar) {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
+      this.tipoAlerta = tipo;
+    } else {
+      this.mensajeAlerta = '';
+      this.tituloAlerta = '';
+      this.tipoAlerta = 'error'; 
     }
-    this.modalAlerta = mostrar;
   }
+  
 }

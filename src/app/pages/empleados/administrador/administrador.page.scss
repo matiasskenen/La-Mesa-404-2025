@@ -1,3 +1,6 @@
+/* ======================
+   FONDO GENERAL
+====================== */
 ion-content::part(scroll) {
   background-image: url("/assets/fondo.png");
   background-size: cover;
@@ -6,6 +9,9 @@ ion-content::part(scroll) {
   overflow-y: auto !important;
 }
 
+/* ======================
+   CONTENEDORES
+====================== */
 .formulario,
 .menu-container {
   display: flex;
@@ -23,19 +29,26 @@ ion-content::part(scroll) {
   overflow: hidden;
 }
 
+/* ======================
+   INPUTS Y SELECTS
+====================== */
 ion-item {
-  --background: #ffffff;
-  --border-radius: 10px;
-  --min-height: 36px;
-  padding: 1px 8px;
-  font-size: 0.88rem;
+  padding: 1rem;
+  --background: transparent;
+  --highlight-color-focused: transparent;
+  --border-color: transparent !important;
+  --padding-start: 0;
+  --padding-end: 0;
+  --min-height: auto;
+  border: none !important;
   box-shadow: none !important;
-  border: 1px solid transparent;
-  margin: 0;
 }
 
-.formulario ion-item:first-of-type {
-  margin-top: 0 !important;
+ion-item ion-textarea {
+  --background: #1e1e1e;
+  --color: #ffffff;
+  --placeholder-color: #bbbbbb;
+  font-size: 1.5rem;
 }
 
 ion-input,
@@ -45,17 +58,20 @@ ion-textarea {
   padding: 2px 0;
 }
 
+/* ======================
+   BOTONES
+====================== */
 .boton-opcion {
-  width: 100%;
-  max-width: 280px;
-  height: 42px;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  --background: #d22f19;
-  --border-radius: 10px;
+  --background: #862525;
   --color: white;
+  --border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  height: 20vh;
+  font-size: 1.2rem;
+  font-weight: bold;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .boton-opcion-warning {
@@ -84,10 +100,9 @@ ion-textarea {
   box-shadow: 0 0 0 2px #19647e;
 }
 
-.texto-blanco {
-  color: white;
-}
-
+/* ======================
+   HEADER
+====================== */
 ion-header ion-toolbar {
   --background: #d22f19;
   --color: black;
@@ -102,9 +117,9 @@ ion-header ion-toolbar {
 }
 
 .boton-home {
-  --background: #d22f19; // color de fondo
-  --color: black; // color del ícono (texto)
-  border-radius: 20%; // opcional si lo querés circular
+  --background: #d22f19;
+  --color: black;
+  border-radius: 20%;
   width: 48px;
   height: 48px;
   padding: 0;
@@ -118,66 +133,170 @@ ion-header ion-toolbar {
   font-size: 84px;
 }
 
+/* ======================
+   TEXTO GENERAL
+====================== */
+.texto-blanco {
+  color: white;
+}
+
+.ion-text-center {
+  color: white !important;
+  font-size: 1.5rem;
+}
+
+.colores {
+  background-color: #19647e;
+}
+
+/* ======================
+   CARD DE CLIENTES
+====================== */
 .card-cliente {
   width: 90%;
-  max-width: 320px;
-  margin: 10px auto;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  max-width: 340px;
+  margin: 12px auto;
+  border-radius: 16px;
+  background-color: #19647e;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 1.2rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card-cliente:hover {
+  transform: scale(1.02);
 }
 
 .card-cliente h3 {
-  margin: 0 0 4px;
-  font-size: 1rem;
+  margin: 0 0 6px;
+  font-size: 1.2rem; /* más grande */
   font-weight: bold;
+  color: white;
 }
 
 .card-cliente p {
-  margin: 2px 0;
-  font-size: 0.85rem;
+  margin: 4px 0;
+  font-size: 1.05rem; /* más grande también */
+  color: #f1f1f1;
   word-break: break-word;
 }
 
+/* ======================
+   BOTONES DENTRO DE LA CARD
+====================== */
 .botones-aprobacion {
+  display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-top: 12px;
 }
+
 ion-list {
   background: transparent !important;
   --background: transparent !important;
   box-shadow: none !important;
 }
 
-.ion-text-center {
-  color: white !important;
-  font-size: 1.5rem;
-
+/* Fondo transparente completo */
+.modal-transparente::part(backdrop) {
+  background-color: transparent !important;
 }
 
-.colores{
-  background-color: #19647e;
-}
+/* ======================
+   MODAL NUEVO RECHAZO
+====================== */
 
-
-ion-item ion-textarea {
-  --background: #1e1e1e;
-  --color: #ffffff;
-  font-size: 1.5rem;
-  --placeholder-color: #bbbbbb;
-}
-
-ion-item {
+.modal-rechazo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   padding: 1rem;
-  --background: transparent;
-  --highlight-color-focused: transparent;
-  --border-color: transparent !important;
-  --padding-start: 0;
-  --padding-end: 0;
-  --min-height: auto;
-  border: none !important;
-  box-shadow: none !important;
+  background-color: transparent; /* No gris detrás */
 }
 
+.modal-rechazo-box {
+  background-color: #326da8;
+  color: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.modal-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: white;
+}
+
+.modal-header ion-button {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.modal-mensaje {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.modal-item {
+  --background: #1e1e1e;
+  --color: white;
+  border-radius: 8px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.modal-textarea {
+  --background: #1e1e1e;
+  --color: white;
+  font-size: 1rem;
+  min-height: 100px;
+}
+
+/* Botón rojo confirmar */
+.boton-rechazo-confirmar {
+  --background: #d22f19;
+  --color: white;
+  border-radius: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+/* Botón volver */
+.boton-rechazo-volver {
+  --background: white;
+  --color: black;
+  border-radius: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+ion-modal.modal-transparente::part(content) {
+  --background: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+ion-modal::part(backdrop) {
+  background: rgba(0, 0, 0, 0.6); /* Cambialo o dejalo transparente */
+}
 

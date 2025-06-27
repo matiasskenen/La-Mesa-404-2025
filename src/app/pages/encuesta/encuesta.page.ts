@@ -7,13 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService } from 'src/app/services/database.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { IonLabel, IonRange, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-encuesta',
   templateUrl: './encuesta.page.html',
   styleUrls: ['./encuesta.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [CommonModule, FormsModule, IonicModule, IonRange,IonLabel, IonSegment, IonSegmentButton]
 })
 export class EncuestaPage implements OnInit {
   db = inject(DatabaseService);
@@ -52,7 +53,8 @@ export class EncuestaPage implements OnInit {
     };
     console.log(encuesta);
     const guardoEncuesta = await this.db.guardarEncuesta(encuesta);
-
+    window.history.back();
+    
     if(guardoEncuesta){
       this.db.cambiarEstadoEncuensta(encuesta.cliente_id, encuesta.mesa_id);
     }

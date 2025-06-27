@@ -498,19 +498,28 @@ export class MesaPage implements OnInit, OnDestroy {
     this.hizoEncuesta = data?.hizo_la_encuesta === true;
     this.log('verificarEncuesta(): hizoEncuesta = ' + this.hizoEncuesta);
   }
+  tipoAlerta: 'exito' | 'error' = 'error';
 
   mostrarModalAlerta(
     mostrar: boolean,
     titulo: string = '',
-    mensaje: string = ''
+    mensaje: string = '',
+    tipo: 'exito' | 'error' = 'error'
   ) {
+    this.modalAlerta = mostrar;
+  
     if (mostrar) {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
+      this.tipoAlerta = tipo;
       this.log(`Modal mostrado: ${titulo} - ${mensaje}`);
+    } else {
+      this.mensajeAlerta = '';
+      this.tituloAlerta = '';
+      this.tipoAlerta = 'error';
     }
-    this.modalAlerta = mostrar;
   }
+  
 
   simularCambioEstadoPedido(
     nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado'

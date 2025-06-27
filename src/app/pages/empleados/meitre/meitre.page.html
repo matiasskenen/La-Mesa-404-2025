@@ -8,7 +8,14 @@
   </ion-toolbar>
 </ion-header>
 
+
+
 <ion-content fullscreen="true" class="fondo ion-padding">
+
+  
+<ion-button expand="block" fill="outline" color="warning" (click)="simularClienteEnEspera()">
+  Simular cliente en espera
+</ion-button>
   <!-- FORMULARIO ALTA CLIENTE -->
   <div *ngIf="formClienteActivo" class="formulario">
     <ion-text color="danger" *ngIf="mensajeError">
