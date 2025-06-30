@@ -1,13 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary" class="toolbar-center">
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon name="home-outline" class="icono-home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true" class="fondo">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="primary" class="toolbar-center">
-        <ion-button class="boton-home" (click)="volverAtras()">
-          <ion-icon name="home-outline" class="icono-home"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
 
   <!-- Menú principal -->
@@ -225,11 +225,11 @@
             ></ion-textarea>
           </ion-item>
   
-          <ion-button expand="block" class="boton-rechazo-confirmar" (click)="confirmarRechazo()">
+          <ion-button expand="block" size="large" class="boton-rechazo-confirmar" (click)="confirmarRechazo()">
             CONFIRMAR RECHAZO
           </ion-button>
   
-          <ion-button expand="block" class="boton-rechazo-volver" (click)="cerrarModalRechazo()">
+          <ion-button expand="block" size="large" class="boton-rechazo-volver" (click)="cerrarModalRechazo()">
             VOLVER
           </ion-button>
         </div>

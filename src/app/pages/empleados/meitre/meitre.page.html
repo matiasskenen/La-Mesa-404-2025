@@ -13,9 +13,9 @@
 <ion-content fullscreen="true" class="fondo ion-padding">
 
   
-<ion-button expand="block" fill="outline" color="warning" (click)="simularClienteEnEspera()">
+<!-- <ion-button expand="block" fill="outline" color="warning" (click)="simularClienteEnEspera()">
   Simular cliente en espera
-</ion-button>
+</ion-button> -->
   <!-- FORMULARIO ALTA CLIENTE -->
   <div *ngIf="formClienteActivo" class="formulario">
     <ion-text color="danger" *ngIf="mensajeError">
@@ -87,13 +87,16 @@
 
   <!-- LISTA DE ESPERA -->
   <div *ngIf="mostrarListaEspera" class="formulario">
-    <ion-button expand="block" class="boton-opcion" (click)="mostrarListaEspera = false">
+    <ion-button expand="block" class="boton-opcion-volver" (click)="mostrarListaEspera = false">
       ⬅ Volver al menú
     </ion-button>
 
     <ion-list *ngIf="clientesEnEspera.length">
-      <ion-card *ngFor="let cliente of clientesEnEspera">
+      <ion-card *ngFor="let cliente of clientesEnEspera" class="carta-usuario">
         <ion-card-content>
+          <div class="imagen-usuario">
+            <img src="{{cliente.usuarios?.imagen_url}}" alt="foto usuario">
+          </div>
           <ion-label>
             <h2 class="texto-blanco">{{ cliente.email }}</h2>
             <p class="texto-blanco">Clave QR: {{ cliente.clave }}</p>
@@ -102,7 +105,7 @@
             <ion-button color="success" (click)="confirmarIngreso(cliente.email, true)">
               Aceptar
             </ion-button>
-            <ion-button color="danger" (click)="confirmarIngreso(cliente.email, false)">
+            <ion-button class="boton-rechazar" (click)="confirmarIngreso(cliente.email, false)">
               Rechazar
             </ion-button>
           </div>

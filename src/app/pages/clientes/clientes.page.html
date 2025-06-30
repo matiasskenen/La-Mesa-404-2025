@@ -1,13 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary" class="toolbar-center">
+      <ion-button class="boton-home" (click)="volverAtras()">
+        <ion-icon name="home-outline" class="icono-home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content [fullscreen]="true" class="pagina-cliente">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="primary" class="toolbar-center">
-        <ion-button class="boton-home" (click)="volverAtras()">
-          <ion-icon name="home-outline" class="icono-home"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
 
   <!-- Ícono QR + botón escanear -->
   <div class="scanner-container" *ngIf="estadoCliente === 'ninguno'">

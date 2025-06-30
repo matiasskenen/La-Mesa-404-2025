@@ -6,7 +6,7 @@ ion-content::part(scroll) {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
 }
 
 /* ======================
@@ -67,8 +67,8 @@ ion-textarea {
   --border-radius: 16px;
   width: 100%;
   max-width: 600px;
-  height: 20vh;
-  font-size: 1.2rem;
+  height: 30vh;
+  font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -270,7 +270,7 @@ ion-list {
 
 /* Botón rojo confirmar */
 .boton-rechazo-confirmar {
-  --background: #d22f19;
+  --background: #862525;
   --color: white;
   border-radius: 12px;
   font-weight: bold;

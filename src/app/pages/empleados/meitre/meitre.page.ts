@@ -150,7 +150,7 @@ export class MeitrePage implements OnInit, OnDestroy {
 
     const { data, error } = await this.supabase
       .from('espera_local')
-      .select('*')
+      .select('*, usuarios (imagen_url)')
       .eq('estado', 'pendiente');
 
     if (!error) this.clientesEnEspera = data;

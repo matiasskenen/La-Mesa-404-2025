@@ -7,7 +7,7 @@ ion-content {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    overflow-y: auto !important;
+    overflow-y: hidden !important;
     --background: var(--ion-color-celeste);
   }
   
@@ -113,7 +113,7 @@ ion-content {
      MENSAJES
   ============================== */
   .mensaje {
-    width: 60%;
+    width: 77%;
     margin: 8px 16px;
   }
   
