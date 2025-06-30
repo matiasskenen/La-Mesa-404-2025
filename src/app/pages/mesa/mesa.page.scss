@@ -6,7 +6,7 @@ ion-content.pagina-mesa::part(scroll) {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
 }
 
 /* =======================
@@ -56,8 +56,8 @@ ion-content.pagina-mesa::part(scroll) {
     --border-radius: 16px;
     width: 100%;
     max-width: 600px;
-    height: 26vh;
-    font-size: 1.2rem;
+    height: 36vh;
+    font-size: 1.5rem;
     font-weight: bold;
     letter-spacing: 0.5px;
     text-transform: uppercase;

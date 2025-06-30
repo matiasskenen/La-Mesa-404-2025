@@ -45,20 +45,22 @@ export class AuthService {
         }
         if (this.rolUsuario === '') {
           this.db.tablaUsuarios
-            .select('rol')
-            .eq('email', this.usuarioActual.email)
-            .single()
-            .then(({ data, error }) => {
-              if (error) {
-                console.error(
-                  'Error al obtener rol del usuario:',
-                  error.message
-                );
-                return;
-              }
+          .select('rol')
+          .eq('email', this.usuarioActual.email)
+          .limit(1)
+          .then(({ data, error }) => {
+            if (error) {
+              console.error('Error al obtener rol del usuario:', error.message);
+              return;
+            }
 
-              this.rolUsuario = data.rol;
-            });
+            if (data && data.length > 0) {
+              this.rolUsuario = data[0].rol;
+            } else {
+              console.error('No se encontró el usuario con ese email');
+            }
+          });
+
         }
       }
     });
