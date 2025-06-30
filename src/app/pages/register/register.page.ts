@@ -32,6 +32,8 @@ import {
   qrCodeOutline,
   trashOutline,
 } from 'ionicons/icons';
+import { NotificationsService } from 'src/app/services/notifications.service';
+import { INotification } from 'src/app/interfaces/notification.model';
 
 @Component({
   selector: 'app-register',
@@ -57,6 +59,15 @@ import {
 export class RegisterPage implements OnInit {
   auth = inject(AuthService);
   actionSheetCtrl = inject(ActionSheetController);
+
+  ns = inject(NotificationsService);
+
+  public notificacion: INotification = {
+    title: '',
+    body: '',
+    url: '',
+  };
+
 
 
   
@@ -91,6 +102,27 @@ export class RegisterPage implements OnInit {
     });
   }
   
+
+  enviarNoti(titulo: string, contenido: string, ruta: string) {
+    this.notificacion.title = titulo;
+    this.notificacion.body = contenido;
+    this.notificacion.url = ruta;
+    console.log('Antes de enviar la noti desde clientes', this.notificacion);
+    this.ns
+      .enviarNotificacion(this.notificacion)
+      .then((responseStatus: boolean) => {
+        if (responseStatus) {
+          console.log('Se envió la notificacion');
+        } else {
+          console.log('No se envió la notificacion');
+        }
+      })
+      .catch((error) => {
+        console.log(
+          'No se envió la notificacion por error: ' + JSON.stringify(error)
+        );
+      });
+  }
 
   ngOnInit() {}
 
@@ -211,6 +243,8 @@ export class RegisterPage implements OnInit {
           console.error('❌ Error en signUp():', errorAuth, 'Data:', data);
           return;
         }
+
+        this.enviarNoti('Nuevo usuario pendiente aprobación', 'Cliente pendiente a aprobación', '/chat');
 
       await this.auth.sb.supabase.auth.signOut();
 

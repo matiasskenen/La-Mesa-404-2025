@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true" class="fondo">
-  <!--  HEADER CON BOTÓN VOLVER -->
+  <!-- HEADER CON BOTÓN VOLVER -->
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="primary" class="toolbar-center">
@@ -10,47 +10,45 @@
     </ion-toolbar>
   </ion-header>
 
-  <!--  MENSAJE DE ERROR GENERAL -->
+  <!-- MENSAJE DE ERROR GENERAL -->
   <div class="mensaje-error" *ngIf="mensajeError">
     <ion-text color="danger">
       <p>{{ mensajeError }}</p>
     </ion-text>
   </div>
 
-  <!-- 🔄 SPINNER DE CARGA -->
-<div *ngIf="subiendoImagen" class="spinner-overlay">
-  <ion-spinner name="crescent"></ion-spinner>
-  <p>Subiendo imagen, por favor espere...</p>
-</div>
+  <!-- SPINNER DE CARGA -->
+  <div *ngIf="subiendoImagen" class="spinner-overlay">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Subiendo imagen, por favor espere...</p>
+  </div>
 
-
-  <!--  FORMULARIO DE REGISTRO DE CLIENTE -->
+  <!-- FORMULARIO DE REGISTRO DE CLIENTE -->
   <form [formGroup]="formCliente" (ngSubmit)="guardarCliente()">
-
-    <!-- 🔹 Nombre -->
+    <!-- Nombre -->
     <div class="input-group">
       <ion-item>
-        <ion-input formControlName="nombre" placeholder="Nombre"></ion-input>
+        <ion-input class="placeholder-negro" formControlName="nombre" placeholder="Nombre"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('nombre')?.touched && formCliente.get('nombre')?.invalid">
         <span *ngIf="formCliente.get('nombre')?.hasError('required')">El nombre es obligatorio</span>
       </div>
     </div>
 
-    <!--  Apellido -->
+    <!-- Apellido -->
     <div class="input-group">
       <ion-item>
-        <ion-input formControlName="apellido" placeholder="Apellido"></ion-input>
+        <ion-input class="placeholder-negro" formControlName="apellido" placeholder="Apellido"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('apellido')?.touched && formCliente.get('apellido')?.invalid">
         <span *ngIf="formCliente.get('apellido')?.hasError('required')">El apellido es obligatorio</span>
       </div>
     </div>
 
-    <!--  DNI + Botón QR -->
+    <!-- DNI + Botón QR -->
     <div class="input-group">
       <ion-item>
-        <ion-input type="number" formControlName="dni" placeholder="DNI"></ion-input>
+        <ion-input class="placeholder-negro" type="number" formControlName="dni" placeholder="DNI"></ion-input>
         <ion-button fill="clear" slot="end" (click)="escanearQR()">
           <ion-icon name="qr-code-outline" size="large" color="light"></ion-icon>
         </ion-button>
@@ -61,10 +59,10 @@
       </div>
     </div>
 
-    <!--  CUIL -->
+    <!-- CUIL -->
     <div class="input-group">
       <ion-item>
-        <ion-input formControlName="cuil" placeholder="CUIL"></ion-input>
+        <ion-input class="placeholder-negro" type="number" formControlName="cuil" placeholder="CUIL"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('cuil')?.touched && formCliente.get('cuil')?.invalid">
         <span *ngIf="formCliente.get('cuil')?.hasError('required')">El CUIL es obligatorio</span>
@@ -72,10 +70,10 @@
       </div>
     </div>
 
-    <!--  Email -->
+    <!-- Email -->
     <div class="input-group">
       <ion-item>
-        <ion-input type="email" formControlName="email" placeholder="Correo electrónico"></ion-input>
+        <ion-input class="placeholder-negro" type="email" formControlName="email" placeholder="Correo electrónico"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('email')?.touched && formCliente.get('email')?.invalid">
         <span *ngIf="formCliente.get('email')?.hasError('required')">El email es obligatorio</span>
@@ -83,10 +81,10 @@
       </div>
     </div>
 
-    <!--  Contraseña -->
+    <!-- Contraseña -->
     <div class="input-group">
       <ion-item>
-        <ion-input type="password" formControlName="password" placeholder="Contraseña"></ion-input>
+        <ion-input class="placeholder-negro" type="password" formControlName="password" placeholder="Contraseña"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('password')?.touched && formCliente.get('password')?.invalid">
         <span *ngIf="formCliente.get('password')?.hasError('required')">Contraseña obligatoria</span>
@@ -94,17 +92,17 @@
       </div>
     </div>
 
-    <!--  Confirmar contraseña -->
+    <!-- Confirmar contraseña -->
     <div class="input-group">
       <ion-item>
-        <ion-input type="password" formControlName="confirmar" placeholder="Confirmar contraseña"></ion-input>
+        <ion-input class="placeholder-negro" type="password" formControlName="confirmar" placeholder="Confirmar contraseña"></ion-input>
       </ion-item>
       <div class="error-tooltip" *ngIf="formCliente.get('confirmar')?.touched && formCliente.get('confirmar')?.invalid">
         <span *ngIf="formCliente.get('confirmar')?.hasError('required')">Debe confirmar la contraseña</span>
       </div>
     </div>
 
-    <!--  Vista previa imagen + Eliminar -->
+    <!-- Vista previa imagen + Eliminar -->
     <div *ngIf="imagenPreviewUrl" class="imagen-preview-container">
       <img [src]="imagenPreviewUrl" class="imagen-preview" alt="Imagen seleccionada" />
       <ion-button expand="block" color="danger" (click)="borrarImagen()">
@@ -113,20 +111,19 @@
       </ion-button>
     </div>
 
-    <!--  Subir imagen -->
+    <!-- Subir imagen -->
     <ion-button expand="block" color="medium" (click)="seleccionarFuenteImagen()">
       <ion-icon slot="start" name="camera-outline"></ion-icon>
       Subir imagen
     </ion-button>
 
-    <!--  Botón REGISTRARSE -->
+    <!-- Botón REGISTRARSE -->
     <ion-button expand="block" type="submit" color="success" [disabled]="!formularioValido()">
       REGISTRARSE
     </ion-button>
-
   </form>
 
-  <!--  MODAL DE ALERTA -->
+  <!-- MODAL DE ALERTA -->
   <div class="alerta-overlay" *ngIf="modalAlerta">
     <div class="alerta-flotante" [ngClass]="tipoAlerta">
       <h2>{{ tituloAlerta }}</h2>

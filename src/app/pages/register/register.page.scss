@@ -119,6 +119,7 @@ ion-button[color="success"] {
   --color: white;
 }
 
+
 ion-button[color="danger"] {
   --background: #c0392b;
   --color: rgb(200, 18, 18);
@@ -198,4 +199,20 @@ ion-button[color="danger"] {
   color: white;
   font-size: 1.2rem;
   text-align: center;
+}
+
+ion-input {
+  --color: var(--ion-color-black);
+  --placeholder-color: var(--ion-color-black);
+  --placeholder-opacity: 1;
+  --highlight-color: var(--ion-color-black);
+  /* Ajusta el grosor si quieres más o menos pronunciado */
+  --highlight-height: 2px;
+}
+-----------
+ion-input {
+padding-left: 4px;
+font-size: 0.95rem;
+--placeholder-color: var(--ion-color-black);
+  --placeholder-opacity: 1;
 }
