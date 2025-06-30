@@ -18,15 +18,15 @@ ion-content::part(scroll) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1;
   width: 100%;
   max-width: 360px;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
   margin: 0 auto;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   gap: 0.5rem;
-  height: 100%;
-  overflow: hidden;
 }
 
 /* ======================
@@ -153,9 +153,12 @@ ion-header ion-toolbar {
    CARD DE CLIENTES
 ====================== */
 .card-cliente {
-  width: 90%;
+  width: 95%;
+  height: 80%;
   max-width: 400px;
-  margin: 12px auto;
+  // margin: 12px auto;
+  margin-top: 55px;
+  margin-bottom: 55px;
   border-radius: 16px;
   background-color: #19647e;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -328,5 +331,11 @@ ion-modal::part(backdrop) {
 .boton-aprobar{
   --background: #248631;
   --color: white;
+}
+
+.listado-usuario{
+flex: 1;
+overflow-y: auto;
+overflow-x: hidden;
 }
 

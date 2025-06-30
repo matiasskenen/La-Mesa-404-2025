@@ -11,7 +11,7 @@ ion-content {
   .custom-card {
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
     border-radius: 16px;
-    margin: 8px;
+    margin: 0 1rem 1.1rem 1rem;
     background-color: rgb(24, 64, 124);
   }
 
@@ -47,7 +47,7 @@ ion-content {
   font-size: 20px;
   font-weight: bold;
   color: white;
-  text-align: center;
+
 }
 
 .titulo-nombre,
@@ -65,13 +65,15 @@ ion-content {
 
 .importe,
 .demora {
-  font-size: 2.4rem;         // más grande
+  font-size: 2.2rem;         // más grande
   font-weight: 900;          // más negrita
   color: #ffffff;            // blanco puro para más contraste
-  text-align: center;        // centrado horizontal
+       // centrado horizontal
   line-height: 1.2;
   margin: 0;
 }
+
+
 
 /* ==============================
    ESTRUCTURAS DE VISUALIZACIÓN
@@ -82,7 +84,7 @@ ion-content {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  height: 125px;
+  height: 110px;
 }
 
 .visor-footer-card {
@@ -109,7 +111,7 @@ ion-card-content {
 
 .galeria-img {
   width: 100%;
-  height: 100%;
+  height: 50%;
   object-fit: cover;
 }
 

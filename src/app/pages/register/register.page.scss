@@ -67,7 +67,18 @@ ion-item {
 ion-input {
   padding-left: 4px;
   font-size: 0.95rem;
+  --placeholder-color: var(--ion-color-light);
+    --placeholder-opacity: 1;
 }
+
+// ion-input {
+//     --color: var(--ion-color-danger);
+//     --placeholder-color: var(--ion-color-celeste);
+//     --placeholder-opacity: 1;
+//     --highlight-color: var(--ion-color-danger);
+//     /* Ajusta el grosor si quieres más o menos pronunciado */
+//     --highlight-height: 2px;
+// }
 
 /* === GRUPO Y TOOLTIP === */
 .input-group {
