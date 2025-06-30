@@ -154,7 +154,7 @@ ion-header ion-toolbar {
 ====================== */
 .card-cliente {
   width: 90%;
-  max-width: 340px;
+  max-width: 400px;
   margin: 12px auto;
   border-radius: 16px;
   background-color: #19647e;
@@ -298,5 +298,35 @@ ion-modal.modal-transparente::part(content) {
 
 ion-modal::part(backdrop) {
   background: rgba(0, 0, 0, 0.6); /* Cambialo o dejalo transparente */
+}
+
+.contenido-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+
+.imagen-usuario{
+  height: 130px;
+  width: 130px;
+  margin-bottom: 1rem;
+  // border: 2px solid rgba(33, 31, 31, 0.5);
+
+  img{
+    border-radius: 1rem;
+  }
+}
+
+.boton-rechazar{
+  --background: #862525;
+  --color: white;
+}
+
+.boton-aprobar{
+  --background: #248631;
+  --color: white;
 }
 
