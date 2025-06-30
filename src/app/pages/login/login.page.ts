@@ -164,6 +164,10 @@ export class LoginPage {
   }
 
   async ingresoAnonimo() {
-    this.router.navigateByUrl('/encuesta');
+    this.mostrarUsuarios = false;
+    this.loginForm.patchValue({
+      email: 'anonimo@gmail.com',
+      password: '123456',
+    });
   }
 }
