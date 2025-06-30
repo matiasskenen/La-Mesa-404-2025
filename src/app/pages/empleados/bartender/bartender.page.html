@@ -1,25 +1,35 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary" class="toolbar-center">
-      @if(!mostrarPedidosPendientes){
-      <ion-button class="boton-home" (click)="volverAtras()">
-        <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
-      </ion-button>
-      }@else {
-      <ion-button (click)="mostrarPedidosPendientes = false">
-        <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
-      </ion-button>
+      @if (!mostrarPedidosPendientes) {
+        <ion-button class="boton-home" (click)="volverAtras()">
+          <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
+        </ion-button>
+      } @else {
+        <ion-button (click)="mostrarPedidosPendientes = false">
+          <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
+        </ion-button>
       }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true" class="fondo ion-padding">
+  <!-- VISTA INICIAL -->
   <div class="menu-container" *ngIf="!mostrarPedidosPendientes">
-    <ion-button expand="block" fill="solid" class="boton-opcion" (click)="mostrarPedidosPendientes = true">
-      Ver pedidos pendientes
+    <!-- Ícono decorativo grande -->
+    <div class="icono-decorativo">
+      <ion-icon name="restaurant-outline"></ion-icon>
+    </div>
+
+    <ion-icon class="elicono" name="receipt-outline"></ion-icon>
+    <!-- Botón principal -->
+    <ion-button expand="block" fill="solid" class="boton-opcion icono-arriba" (click)="mostrarPedidosPendientes = true">
+      <div>Ver pedidos pendientes</div>
     </ion-button>
   </div>
+
+  <!-- LISTADO DE PEDIDOS -->
   <div *ngIf="mostrarPedidosPendientes">
     <div *ngIf="pedidos.length > 0" class="contenedor-flex slide-in">
       <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
@@ -29,14 +39,15 @@
               <div class="mesa-demora">
                 <span class="titulo-mesa">Mesa {{ pedido.mesa }}</span>
                 <ion-button color="success" (click)="prepararProducto(pedido.id, pedido.mesa)">
-                  Entregar</ion-button>
+                  Entregar
+                </ion-button>
               </div>
             </ion-card-header>
 
             <ion-list>
               <ion-item>
                 <ion-label class="texto-parte-pedido" [ngClass]="pedido.estado">
-                  {{ pedido.producto_nombre }} x {{ pedido.cantidad}}
+                  {{ pedido.producto_nombre }} x {{ pedido.cantidad }}
                 </ion-label>
               </ion-item>
             </ion-list>

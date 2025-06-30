@@ -7,49 +7,52 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
+  <!-- LISTA DE PEDIDOS -->
   <div *ngIf="pedidos.length > 0" class="contenedor-flex">
-    <ion-card
-      *ngFor="let pedido of pedidos"
-      class="custom-card"
-      [ngClass]="pedido.estado"
-    >
+    <ion-card *ngFor="let pedido of pedidos" class="custom-card">
       <ion-card-content>
         <div class="scroll-card">
-          <!-- Header: Mesa, demora e importe -->
+
           <ion-card-header>
             <div class="mesa-demora">
-              <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
-              <span class="titulo-demora">Demora: {{ pedido.demora_total }} min</span>
-              <span class="titulo-precio">
-                ${{ pedido.importe_total + montoPropina }}
-              </span>
+              <div class="fila-superior">
+                <span class="titulo-mesa">Mesa: {{ pedido.mesa_id }}</span>
+                <span class="titulo-mesa">Demora: {{ pedido.demora_total }} min</span>
+              </div>
+              <div class="fila-inferior">
+                <span class="titulo-precio">
+                  Total: ${{ (pedido.importe_total || 0) + montoPropina }}
+                </span>
+              </div>
             </div>
           </ion-card-header>
+          
 
-          <!-- Lista de productos detallados -->
+          <!--  DETALLE EXTENDIDO -->
           <ion-list *ngIf="pedido.detalle?.length">
             <ion-item *ngFor="let item of pedido.detalle">
-              <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
-                {{ item.producto_nombre }} x {{ item.cantidad }} - ${{ item.precio_unitario }}
+              <ion-label class="texto-blanco" [ngClass]="item.estado">
+                {{ item.producto_nombre }} - {{ item.cantidad }}u. ${{ item.precio_unitario }}
               </ion-label>
             </ion-item>
           </ion-list>
 
-          <!-- Fallback si no hay detalle, mostrar productos simples -->
+          <!-- DETALLE SIMPLE (FALLBACK) -->
           <ion-list *ngIf="!pedido.detalle?.length && pedido.productos?.length">
             <ion-item *ngFor="let item of pedido.productos">
               <ion-label class="texto-parte-pedido">
-                {{ item.nombre }} x {{ item.cantidad }}
+                {{ item.nombre }} - {{ item.cantidad }}
               </ion-label>
             </ion-item>
           </ion-list>
 
-          <!-- Botones para estado 'entregado' -->
+          <!--  BOTONES PARA ESTADO 'entregado' -->
           <ion-row *ngIf="pedido.estado === 'entregado'" class="botones-acciones">
             <ion-col>
               <ion-button expand="block" color="success" (click)="confirmarPedido(pedido)">
-                Confirmar Pedido
+                Confirmar
               </ion-button>
             </ion-col>
             <ion-col>
@@ -65,7 +68,7 @@
             </ion-col>
           </ion-row>
 
-          <!-- Botones para estado 'pedido_listo_pagar' -->
+          <!--  BOTONES PARA ESTADO 'pedido_listo_pagar' -->
           <ion-row *ngIf="pedido.estado === 'pedido_listo_pagar'" class="botones-acciones">
             <ion-col>
               <ion-button expand="block" color="success" (click)="marcarPagoPendienteConfirmacion()">
@@ -89,13 +92,26 @@
               </ion-button>
             </ion-col>
           </ion-row>
+
         </div>
       </ion-card-content>
     </ion-card>
   </div>
 
-  <!-- Mensaje cuando no hay pedidos -->
+  <!-- MENSAJE SI NO HAY PEDIDOS -->
   <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
     <p>No hay pedidos pendientes.</p>
   </ion-text>
+
+  <!--  MODAL DE ALERTA -->
+  <div class="alerta-overlay" *ngIf="modalAlerta">
+    <div class="alerta-flotante">
+      <h2>{{ tituloAlerta }}</h2>
+      <p>{{ mensajeAlerta }}</p>
+      <ion-button size="small" expand="block" class="boton-cerrar-alerta" (click)="mostrarModalAlerta(false)">
+        Aceptar
+      </ion-button>
+    </div>
+  </div>
+
 </ion-content>

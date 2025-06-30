@@ -212,6 +212,63 @@ export class MozoPage implements OnInit, OnDestroy {
     this.obtenerPedidosPendientes();
   }
 
+
+  async simularEstado(nuevoEstado: string) {
+    if (this.pedidos.length === 0) {
+      console.warn('No hay pedidos para simular');
+      return;
+    }
+  
+    const pedido = this.pedidos[0]; // Cambia el primero de la lista
+  
+    const { error } = await this.supabase
+      .from('pedidos_pendientes')
+      .update({ estado: nuevoEstado })
+      .eq('id', pedido.id);
+  
+    if (!error) {
+      console.log(`Estado simulado: ${nuevoEstado}`);
+      this.obtenerPedidosPendientes();
+    } else {
+      console.error('Error al simular estado:', error);
+    }
+  }
+  
+  async simularNuevoPedido() {
+    const nuevoPedido = {
+      mesa_id: Math.floor(Math.random() * 100) + 1, // mesa del 1 al 100
+      productos: [
+        {
+          nombre: 'Pizza Margarita',
+          cantidad: 1,
+          precio: 1500,
+          tiempo: 15,
+          sector: 'cocinero',
+        },
+        {
+          nombre: 'Cerveza IPA',
+          cantidad: 2,
+          precio: 800,
+          tiempo: 5,
+          sector: 'bartender',
+        },
+      ],
+      demora_total: 20,
+      importe_total: 3100,
+      estado: 'pendiente_confirmacion',
+    };
+  
+    const { error } = await this.supabase
+      .from('pedidos_pendientes')
+      .insert(nuevoPedido);
+  
+    if (!error) {
+      console.log('Pedido de prueba creado');
+      this.obtenerPedidosPendientes();
+    } else {
+      console.error('Error al crear pedido de prueba:', error);
+    }
+  }
   escucharPedidosEnTiempoReal() {
     this.canalPedidos = this.supabase
       .channel('pedidos-pendientes-canal')
@@ -223,20 +280,42 @@ export class MozoPage implements OnInit, OnDestroy {
           table: 'pedidos_pendientes',
         },
         (payload) => {
-          const nuevo = payload.new as { [key: string]: any };
-          if (nuevo['estado'] === 'pendiente_confirmacion') {
-            this.pedidos.unshift(nuevo);
-          }
-          if (nuevo['estado'] === 'pago_pendiente_confirmacion') {
-            this.pedidos.unshift(nuevo);
-          }
-          if (nuevo['estado'] === 'confirmado') {
-            this.pedidos.unshift(nuevo);
+          const nuevoEstado =
+            payload.new && typeof payload.new === 'object' && 'estado' in payload.new
+              ? (payload.new as any).estado
+              : undefined;
+  
+          if (
+            ['pendiente_confirmacion', 'pago_pendiente_confirmacion', 'confirmado'].includes(nuevoEstado)
+          ) {
+            this.obtenerPedidosPendientes(); // ✅ Recarga la lista evitando duplicados
           }
         }
       )
       .subscribe();
   }
+  
+  async simularPedidoListo() {
+    if (this.pedidos.length === 0) {
+      console.warn('No hay pedidos para simular');
+      return;
+    }
+  
+    const pedido = this.pedidos[0]; // Tomamos el primero para testeo
+  
+    const { error } = await this.supabase
+      .from('detalle_pedido_cliente')
+      .update({ estado: 'listo' })
+      .eq('mesa', pedido.mesa_id);
+  
+    if (!error) {
+      console.log('Todos los productos del pedido fueron marcados como "listo"');
+      this.obtenerPedidosPendientes();
+    } else {
+      console.error('Error al marcar como listo:', error);
+    }
+  }
+  
 
   inferirSector(nombre: string): string {
     const lower = nombre.toLowerCase();

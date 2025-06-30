@@ -301,13 +301,15 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido confirmado',
-              'Tu pedido fue aceptado por el mozo.'
+              'Tu pedido fue aceptado por el mozo.',
+              'exito'
             );
           } else if (nuevoEstado === 'pendiente_confirmacion') {
             this.mostrarModalAlerta(
               true,
               'Pedido pendiente',
-              'Tu pedido está esperando confirmación del mozo.'
+              'Tu pedido está esperando confirmación del mozo.',
+              'exito'
             );
             this.estadoPedido = 'pendiente';
           } else if (nuevoEstado === 'entregado') {
@@ -315,7 +317,8 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido entregado',
-              'Tu pedido fue entregado. Podés pagar la cuenta.'
+              'Tu pedido fue entregado. Podés pagar la cuenta.',
+              'exito'
             );
             this.navCtrl.navigateForward(['/estado-pedido'], {
               queryParams: { mesa: this.mesaAsignada },
@@ -325,7 +328,8 @@ export class MesaPage implements OnInit, OnDestroy {
             this.mostrarModalAlerta(
               true,
               'Pedido entregado',
-              'Gracias por tu visita.'
+              'Gracias por tu visita.',
+              'exito'
             );
             this.volverAtras();
           }
@@ -498,19 +502,28 @@ export class MesaPage implements OnInit, OnDestroy {
     this.hizoEncuesta = data?.hizo_la_encuesta === true;
     this.log('verificarEncuesta(): hizoEncuesta = ' + this.hizoEncuesta);
   }
+  tipoAlerta: 'exito' | 'error' = 'error';
 
   mostrarModalAlerta(
     mostrar: boolean,
     titulo: string = '',
-    mensaje: string = ''
+    mensaje: string = '',
+    tipo: 'exito' | 'error' = 'error'
   ) {
+    this.modalAlerta = mostrar;
+  
     if (mostrar) {
       this.mensajeAlerta = mensaje;
       this.tituloAlerta = titulo;
+      this.tipoAlerta = tipo;
       this.log(`Modal mostrado: ${titulo} - ${mensaje}`);
+    } else {
+      this.mensajeAlerta = '';
+      this.tituloAlerta = '';
+      this.tipoAlerta = 'error';
     }
-    this.modalAlerta = mostrar;
   }
+  
 
   simularCambioEstadoPedido(
     nuevoEstado: 'ninguno' | 'pendiente' | 'confirmado' | 'entregado'

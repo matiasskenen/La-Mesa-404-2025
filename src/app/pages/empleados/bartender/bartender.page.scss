@@ -10,9 +10,10 @@ ion-content::part(scroll) {
 }
 
 /* ======================
-   CONTENEDORES
+   CONTENEDORES GENERALES
 ====================== */
-.formulario {
+.formulario,
+.menu-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,10 +27,6 @@ ion-content::part(scroll) {
   gap: 0.5rem;
   height: 100%;
   overflow: hidden;
-}
-
-
-.formulario {
   background-color: transparent !important;
 }
 
@@ -42,8 +39,36 @@ ion-content::part(scroll) {
   font-size: 1rem;
 }
 
+.texto-parte-pedido {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 0.4rem;
+}
+
 /* ======================
-   CABECERA Y ÍCONO HOME
+   BOTONES
+====================== */
+.boton-opcion {
+  --background: #862525;
+  --color: white;
+  --border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  height: 30vh;
+  font-size: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ======================
+   HEADER Y TOOLBAR
 ====================== */
 ion-header ion-toolbar {
   --background: #d22f19;
@@ -75,59 +100,27 @@ ion-header ion-toolbar {
   color: white;
 }
 
-
-.menu-container {
+/* ======================
+   PEDIDOS Y TARJETAS
+====================== */
+.contenedor-flex {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  width: 100%;
-  max-width: 360px;
-  margin: 0 auto;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  gap: 0.5rem;
   height: 100%;
-  overflow: hidden;
 }
 
-.boton-opcion {
-  width: 100%;
-  max-width: 280px;
-  height: 42px;
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  --background: #d22f19;
-  --border-radius: 10px;
-  --color: white;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
+.custom-card {
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  margin: 8px;
+  background-color: red;
 }
 
-/* ======================
-   Agregado tomi
-====================== */
- .contenedor-flex {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
+ion-card-header {
+  padding: 0px;
+}
 
-  .custom-card {
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-    margin: 8px;
-    background-color: red;
-  }
-
-  .contenido-listado {
-    flex: 1; // ocupa el espacio restante
-    overflow-y: auto;
-  }
-
-  .mesa-demora {
+.mesa-demora {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -135,48 +128,34 @@ ion-header ion-toolbar {
 
 .titulo-mesa,
 .titulo-demora {
-  font-size: 1.2rem; // mismo tamaño que ion-card-title
+  font-size: 1.2rem;
   font-weight: bolder;
   color: black;
 }
 
-ion-card-header{
-  padding: 0px;
-}
-
-//Colores dinamicos para la CARD del pedido
+/* ======================
+   COLORES SEGÚN ESTADO
+====================== */
+.pendiente,
 .pendiente_confirmacion {
-  background: #ffee8c; // amarillo
-}
-
-.confirmado {
-  background: #2ecc71; // verde
-}
-
-.entregado {
-  background: #3498db; // por si querés un azul
-}
-
-.pendiente {
   background-color: #ffee8c; // amarillo
 }
 
+.confirmado {
+  background-color: #2ecc71; // verde
+}
+
+.entregado {
+  background-color: #3498db; // azul
+}
+
 .listo {
-  background-color: #1b7f45; // verde
+  background-color: #1b7f45; // verde fuerte
 }
 
-.texto-parte-pedido{
-font-size: 1.5rem; 
-  font-weight:bold;
-  color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 16px;
-  padding: 0.4rem;
-}
-
+/* ======================
+   LISTA DE PRODUCTOS
+====================== */
 ion-list {
   background: transparent !important;
 }
@@ -197,6 +176,7 @@ ion-item {
   display: flex;
   align-items: center;
 }
+
 ion-item ion-label {
   white-space: normal;
   overflow: visible;
@@ -205,6 +185,23 @@ ion-item ion-label {
   font-size: 0.95rem;
   text-align: left;
   width: 100%;
+}
+
+/* ======================
+   ICONOS Y ANIMACIONES
+====================== */
+.icono-decorativo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.elicono {
+  font-size: 94px;
+  color: white;
+  opacity: 0.8;
+  position: absolute;
+  top: 150px;
 }
 
 @keyframes slideInFwdCenter {
@@ -221,4 +218,3 @@ ion-item ion-label {
 .slide-in {
   animation: slideInFwdCenter 1s ease-out 0s both;
 }
-

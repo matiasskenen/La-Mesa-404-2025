@@ -1,55 +1,85 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary" class="toolbar-center">
-      @if(!mostrarPedidos){
+      @if (!mostrarPedidos) {
         <ion-button class="boton-home" (click)="volverAtras()">
           <ion-icon name="home-outline" class="icono-home" size="large"></ion-icon>
         </ion-button>
-      }@else {
+      } @else {
         <ion-button (click)="mostrarPedidos = false">
-      <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
-    </ion-button>
+          <ion-icon name="arrow-back-circle-outline" class="icono-home" size="large"></ion-icon>
+        </ion-button>
       }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true" class="fondo ion-padding">
+  <!-- MENÚ PRINCIPAL -->
   <div class="menu-container" *ngIf="!mostrarPedidos">
-    <ion-button
-      expand="block"
-      fill="solid"
-      routerLink="/chat"
-      class="boton-opcion"
-    >
+    <ion-button expand="block" fill="solid" routerLink="/chat" class="boton-opcion">
       Responder consultas
     </ion-button>
 
-    <ion-button
-      expand="block"
-      fill="solid"
-      class="boton-opcion"
-      (click)="mostrarPedidos = true"
-    >
+    <ion-button expand="block" fill="solid" class="boton-opcion" (click)="mostrarPedidos = true">
       Ver pedidos pendientes
     </ion-button>
   </div>
 
+
+  
+
+  <!-- TESTEO DE ESTADOS -->
+  <div class="botones-test">
+
+    <ion-button expand="block" color="tertiary" (click)="simularPedidoListo()">
+      Simular: Pedido Listo por Cocinero
+    </ion-button>
+
+    <ion-button expand="block" color="dark" (click)="simularNuevoPedido()">
+      Crear pedido de prueba
+    </ion-button>
+
+    <ion-button expand="block" color="medium" (click)="simularEstado('pendiente_confirmacion')">
+      Simular: Pendiente Confirmación
+    </ion-button>
+
+    <ion-button expand="block" color="warning" (click)="simularEstado('confirmado')">
+      Simular: Confirmado
+    </ion-button>
+
+    <ion-button expand="block" color="tertiary" (click)="simularEstado('pago_pendiente_confirmacion')">
+      Simular: Pago Pendiente Confirmación
+    </ion-button>
+
+    <ion-button expand="block" color="success" (click)="simularEstado('pagado')">
+      Simular: Pagado
+    </ion-button>
+
+    <ion-button expand="block" color="danger" (click)="simularEstado('rechazado')">
+      Simular: Rechazado
+    </ion-button>
+  </div>
+
+  <!-- LISTADO DE PEDIDOS -->
   <div *ngIf="mostrarPedidos">
     <div *ngIf="pedidos.length > 0" class="contenedor-flex">
       <ion-card *ngFor="let pedido of pedidos" class="custom-card" [ngClass]="pedido.estado">
         <ion-card-content>
           <div class="scroll-card">
             <ion-card-header>
-          <div class="mesa-demora">
-            <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
-            <span class="titulo-demora" *ngIf = "pedido.estado !== 'pago_pendiente_confirmacion'">Demora: {{ pedido.demora_total }} min</span>
-            <span class="titulo-demora" *ngIf = "pedido.estado == 'pago_pendiente_confirmacion'">Importe: ${{ pedido.importe_total }}</span>
-          </div>
-        </ion-card-header>
+              <div class="mesa-demora">
+                <span class="titulo-mesa">Mesa {{ pedido.mesa_id }}</span>
+                <span class="titulo-demora" *ngIf="pedido.estado !== 'pago_pendiente_confirmacion'">
+                  Demora: {{ pedido.demora_total }} min
+                </span>
+                <span class="titulo-demora" *ngIf="pedido.estado === 'pago_pendiente_confirmacion'">
+                  Importe: ${{ pedido.importe_total }}
+                </span>
+              </div>
+            </ion-card-header>
 
-
-            <!-- Productos antes de confirmar -->
+            <!-- Lista antes de confirmar -->
             <ion-list *ngIf="pedido.estado === 'pendiente_confirmacion'">
               <ion-item *ngFor="let item of pedido.productos">
                 <ion-label class="texto-blanco">
@@ -58,54 +88,28 @@
               </ion-item>
             </ion-list>
 
-            <!-- Detalle luego de confirmar -->
-            <ion-list
-              *ngIf="pedido.estado === 'confirmado' && pedido.detalle && pedido.detalle.length"
-            >
+            <!-- Lista luego de confirmar -->
+            <ion-list *ngIf="pedido.estado === 'confirmado' && pedido.detalle?.length">
               <ion-item *ngFor="let item of pedido.detalle">
                 <ion-label class="texto-parte-pedido" [ngClass]="item.estado">
-                  {{ item.producto_nombre }} x {{ item.cantidad}}
+                  {{ item.producto_nombre }} x {{ item.cantidad }}
                 </ion-label>
               </ion-item>
             </ion-list>
 
-            <!-- Botones: Confirmar / Rechazar -->
-            <div
-              class="botones-decision"
-              *ngIf="pedido.estado === 'pendiente_confirmacion'">
-              <ion-button color="success" (click)="confirmarPedido(pedido.id)"> 
-                Confirmar
-              </ion-button>
-              <ion-button color="danger" (click)="rechazarPedido(pedido.id)">
-                Rechazar
-              </ion-button>
+            <!-- Botones según estado -->
+            <div class="botones-decision" *ngIf="pedido.estado === 'pendiente_confirmacion'">
+              <ion-button color="success" (click)="confirmarPedido(pedido.id)">Confirmar</ion-button>
+              <ion-button color="danger" (click)="rechazarPedido(pedido.id)">Rechazar</ion-button>
             </div>
 
-            <!-- Botón: Entregar pedido -->
-            <div
-              class="botones-decision"
-              *ngIf="pedido.estado === 'confirmado'"
-            >
-              <ion-button
-                color="primary"
-                (click)="entregarPedido(pedido.mesa_id)"
-              >
-                Entregar el pedido
-              </ion-button>
+            <div class="botones-decision" *ngIf="pedido.estado === 'confirmado'">
+              <ion-button color="primary" (click)="entregarPedido(pedido.mesa_id)">Entregar el pedido</ion-button>
             </div>
 
-            <div
-            class="botones-decision"
-            *ngIf="pedido.estado === 'pago_pendiente_confirmacion'"
-          >
-            <ion-button
-              color="primary"
-              (click)="confirmarPago(pedido.mesa_id)"
-            >
-              Confirmar el Pago
-            </ion-button>
-          </div>
-          
+            <div class="botones-decision" *ngIf="pedido.estado === 'pago_pendiente_confirmacion'">
+              <ion-button color="primary" (click)="confirmarPago(pedido.mesa_id)">Confirmar el Pago</ion-button>
+            </div>
           </div>
         </ion-card-content>
       </ion-card>

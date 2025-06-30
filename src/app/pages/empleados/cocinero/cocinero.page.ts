@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/stan
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { addIcons } from 'ionicons';
-import { arrowBackCircleOutline, homeOutline } from 'ionicons/icons';
+import { arrowBackCircleOutline, homeOutline, receiptOutline } from 'ionicons/icons';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { INotification } from 'src/app/interfaces/notification.model';
 
@@ -29,7 +29,7 @@ export class CocineroPage implements OnInit {
   pedidos: any[] = [];
   mostrarPedidosPendientes: boolean = false;
   constructor() {
-    addIcons({ homeOutline, arrowBackCircleOutline });
+    addIcons({ homeOutline, arrowBackCircleOutline, receiptOutline });
   }
 
   ngOnInit() {

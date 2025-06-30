@@ -164,21 +164,6 @@ export class LoginPage {
   }
 
   async ingresoAnonimo() {
-    this.cargando = true;
-    this.mensajeError = '';
-
-    const email = 'anonimo@gmail.com';
-    const password = '123456';
-
-    const resultado = await this.auth.iniciarSesion(email, password);
-
-    if (!resultado.success) {
-      this.cargando = false;
-      this.mensajeError = '❌ Error al ingresar como anónimo.';
-      return;
-    }
-
-    this.router.navigateByUrl('/principal');
-    this.cargando = false;
+    this.router.navigateByUrl('/encuesta');
   }
 }

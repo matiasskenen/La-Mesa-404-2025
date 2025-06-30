@@ -76,15 +76,16 @@ ion-input {
 }
 
 .error-tooltip {
-  background-color: #d22f19;
-  color: white;
-  font-size: 0.75rem;
+  background-color: #222;        /* Fondo oscuro neutro */
+  color: #fff;                   /* Texto blanco para alto contraste */
+  font-size: 0.95rem;
   padding: 3px 6px;
   border-radius: 6px;
   margin-top: 2px;
   width: fit-content;
   animation: aparecer 0.2s ease-in-out;
 }
+
 
 @keyframes aparecer {
   from {
@@ -120,7 +121,7 @@ ion-button[color="success"] {
 
 ion-button[color="danger"] {
   --background: #c0392b;
-  --color: white;
+  --color: rgb(200, 18, 18);
 }
 
 /* === IMAGEN PREVIEW COMPACTA === */

@@ -1,191 +1,258 @@
+/* ==============================
+   FONDO GENERAL
+============================== */
 ion-content {
+    background-color: #1e437f;
+    background-image: url("/assets/fondo.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow-y: auto !important;
     --background: var(--ion-color-celeste);
-}
-
-//Contenedor toda la pantalla
-.contenedor-flex {
+  }
+  
+  /* ==============================
+     FUENTE GENERAL
+  ============================== */
+  ion-button,
+  ion-input,
+  ion-title {
+    font-family: 'Montserrat', sans-serif;
+  }
+  
+  /* ==============================
+     CONTENEDORES GENERALES
+  ============================== */
+  .contenedor-flex {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-}
-
-ion-card {
+    height: 90%;
+  }
+  
+  ion-card {
     width: 90%;
     max-width: 400px;
     box-shadow:
-        0px 4px 16px rgba(0, 0, 0, 0.2),
-        0 4px 10px rgba(0, 0, 0, 0.3);
+      0px 4px 16px rgba(0, 0, 0, 0.2),
+      0 4px 10px rgba(0, 0, 0, 0.3);
     border-radius: 16px;
-}
-
-ion-button,
-ion-input,
-ion-title{
-    font-family: 'Montserrat', sans-serif;
-}
-
-ion-input {
-    --color: var(--ion-color-danger);
-    --placeholder-color: var(--ion-color-celeste);
-    --placeholder-opacity: 1;
-    --highlight-color: var(--ion-color-danger);
-    /* Ajusta el grosor si quieres más o menos pronunciado */
-    --highlight-height: 2px;
-}
-
-
-
-//componente contenedor de todo el cuadro de chat
-.chat-card {
+  }
+  
+  /* ==============================
+     CHAT CARD PRINCIPAL
+  ============================== */
+  .chat-card {
     background: var(--ion-color-medium);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
-
     animation: fadeInRight 2s ease-out;
-}
-
-.pantalla-chat-card {
+  }
+  
+  .pantalla-chat-card {
     display: flex;
     flex-direction: column;
-    height: 100%; // para que la pantalla azul este completa
-    background-color: #bf1f27; //fondo pantalla
-}
-
-//Contenedor Solo para los mensajes que llegan de la base de datos tiene que ser scrolleable
-.contenedor-mensajes-flex {
+    height: 100%;
+    background-color: #1e437f;
+  }
+  
+  .contenedor-mensajes-flex {
     flex: 1;
     display: flex;
     overflow-y: auto;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-}
-
-@keyframes slideInFwdCenter {
-  0% {
-    transform: translateZ(-1400px);
-    opacity: 0;
   }
-  100% {
-    transform: translateZ(0);
-    opacity: 1;
+  
+  /* ==============================
+     ANIMACIONES
+  ============================== */
+  @keyframes slideInFwdCenter {
+    0% {
+      transform: translateZ(-1400px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateZ(0);
+      opacity: 1;
+    }
   }
-}
-
-.slide-in {
-  animation: slideInFwdCenter 1s ease-out 0s both;
-}
-
-
-
-//Header por fuera del componente mensajes-card
-.mensajes-card-header {
+  
+  .slide-in {
+    animation: slideInFwdCenter 1s ease-out 0s both;
+  }
+  
+  /* ==============================
+     ENCABEZADO DEL CHAT
+  ============================== */
+  .mensajes-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    ion-label{
-        padding: 13px 0px 0px 0px;
+  
+    ion-label {
+      padding: 13px 0 0 0;
     }
-}
-
-.mensajes-card-title {
+  }
+  
+  .mensajes-card-title {
     flex: 1;
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
     color: #000000;
     font-family: 'Montserrat', sans-serif;
-}
-
-
-//Estilos para mensajes
-
-.mensaje {
+  }
+  
+  /* ==============================
+     MENSAJES
+  ============================== */
+  .mensaje {
     width: 60%;
     margin: 8px 16px;
-}
-
-.mensaje-ajeno {
+  }
+  
+  .mensaje-ajeno {
     background: var(--ion-color-light);
     align-self: flex-start;
-
+  
     ion-label {
-        text-align: start;
-        color: var(--ion-color-crema);
+      text-align: start;
+      color: var(--ion-color-crema);
     }
-
+  
     ion-card-content {
-        color: var(--ion-color-crema);
+      color: var(--ion-color-crema);
     }
-}
-
-.mensaje-propio {
+  }
+  
+  .mensaje-propio {
     background: var(--ion-color-dark);
     align-self: flex-end;
-
+  
     ion-label {
-        text-align: end;
-        color: #000000;
+      text-align: end;
+      color: #000000;
     }
-
+  
     ion-card-content {
-        color: #000000;
+      color: #000000;
     }
-}
-
-//Lo usa el input para mensajes y los mensajes que vienen de la BD
-.componente-card {
-    /* Separación interna */
+  }
+  
+  /* ==============================
+     COMPONENTE CARD GENERAL
+  ============================== */
+  .componente-card {
     padding: 13px 16px;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0; // ⛔️ NO permitir que se achique
-
-
-    min-height: auto; // Asegura que la altura sea la del contenido
-
-}
-
-.componente-card ion-label {
+    flex-shrink: 0;
+    min-height: auto;
+  }
+  
+  .componente-card ion-label {
     display: block;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 1rem;
     font-family: 'Montserrat', sans-serif;
-}
-
-.componente-card ion-card-content {
+  }
+  
+  .componente-card ion-card-content {
     padding: 0;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-family: 'Montserrat', sans-serif;
-}
-
-//Solo para el componente que tiene al input
-.input-card ion-input {
-    --color: var(--ion-color-medium);
-    --background: transparent;
-    /* ya el ion-item trae el fondo */
-    --padding: 8px;
+    font-weight: 700;
+  }
+  
+  /* ==============================
+     INPUT CARD DEL CHAT
+  ============================== */
+  .input-card ion-input {
     --color: var(--ion-color-crema);
+    --background: transparent;
+    --padding: 8px;
     --placeholder-color: #7d7d7d;
     --highlight-color: var(--ion-color-dark);
-}
-
-.input-card ion-button {
+  }
+  
+  .input-card ion-button {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.1rem;
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-ion-input.custom {
+  }
+  
+  ion-input.custom {
     --placeholder-opacity: 1;
-    /* Ajusta el grosor si quieres más o menos pronunciado */
     --highlight-height: 2px;
-
-}
+  }
+  
+  /* ==============================
+     HEADER (ANTERIOR)
+  ============================== */
+  ion-header ion-toolbar {
+    --background: #d22f19;
+    --color: black;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 50px;
+  }
+  
+  .toolbar-center {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+  
+  /* ==============================
+   FOOTER CON BOTÓN HOME
+============================== */
+ion-footer {
+    --background: transparent;
+    border-top: none;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+  }
+  
+  ion-footer ion-toolbar {
+    --background: #d22f19;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 74px;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  .toolbar-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .boton-home {
+    --background: #d22f19;
+    --color: white;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .icono-home {
+    font-size: 28px;
+    color: white;
+  }
+  
+  
