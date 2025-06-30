@@ -122,7 +122,7 @@
     <div *ngIf="clientesPendientes.length === 0" class="ion-text-center">
       <p class="texto-blanco">No hay clientes pendientes de aprobación.</p>
     </div>
-    <ion-list *ngIf="clientesPendientes.length > 0">
+    <div *ngIf="clientesPendientes.length > 0" class="listado-usuario">
       <ion-card *ngFor="let cliente of clientesPendientes" class="card-cliente">
         <ion-card-content class="contenido-card">
           <div class="imagen-usuario">
@@ -143,7 +143,7 @@
           </div>
         </ion-card-content>
       </ion-card>
-    </ion-list>
+    </div>
     <ion-button class="boton-volver" (click)="formActivo = null">
       VOLVER
     </ion-button>
