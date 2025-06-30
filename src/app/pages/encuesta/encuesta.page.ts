@@ -14,11 +14,7 @@ import { IonLabel, IonRange, IonSegment, IonSegmentButton } from '@ionic/angular
   templateUrl: './encuesta.page.html',
   styleUrls: ['./encuesta.page.scss'],
   standalone: true,
-<<<<<<< HEAD
-  imports: [CommonModule, FormsModule, IonicModule, IonRange, IonLabel, IonSegment, IonSegmentButton]
-=======
   imports: [CommonModule, FormsModule, IonicModule, IonRange,IonLabel, IonSegment, IonSegmentButton]
->>>>>>> 5bfa6991da2ff9b9cc773ea79648661fdcaaae6b
 })
 export class EncuestaPage implements OnInit {
   db = inject(DatabaseService);
@@ -59,14 +55,9 @@ export class EncuestaPage implements OnInit {
     };
     console.log(encuesta);
     const guardoEncuesta = await this.db.guardarEncuesta(encuesta);
-<<<<<<< HEAD
-
-    if (guardoEncuesta) {
-=======
     window.history.back();
     
     if(guardoEncuesta){
->>>>>>> 5bfa6991da2ff9b9cc773ea79648661fdcaaae6b
       this.db.cambiarEstadoEncuensta(encuesta.cliente_id, encuesta.mesa_id);
       this.mostrarModalAlerta(
         true,
