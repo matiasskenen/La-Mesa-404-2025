@@ -176,6 +176,57 @@ ion-radio.ios::part(container) {
   color: rgb(233, 231, 231);
 }
 
+// alerta
+.alerta-flotante {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    width: 90%;
+    max-width: 320px;
+    padding: 1.5rem 1rem;
+    background-color: #2e7d32;
+    color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: aparecer 0.4s ease-out;
+  }
+
+   .alerta-flotante h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .alerta-flotante p {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  /* ✅ Fondo alerta verde cuando QR es correcto */
+  .mesa-verificada .alerta-flotante {
+    background-color: #2e7d32 !important; /* Verde oscuro */
+    color: white;
+  }
+
+  /* ✅ Botón "Aceptar" blanco con texto verde */
+  .boton-cerrar-alerta {
+    --background: #ffffff;
+    --color: #2e7d32;
+  }
+
+  .boton-cerrar-alerta {
+    --background: #ffffff;
+    --color: #2e7d32;
+    --border-radius: 10px;
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+
+
 
 
 

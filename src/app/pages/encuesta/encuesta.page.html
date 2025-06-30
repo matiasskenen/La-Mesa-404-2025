@@ -47,17 +47,17 @@
   <ion-button shape="round" color="none" class="boton-sombra"
               [class.boton-activo]="medio_de_pago === 'efectivo'" 
               (click)="medio_de_pago = 'efectivo'">
-    <ion-icon name="cash-outline" size="large" color="dark"></ion-icon>
+    <ion-icon name="cash-outline" size="large" color="light"></ion-icon>
   </ion-button>
   <ion-button shape="round" color="none" class="boton-sombra"
               [class.boton-activo]="medio_de_pago === 'tarjeta'" 
               (click)="medio_de_pago = 'tarjeta'">
-    <ion-icon name="card-outline" size="large" color="dark"></ion-icon>
+    <ion-icon name="card-outline" size="large" color="light"></ion-icon>
   </ion-button>
   <ion-button shape="round" color="none" class="boton-sombra"
               [class.boton-activo]="medio_de_pago === 'cripto'" 
               (click)="medio_de_pago = 'cripto'">
-    <ion-icon name="logo-bitcoin" size="large" color="dark"></ion-icon>
+    <ion-icon name="logo-bitcoin" size="large" color="light"></ion-icon>
   </ion-button>
 </div>
       </ion-card-content>
@@ -68,7 +68,7 @@
         <ion-card-header>
           <ion-label class="texto-pregunta titulo-pregunta">Higiene del local</ion-label>
         </ion-card-header>
-        <ion-segment [(ngModel)]="higiene_local" color="dark">
+        <ion-segment [(ngModel)]="higiene_local" color="light">
   <ion-segment-button value="sucio">
     <ion-label>Sucio</ion-label>
   </ion-segment-button>
@@ -87,4 +87,15 @@
         </ion-button>
     </ion-card>
   </div>
+
+  <!-- MODAL ALERTA -->
+    <div class="alerta-overlay" *ngIf="modalAlerta">
+      <div class="alerta-flotante">
+        <h2>{{ tituloAlerta }}</h2>
+        <p>{{ mensajeAlerta }}</p>
+        <ion-button size="small" expand="block" class="boton-cerrar-alerta" (click)="salirDeEncuesta()">
+          Aceptar
+        </ion-button>
+      </div>
+    </div>
 </ion-content>
