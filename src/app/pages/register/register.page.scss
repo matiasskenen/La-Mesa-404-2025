@@ -174,12 +174,28 @@ ion-button[color="danger"] {
 
 /* ✅ Colores dinámicos según clase */
 .exito {
-  background: #2ecc71; // fondo verde
-  --color: #2ecc71; // texto botón verde
+  background: #772f14; // fondo verde
+  --color: #f2f6f4; // texto botón verde
 }
 
 .error {
-  background: #f44336; // fondo rojo
-  --color: #f44336; // texto botón rojo
+  background: #5a5959; // fondo rojo
+  --color: #fbfbfb; // texto botón rojo
 }
 
+.spinner-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  color: white;
+  font-size: 1.2rem;
+  text-align: center;
+}

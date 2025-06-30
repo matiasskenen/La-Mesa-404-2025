@@ -19,6 +19,7 @@ import {
   IonHeader,
   IonButtons,
   IonToolbar,
+  IonSpinner,
 } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -38,6 +39,7 @@ import {
   styleUrls: ['./register.page.scss'],
   standalone: true,
   imports: [
+    IonSpinner,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -49,12 +51,15 @@ import {
     IonHeader,
     IonToolbar,
     IonButtons,
+    IonText
   ],
 })
 export class RegisterPage implements OnInit {
   auth = inject(AuthService);
   actionSheetCtrl = inject(ActionSheetController);
 
+
+  
   formCliente: FormGroup;
   mensajeError = '';
   mensajeOk = '';
@@ -85,6 +90,7 @@ export class RegisterPage implements OnInit {
       cameraOutline,
     });
   }
+  
 
   ngOnInit() {}
 
@@ -198,12 +204,13 @@ export class RegisterPage implements OnInit {
           password: c.password,
         });
 
-      if (errorAuth || !data?.user) {
-        this.mensajeError =
-          '❌ Error al registrar en Auth: ' +
-          (errorAuth?.message || 'Usuario no creado');
-        return;
-      }
+        if (errorAuth || !data?.user) {
+          this.mensajeError =
+            '❌ Error al registrar en Auth: ' +
+            (errorAuth?.message || 'Usuario no creado');
+          console.error('❌ Error en signUp():', errorAuth, 'Data:', data);
+          return;
+        }
 
       await this.auth.sb.supabase.auth.signOut();
 
@@ -225,6 +232,7 @@ export class RegisterPage implements OnInit {
 
       if (error) {
         this.mensajeError = '❌ Error al guardar en usuarios: ' + error.message;
+        console.error('❌ Error al insertar en tabla usuarios:', error);
       } else {
         this.tituloAlerta = 'Registro exitoso';
         this.mensajeAlerta =
@@ -236,6 +244,7 @@ export class RegisterPage implements OnInit {
       }
     } catch (err) {
       this.mensajeError = '❌ Hubo un problema: ' + (err as Error).message;
+      console.error('❌ Excepción general:', err);
     }
   }
 
@@ -249,6 +258,7 @@ export class RegisterPage implements OnInit {
       this.tituloAlerta = titulo;
     }
     this.modalAlerta = mostrar;
+
   }
 
   async escanearQR() {

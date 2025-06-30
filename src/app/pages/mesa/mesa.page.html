@@ -10,18 +10,6 @@
       </ion-toolbar>
     </ion-header>
 
-<!-- 🔧 BOTONES DE TESTEO DE ALERTAS -->
-<div class="botones-test" *ngIf="!procesando">
-  <ion-button expand="block" color="success" (click)="mostrarModalAlerta(true, 'Éxito', 'La operación fue completada correctamente.', 'exito')">
-    Probar Alerta de Éxito
-  </ion-button>
-
-  <ion-button expand="block" color="danger" (click)="mostrarModalAlerta(true, 'Error', 'Ocurrió un problema durante la operación.', 'error')">
-    Probar Alerta de Error
-  </ion-button>
-</div>
-
-
     <!-- QR NO verificado -->
     <div class="scanner-container" *ngIf="!mesaVerificada">
       <ion-icon name="checkbox-outline" class="icono-qr elicono"></ion-icon>
