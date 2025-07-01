@@ -55,5 +55,8 @@
         </ion-card-content>
       </ion-card>
     </div>
+    <ion-text *ngIf="pedidos.length === 0" class="ion-padding texto-blanco">
+      <p>No hay pedidos pendientes.</p>
+    </ion-text>
   </div>
 </ion-content>

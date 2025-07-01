@@ -412,3 +412,15 @@ flex: 1;
 overflow-y: auto;
 overflow-x: hidden;
 }
+
+.ocupada {
+  background-color: #eb445a; // Rojo
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.limpieza {
+  background-color: #ffc409; // Amarillo
+  pointer-events: none;
+  opacity: 0.6;
+}
