@@ -220,6 +220,8 @@ export class ClientesPage {
       this.tituloAlerta = '';
       this.tipoAlerta = 'error'; 
     }
+
+    this.modalAlerta = mostrar;
   }
   
 }
