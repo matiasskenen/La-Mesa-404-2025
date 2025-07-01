@@ -91,7 +91,7 @@
       ⬅ Volver al menú
     </ion-button>
 
-    <ion-list *ngIf="clientesEnEspera.length">
+    <div *ngIf="clientesEnEspera.length" class="listado-usuario">
       <ion-card *ngFor="let cliente of clientesEnEspera" class="carta-usuario">
         <ion-card-content>
           <div class="imagen-usuario">
@@ -111,7 +111,7 @@
           </div>
         </ion-card-content>
       </ion-card>
-    </ion-list>
+    </div>
 
     <ion-text *ngIf="!clientesEnEspera.length" class="ion-padding texto-blanco">
       <p>No hay clientes en espera.</p>
