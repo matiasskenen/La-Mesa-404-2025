@@ -237,3 +237,27 @@ ion-item ion-label {
   justify-content: center;
   align-items: center;
 }
+
+
+
+  .vidrio {
+  background: rgba(255, 255, 255, 0.01); 
+  backdrop-filter: blur(10px);         
+  border-radius: 15px;                 
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+ .custom-card-vidrio{
+    margin: 6px;
+    padding: 1rem;
+
+    p{
+      font-size: 1.9rem; 
+  font-weight:bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    }
+  }
