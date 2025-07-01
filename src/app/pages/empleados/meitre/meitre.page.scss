@@ -7,7 +7,6 @@ ion-content::part(scroll) {
   background-repeat: no-repeat;
   background-position: center;
   overflow-y: auto !important;
-  
 }
 
 /* ======================
@@ -313,13 +312,16 @@ ion-list {
 }
 
 .grilla-mesas {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 12px;
-  justify-items: center;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* This is what does the trick */
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: stretch;
+  align-items: stretch;
 }
-
 .mesa-cuadro {
   background-color: gray;
   color: white;
@@ -330,7 +332,7 @@ ion-list {
   text-align: center;
   cursor: pointer;
   width: 100%;
-  max-width: 100px;
+  max-width: 200px;
   transition: transform 0.2s, background-color 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -372,15 +374,39 @@ ion-list {
 }
 
 
+/* ===========================
+   MODAL MESAS FULLSCREEN
+=========================== */
+ion-modal {
+  --height: 100%;
+  --max-height: 100%;
+}
+
+ion-content::part(scroll) {
+  padding: 0 !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+ion-content {
+  --padding-bottom: 0 !important;
+  --padding-top: 0 !important;
+}
+
+/* ===========================
+   GRILLA DE MESAS
+=========================== */
 .grilla-mesas {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Más ancho base */
-  height: 80%;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
   width: 100%;
   box-sizing: border-box;
-  justify-content: center;
-  align-items: center;
-  
+  justify-items: stretch;
+  align-items: stretch;
 }
 
 .mesa-cuadro {
@@ -391,9 +417,8 @@ ion-list {
   border-radius: 16px;
   text-align: center;
   cursor: pointer;
-  aspect-ratio: 1 / 1; /* ⬅️ Cuadrado automático */
-  width: 500px;         /* ⬅️ Ocupa todo el ancho de su celda */
-  height: 60%;        /* ⬅️ Ocupa todo el alto de su celda */
+  aspect-ratio: 1 / 1; /* cuadrado automático */
+  width: 100%; /* ocupar celda completa */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,5 +428,22 @@ ion-list {
 
 .mesa-cuadro:hover {
   transform: scale(1.05);
+}
+
+/* ESTADOS */
+.disponible {
+  background-color: #2dd36f;
+}
+
+.ocupada {
+  background-color: #eb445a;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.limpieza {
+  background-color: #ffc409;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
