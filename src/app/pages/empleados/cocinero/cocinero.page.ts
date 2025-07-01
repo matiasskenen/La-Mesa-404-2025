@@ -91,7 +91,7 @@ export class CocineroPage implements OnInit {
 
     this.enviarNoti(
       'Pedido Terminado',
-      `Pedido de la mesa ${numeroMesa}, Terminado`,
+      `El cocinero terminó el pedido de la mesa ${numeroMesa}`,
       '/chat'
     );
   }

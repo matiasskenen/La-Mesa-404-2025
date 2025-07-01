@@ -91,7 +91,7 @@ export class BartenderPage implements OnInit {
 
     this.enviarNoti(
       'Pedido Terminado',
-      `Pedido de la mesa ${numeroMesa}, Terminado`,
+      `El bartender terminó el pedido de la mesa ${numeroMesa}`,
       '/chat'
     );
   }
