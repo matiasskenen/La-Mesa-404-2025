@@ -332,7 +332,8 @@ ion-list {
   text-align: center;
   cursor: pointer;
   width: 100%;
-  max-width: 200px;
+  max-width: 600px;
+  height: 300px;
   transition: transform 0.2s, background-color 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -375,26 +376,6 @@ ion-list {
 
 
 /* ===========================
-   MODAL MESAS FULLSCREEN
-=========================== */
-ion-modal {
-  --height: 100%;
-  --max-height: 100%;
-}
-
-ion-content::part(scroll) {
-  padding: 0 !important;
-  height: 100% !important;
-  display: flex;
-  flex-direction: column;
-}
-
-ion-content {
-  --padding-bottom: 0 !important;
-  --padding-top: 0 !important;
-}
-
-/* ===========================
    GRILLA DE MESAS
 =========================== */
 .grilla-mesas {
@@ -424,26 +405,5 @@ ion-content {
   justify-content: center;
   transition: transform 0.2s ease, background-color 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.mesa-cuadro:hover {
-  transform: scale(1.05);
-}
-
-/* ESTADOS */
-.disponible {
-  background-color: #2dd36f;
-}
-
-.ocupada {
-  background-color: #eb445a;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.limpieza {
-  background-color: #ffc409;
-  pointer-events: none;
-  opacity: 0.6;
 }
 
