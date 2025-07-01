@@ -55,7 +55,7 @@
         </ion-card-content>
       </ion-card>
     </div>
-    <ion-card class="custom-card-vidrio vidrio">
+    <ion-card *ngIf="pedidos.length === 0" class="custom-card-vidrio vidrio">
       <p class="texto-sin-pedidos">No hay pedidos</p>
     </ion-card>
   </div>
