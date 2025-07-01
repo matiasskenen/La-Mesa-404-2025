@@ -7,6 +7,7 @@ ion-content::part(scroll) {
   background-repeat: no-repeat;
   background-position: center;
   overflow-y: auto !important;
+  
 }
 
 /* ======================
@@ -370,4 +371,37 @@ ion-list {
   --color: white;
 }
 
+
+.grilla-mesas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Más ancho base */
+  height: 80%;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.mesa-cuadro {
+  background-color: #2dd36f;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  aspect-ratio: 1 / 1; /* ⬅️ Cuadrado automático */
+  width: 500px;         /* ⬅️ Ocupa todo el ancho de su celda */
+  height: 60%;        /* ⬅️ Ocupa todo el alto de su celda */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.mesa-cuadro:hover {
+  transform: scale(1.05);
+}
 
