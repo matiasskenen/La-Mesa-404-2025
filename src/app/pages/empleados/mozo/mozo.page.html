@@ -103,11 +103,11 @@
               <ion-button color="danger" (click)="rechazarPedido(pedido.id)">Rechazar</ion-button>
             </div>
 
-            <div class="botones-decision" *ngIf="pedido.estado === 'confirmado'">
-              <ion-button color="primary" (click)="entregarPedido(pedido.mesa_id)">Entregar el pedido</ion-button>
+            <div class="boton-solo " *ngIf="pedido.estado === 'confirmado'">
+              <ion-button  (click)="entregarPedido(pedido.mesa_id)">Entregar el pedido</ion-button>
             </div>
 
-            <div class="botones-decision" *ngIf="pedido.estado === 'pago_pendiente_confirmacion'">
+            <div class="boton-solo" *ngIf="pedido.estado === 'pago_pendiente_confirmacion'">
               <ion-button color="primary" (click)="confirmarPago(pedido.mesa_id)">Confirmar el Pago</ion-button>
             </div>
           </div>
